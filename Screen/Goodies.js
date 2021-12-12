@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Header from '../Components/Header';
 import GoodiesCard from '../Components/GoodiesCard';
 import Navbar from '../Components/Navbar';
