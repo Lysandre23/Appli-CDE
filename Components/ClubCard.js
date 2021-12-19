@@ -9,22 +9,30 @@ const ClubCard = (props) => {
     return (
         <TouchableOpacity
             onPress={() => {
-                navigation.navigate("Club", {nom: props.nom});
+                navigation.navigate("Club", {nom: props.name});
             }}
+            style={styles.main}
         >
-            <Image style={styles.img} source={{uri: require("../assets/event.jpg")}}/>
-            <Text>{props.nom}</Text>
+            <Image source={require('../assets/event.jpg')} style={styles.img}/>
+            <Text style={styles.text}>{props.name}</Text>
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
     main: {
-
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 20
     },
     img: {
         width: 40,
         height: 40
+    },
+    text: {
+        fontSize: 11,
+        color: "#555"
     }
 });
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import Role from "../Components/Role"
 import { SideBarButton } from "./SideBarButton";
+import RoleSquare from "./RoleSquare";
 
 export function SideBar(props) {
     return(
@@ -9,7 +9,10 @@ export function SideBar(props) {
         <Image style={styles.logo} source={require("../assets/CDELogo.png")}/>
         <View style={styles.info}>
             <Text style={styles.name}>Alexandre Humbert</Text>
-            <Role role="Utilisateur standard" color="#2ECC71"/>
+            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                <RoleSquare color="#da291c"/>
+                <Text>Utilisateur standard</Text>
+            </View>
         </View>
         <View style={styles.actions}>
             <SideBarButton goto="Admin" txt="Page administrateur"/>

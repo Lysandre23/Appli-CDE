@@ -11,9 +11,9 @@ const Club = ({route}) => {
     const {nom} = route.params;
     return(
         <View style={styles.main}>
-            <Header color="#da291c" title={"CLUB DE " + nom.toUpperCase()} />
+            <Header color="#da291c" title={nom.toUpperCase()} />
             <View style={styles.head}>
-                <Image style={styles.img} source={{uri: require('../assets/event.jpg')}}/>
+                <Image style={styles.img} source={require('../assets/event.jpg')}/>
                 <View style={styles.headButton}>
                     <TouchableOpacity style={styles.bt} onPress={() => {
                         
@@ -33,7 +33,7 @@ const Club = ({route}) => {
                 </View>
             </View>
             <View style={styles.presText}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.
+                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.</Text>
             </View>
             <View style={styles.line}></View>
             <ScrollView style={styles.list}>

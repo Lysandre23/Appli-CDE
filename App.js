@@ -12,8 +12,9 @@ import PSN from './Screen/PSN';
 import Message from './Screen/Message';
 import Abonnement from './Screen/Abonnements';
 import GestionClub from './Screen/GestionClub';
-import Admin from './Screen/Admin';
+import Role from './Screen/Role';
 import Club from './Screen/Club';
+import Admin from './Screen/Admin';
 import { SideBar } from './Components/SideBar';
 
 const Drawer = createDrawerNavigator();
@@ -32,8 +33,9 @@ function App() {
         <Drawer.Screen name="Message" component={Message} />
         <Drawer.Screen name="Abonnements" component={Abonnement} />
         <Drawer.Screen name="GestionClub" component={GestionClub} />
-        <Drawer.Screen name="Admin" component={Admin} />
+        <Drawer.Screen name="Role" component={Role} />
         <Drawer.Screen name="Club" component={Club} />
+        <Drawer.Screen name="Admin" component={Admin} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

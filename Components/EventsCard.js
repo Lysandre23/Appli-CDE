@@ -12,7 +12,7 @@ const EventsCard = (props) => {
                 />
             </View>
             <View style={styles.infoContainer}>
-                <Text style={styles.infoTitle}>{props.title}</Text>
+                <Text style={styles.infoTitle}>{props.name}</Text>
                 <Text style={styles.infoDate}>{props.date}</Text>
             </View>
         </TouchableOpacity>

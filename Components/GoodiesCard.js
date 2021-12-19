@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState } from 'react';
 
-const GoodiesCard = () => {
+const GoodiesCard = (props) => {
     const [loaded, setLoaded] = useState(false);
     return(
         <TouchableOpacity style={styles.main}>
@@ -14,8 +14,8 @@ const GoodiesCard = () => {
             />
             <View style={styles.lineSeparator}></View>
             <View style={styles.info}>
-                <Text>T-SHIRT</Text>
-                <Text>20€</Text>
+                <Text>{props.name}</Text>
+                <Text>{props.price} €</Text>
             </View>
         </TouchableOpacity>
     )
@@ -24,7 +24,7 @@ const GoodiesCard = () => {
 const styles = StyleSheet.create({
     main: {
         backgroundColor: "white",
-        width: "42%",
+        width: "80%",
         height: 180,
         borderRadius: 10,
         paddingTop: 5,
