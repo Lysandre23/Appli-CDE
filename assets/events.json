@@ -1,16 +1,3 @@
 [
-    {
-        "name": "Soirée",
-        "slug": "soiree",
-        "image": 0,
-        "description": "Soirée du 28",
-        "date": "28/12/2021"
-    },
-    {
-        "name": "Soirée-2",
-        "slug": "soiree-2",
-        "image": 0,
-        "description": "Soirée du 32",
-        "date": "32/12/2021"
-    }
+    
 ]

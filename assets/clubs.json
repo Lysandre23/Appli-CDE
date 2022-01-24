@@ -50,5 +50,31 @@
                 "email": "testemail@gmail.com"
             }
         ]
+    },
+    {
+        "name": "BDD",
+        "list": [
+            {
+                "name": "Club de football",
+                "slug": "club-de-football",
+                "image": 0,
+                "description": "lorem ipsum sit dolor...",
+                "email": "testemail@gmail.com"
+            },
+            {
+                "name": "Club de basketball",
+                "slug": "club-de-basketball",
+                "image": 0,
+                "description": "lorem ipsum sit dolor...",
+                "email": "testemail@gmail.com"
+            },
+            {
+                "name": "Club de handball",
+                "slug": "club-de-handball",
+                "image": 0,
+                "description": "lorem ipsum sit dolor...",
+                "email": "testemail@gmail.com"
+            }
+        ]
     }
 ]

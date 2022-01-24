@@ -11,6 +11,9 @@ export function SideBarButton(props) {
     return(
         <TouchableOpacity style={styles.main} onPress={() => {
                 switchScreen(props.goto, navigation);
+                if(props.disconnect) {
+                    
+                }
             }}>
             <Text style={styles.txt}>{props.txt}</Text>
         </TouchableOpacity>

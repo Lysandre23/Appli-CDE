@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     main: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
     },
     img: {
         width: iconSize,

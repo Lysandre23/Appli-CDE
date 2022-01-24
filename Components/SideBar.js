@@ -9,15 +9,11 @@ export function SideBar(props) {
         <Image style={styles.logo} source={require("../assets/CDELogo.png")}/>
         <View style={styles.info}>
             <Text style={styles.name}>Alexandre Humbert</Text>
-            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                <RoleSquare color="#da291c"/>
-                <Text>Utilisateur standard</Text>
-            </View>
         </View>
         <View style={styles.actions}>
             <SideBarButton goto="Admin" txt="Page administrateur"/>
-            <SideBarButton goto="GestionClub" txt="Gestion de club"/>
-            <SideBarButton txt="Se déconnecter"/>
+            <SideBarButton goto="ListGestionClub" txt="Gestion de club"/>
+            <SideBarButton goto="Login" txt="Se déconnecter" disconnect={true}/>
         </View>
       </View>  
     );
@@ -47,11 +43,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: "80%",
         left: "10%",
-        top: "30%",
+        top: "40%",
     },
-    pierre: {
-        position: 'absolute',
-        bottom: "1%",
-        fontSize: 1
-    }
 });

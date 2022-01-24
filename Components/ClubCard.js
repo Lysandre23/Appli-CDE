@@ -9,7 +9,7 @@ const ClubCard = (props) => {
     return (
         <TouchableOpacity
             onPress={() => {
-                navigation.navigate("Club", {nom: props.name});
+                navigation.navigate("Club", {nom: props.name, description: props.description, slug: props.slug, image: props.image, email: props.email});
             }}
             style={styles.main}
         >

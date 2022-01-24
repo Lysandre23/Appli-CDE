@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Modal} from 'react-native';
 import Header from '../Components/Header';
 import Navbar from '../Components/Navbar';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EventsCard from '../Components/EventsCard';
 import { useNavigation } from '@react-navigation/core';
+import { useState } from 'react';
 
 const Club = ({route}) => {
     const navigation = useNavigation();
-    const {nom} = route.params;
+    const [membresVisible, setMembresVisible] = useState(false);
+    const {nom,description,img,email,slug} = route.params;
     return(
         <View style={styles.main}>
             <Header color="#da291c" title={nom.toUpperCase()} />
@@ -18,22 +20,22 @@ const Club = ({route}) => {
                     <TouchableOpacity style={styles.bt} onPress={() => {
                         
                     }}>
-                        <Text>Suivre</Text>
+                        <Text style={styles.btText}>Suivre</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.bt} onPress={() => {
-                        
+                        setMembresVisible(true);
                     }}>
-                        <Text>Membres</Text>
+                        <Text style={styles.btText}>Membres</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.bt} onPress={() => {
-                        navigation.navigate("Message");
+                        navigation.navigate("Message", {preClub: nom});
                     }}>
-                        <Icon name="envelope-o" size={20} color="#000"/>
+                        <Icon name="envelope-o" size={20} color="#fff"/>
                     </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.presText}>
-                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.</Text>
+                <Text>{description}</Text>
             </View>
             <View style={styles.line}></View>
             <ScrollView style={styles.list}>
@@ -44,6 +46,18 @@ const Club = ({route}) => {
                     description=""
                 />
             </ScrollView>
+            <Modal
+                animationType='fade'
+                transparent={true}
+                visible={membresVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.modal}>
+
+                </View>
+            </Modal>
             <Navbar color="#da291c"/>
         </View>
     )
@@ -51,7 +65,8 @@ const Club = ({route}) => {
 
 const styles = StyleSheet.create({
     main: {
-        flex: 1
+        flex: 1,
+        backgroundColor: 'rgb(250,250,250)'
     },
     head: {
         display: 'flex',
@@ -71,12 +86,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     },
     bt: {
-        borderWidth: 1,
-        borderColor: "#da291c",
-        borderRadius: 8,
-        padding: 5,
+        borderRadius: 100,
+        padding: 10,
         fontSize: 20,
-        marginRight: 5
+        marginRight: 5,
+        backgroundColor: "#da291c",
+    },
+    btText: {
+        color: "white",
+        fontWeight: '500'
     },
     presText: {
         width: "100%",
@@ -94,9 +112,13 @@ const styles = StyleSheet.create({
         marginLeft: "5%",
         marginTop: 20
     },
-    list: {
-
-    }
+    modal: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.15)'
+    },
 });
 
 export default Club;

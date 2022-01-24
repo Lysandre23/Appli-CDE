@@ -3,24 +3,16 @@ import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-nati
 import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
 import AdminButton from "../Components/AdminButton";
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const Admin = (props) => {
+    const navigation = useNavigation();
     return(
         <View style={styles.main}>
             <Header title="ADMIN" color="#da291c"/>
             <ScrollView>
                 <TouchableOpacity style={styles.category} onPress={() => {
-
-                }}>
-                    <AdminButton text="Gestion des events"/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.category} onPress={() => {
-                    
-                }}>
-                    <AdminButton text="Gestion des goodies"/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.category} onPress={() => {
-                    
+                    navigation.navigate('Role');
                 }}>
                     <AdminButton text="Gestion des rôles"/>
                 </TouchableOpacity>

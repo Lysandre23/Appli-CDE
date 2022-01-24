@@ -7,10 +7,10 @@ const Header = (props) => {
     const navigation = useNavigation();
     return (
         <View style={[styles.main, {backgroundColor: props.color}]}>
-            <TouchableOpacity onPress={() => {
+            <TouchableOpacity style={styles.menuIcon} onPress={() => {
                 navigation.toggleDrawer();
             }}>
-                <Icon name="bars"/>
+                <Icon name="bars" color="white" size={25}/>
             </TouchableOpacity>
             <Text style={styles.title}>{props.title}</Text>
         </View>
@@ -30,11 +30,14 @@ const styles = StyleSheet.create({
         fontSize: 25,
         position: 'absolute',
         width: "100%",
-        bottom: "15%"
+        bottom: 15,
+        zIndex: 1,
     },
     menuIcon: {
-        marginBottom: 15,
-        left: 10
+        left: 15,
+        bottom: 15,
+        position: 'absolute',
+        zIndex: 2,
     }
 });
 

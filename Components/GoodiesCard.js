@@ -1,15 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const GoodiesCard = (props) => {
     const [loaded, setLoaded] = useState(false);
+    const [admin, setAdmin] = useState(true);
     return(
         <TouchableOpacity style={styles.main}>
             {loaded ? null : <ActivityIndicator style={styles.loader}/>}
             <Image 
                 style={styles.img}
-                source={require("../assets/tshirt.jpg")}
+                source={{uri: props.src}}
                 onLoad={() => {setLoaded(true)}}
             />
             <View style={styles.lineSeparator}></View>
@@ -17,6 +19,16 @@ const GoodiesCard = (props) => {
                 <Text>{props.name}</Text>
                 <Text>{props.price} €</Text>
             </View>
+            {admin ? 
+            <TouchableOpacity style={styles.adminButton} onPress={() => {
+                // Envoi requête
+                }
+            }>
+                <Icon name="trash" size={20} color="#000"/>
+            </TouchableOpacity>
+            :
+            <View></View>
+            }
         </TouchableOpacity>
     )
 }
@@ -64,6 +76,12 @@ const styles = StyleSheet.create({
     },
     loader: {
         marginTop: "25%"
+    },
+    adminButton: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        zIndex: 2
     }
 });
 

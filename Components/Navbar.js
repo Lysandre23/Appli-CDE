@@ -10,10 +10,6 @@ function switchScreen(screenName, nav, fx) {
     fx(false);
 }
 
-function getGoodIconColor(screenName, rt, styles) {
-    return (rt.name==screenName?styles.selectedScreen:0)
-}
-
 const Navbar = (props) => {
     const navigation = useNavigation();
     const iconSize = 30;
@@ -93,7 +89,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         width: 150,
         height: 150,
-        top: "-250%",
         left: "3%",
         borderRadius: 10,
         flexDirection: "row",
@@ -106,7 +101,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowRadius: 5,
         borderWidth: 1,
-        borderColor: "rgba(0,0,0,0.05)"
+        borderColor: "rgba(0,0,0,0.05)",
+        transform: [
+            {translateY: -160}
+        ]
     },
     selectedScreen: {
         shadowColor: "#fff",

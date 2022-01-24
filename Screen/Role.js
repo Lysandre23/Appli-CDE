@@ -1,28 +1,23 @@
 import React from "react";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
-import UserCardAdmin from "../Components/UserCardAdmin";
+import { useState } from "react";
+import RedLine from "../Components/RedLine";
+import { useNavigation } from "@react-navigation/core";
 
 const Role = (props) => {
+    const [name, setName] = useState(null);
+    const navigation = useNavigation();
     return(
         <View style={styles.main}>
             <Header title="ROLE" color="#da291c"/>
-            <ScrollView>
-                <View style={styles.roleListContainer}>
-                    <View style={styles.roleList}>
-                        <Role role="Utilisateur standard" color="#2ECC71"/>
-                        <Role role="Administrateur de club" color="#E74C3C"/>
-                        <Role role="Administrateur de bureau" color="#3498DB"/>
-                        <Role role="Administrateur global CDE" color="#F39C12"/>
-                    </View>
-                </View>
-                <View style={styles.userList}>
-                    <UserCardAdmin name="User 1" color="#E74C3C"/>
-                    <UserCardAdmin name="User 2" color="#E74C3C"/>
-                    <UserCardAdmin name="User 3" color="#E74C3C"/>
-                </View>
-            </ScrollView>
+            <TextInput style={styles.input} placeholder="Saisir l'adresse e-mail" onChangeText={setName} value={name}/>
+            <TouchableOpacity style={styles.btSearch} onPress={() => {
+                navigation.navigate('RoleOneUser', {name:"Lorem", surname:"Ipsum", roles:[]});
+            }}>
+                <Text style={styles.textBTSearch}>Rechercher</Text>
+            </TouchableOpacity>
             <Navbar color="#da291c"/>
         </View>
     )
@@ -34,18 +29,32 @@ const styles = StyleSheet.create({
         display: 'flex',
         backgroundColor: "#F8F8F8"
     },
-    roleListContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: "space-around"
-    },
-    roleList: {
-        marginTop: 20,
-        marginBottom: 20,
-    },
-    userList: {
+    input: {
         width: "80%",
-        marginLeft: "10%"
+        marginLeft: "10%",
+        textAlign: 'center',
+        padding: 10,
+        fontSize: 20,
+        borderColor: "rgb(200,200,200)",
+        borderWidth: 1,
+        borderRadius: 10,
+        marginTop: 15
+    },
+    btSearch: {
+        width: "50%",
+        marginLeft: "25%",
+        backgroundColor: "#da291c",
+        padding: 10,
+        borderRadius: 100,
+        marginTop: 10
+    },
+    textBTSearch: {
+        textAlign: 'center',
+        fontSize: 20,
+        color: "white"
+    },
+    scrollview: {
+        marginTop: 15
     }
 });
 
