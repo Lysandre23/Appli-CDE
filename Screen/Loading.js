@@ -9,11 +9,11 @@ import {
 } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import Api from "../Api"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Icon from "react-native-vector-icons/FontAwesome"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
-const Login = ({ onTokenUpdate }) => {
+function Loading(props) {
 	const navigation = useNavigation()
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
@@ -23,114 +23,16 @@ const Login = ({ onTokenUpdate }) => {
 	const [action, setAction] = useState("S'enregistrer")
 	const [title, setTitle] = useState("Connexion")
 
-	const login = (props) => {
-		let form = new FormData()
-		form.append("email", email)
-		form.append("password", password)
-
-		Api.post("/user/login/", form).then(function (response) {
-			onTokenUpdate(response.data.token)
-			AsyncStorage.setItem("cde-token", response.data.token)
-			setPassword("")
-			setEmail("")
+	useEffect(() => {
+		if (props.logState === "logged") {
 			navigation.navigate("Events")
-		})
-	}
+		} else if (props.logState === "disconnected") {
+			navigation.navigate("Login")
+		}
+	})
 
 	return (
 		<View style={styles.main}>
-			<View style={styles.logoCDE}>
-				<Image
-					style={styles.img}
-					source={require("../assets/CDELogo.png")}
-				/>
-				<Text style={{ fontSize: 20, fontWeight: "bold" }}>
-					{title}
-				</Text>
-			</View>
-			<View style={styles.form}>
-				<View>
-					<TextInput
-						style={[styles.inputTop, styles.input]}
-						onChangeText={setEmail}
-						value={email}
-						placeholder="E-mail"
-					/>
-					{title == "Enregistrement" ? (
-						<TextInput
-							style={styles.input}
-							onChangeText={setName}
-							value={name}
-							placeholder="Nom"
-						/>
-					) : null}
-					{title == "Enregistrement" ? (
-						<TextInput
-							style={styles.input}
-							onChangeText={setSurname}
-							value={surname}
-							placeholder="Prénom"
-						/>
-					) : null}
-					<TextInput
-						style={[styles.inputBottom, styles.input]}
-						onChangeText={setPassword}
-						value={password}
-						placeholder="Mot de passe"
-					/>
-					{title == "Enregistrement" ? (
-						<TextInput
-							style={styles.input}
-							onChangeText={setPasswordConfirm}
-							value={password_confirm}
-							placeholder="Mot de passe (confirmation)"
-						/>
-					) : null}
-					{title == "Connexion" ? (
-						<TouchableOpacity style={styles.forgetPassword}>
-							<Text
-								style={{
-									color: "rgb(180,180,180)",
-								}}
-							>
-								Mot de passe oublié
-							</Text>
-						</TouchableOpacity>
-					) : (
-						<View></View>
-					)}
-					<TouchableOpacity
-						style={styles.confirmButton}
-						onPress={login}
-					>
-						<Icon
-							color="white"
-							name="arrow-right"
-							size={30}
-							style={{
-								backgroundColor: "#da291c",
-								padding: 15,
-								borderRadius: 100,
-							}}
-						/>
-					</TouchableOpacity>
-				</View>
-			</View>
-			<TouchableOpacity
-				style={styles.registerButton}
-				onPress={() => {
-					if (title == "Connexion") {
-						setTitle("Enregistrement")
-						setAction("Se connecter")
-					} else {
-						setTitle("Connexion")
-						setAction("S'enregistrer")
-					}
-				}}
-			>
-				<Text style={styles.registerTextButton}>{action}</Text>
-			</TouchableOpacity>
-
 			<Image
 				style={{
 					width: "100%",
@@ -239,4 +141,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default Login
+export default Loading
