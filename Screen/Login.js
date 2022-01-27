@@ -18,12 +18,37 @@ const Login = ({ onTokenUpdate }) => {
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
 	const [password_confirm, setPasswordConfirm] = useState("")
-	const [name, setName] = useState("")
-	const [surname, setSurname] = useState("")
+	const [firstName, setFirstName] = useState("")
+	const [lastName, setLastName] = useState("")
+	const [verificationCode, setVerificationCode] = useState("")
 	const [action, setAction] = useState("S'enregistrer")
-	const [title, setTitle] = useState("Connexion")
+	const [title, setTitle] = useState("Connexion") // "Connexion", "Enregistrement", "Vérification", "Réinitialisation mot de passe"
 
-	const login = (props) => {
+	const handleSubmit = () => {
+		if (title === "Connexion") {
+			login()
+		} else if (title === "Enregistrement") {
+			register()
+		} else if (title === "Vérification") {
+			sendVerificationCode()
+		} else if (title === "Réinitialisation mot de passe") {
+			resetPasswordMail()
+		}
+	}
+
+	const resendConfirmationMail = () => {
+		let form = new FormData()
+		form.append("email", email)
+		Api.post("/user/resend-confirmation-email/", form)
+	}
+
+	const resetPasswordMail = () => {
+		let form = new FormData()
+		form.append("email", email)
+		Api.post("/user/reset-password/send-email/", form)
+	}
+
+	const login = () => {
 		let form = new FormData()
 		form.append("email", email)
 		form.append("password", password)
@@ -34,6 +59,34 @@ const Login = ({ onTokenUpdate }) => {
 			setPassword("")
 			setEmail("")
 			navigation.navigate("Events")
+		})
+	}
+
+	const sendVerificationCode = () => {
+		let form = new FormData()
+		form.append("email", email)
+		form.append("secret_word", verificationCode)
+
+		Api.post("/user/confirm-email/", form).then(function (response) {
+			setVerificationCode("")
+			setTitle("Connexion")
+		})
+	}
+
+	const register = () => {
+		let form = new FormData()
+		form.append("email", email)
+		form.append("password", password)
+		form.append("password_confirm", password_confirm)
+		form.append("first_name", firstName)
+		form.append("last_name", lastName)
+
+		Api.post("/user/signup/", form).then(function (response) {
+			setPassword("")
+			setFirstName("")
+			setLastName("")
+			setPasswordConfirm("")
+			setTitle("Vérification")
 		})
 	}
 
@@ -59,25 +112,27 @@ const Login = ({ onTokenUpdate }) => {
 					{title == "Enregistrement" ? (
 						<TextInput
 							style={styles.input}
-							onChangeText={setName}
-							value={name}
-							placeholder="Nom"
+							onChangeText={setFirstName}
+							value={firstName}
+							placeholder="Prénom"
 						/>
 					) : null}
 					{title == "Enregistrement" ? (
 						<TextInput
 							style={styles.input}
-							onChangeText={setSurname}
-							value={surname}
-							placeholder="Prénom"
+							onChangeText={setLastName}
+							value={lastName}
+							placeholder="Nom"
 						/>
 					) : null}
-					<TextInput
-						style={[styles.inputBottom, styles.input]}
-						onChangeText={setPassword}
-						value={password}
-						placeholder="Mot de passe"
-					/>
+					{title == "Enregistrement" || title === "Connexion" ? (
+						<TextInput
+							style={[styles.inputBottom, styles.input]}
+							onChangeText={setPassword}
+							value={password}
+							placeholder="Mot de passe"
+						/>
+					) : null}
 					{title == "Enregistrement" ? (
 						<TextInput
 							style={styles.input}
@@ -86,8 +141,21 @@ const Login = ({ onTokenUpdate }) => {
 							placeholder="Mot de passe (confirmation)"
 						/>
 					) : null}
+					{title == "Vérification" ? (
+						<TextInput
+							style={styles.input}
+							onChangeText={setVerificationCode}
+							value={verificationCode}
+							placeholder="Code de vérification"
+						/>
+					) : null}
 					{title == "Connexion" ? (
-						<TouchableOpacity style={styles.forgetPassword}>
+						<TouchableOpacity
+							style={styles.forgetPassword}
+							onPress={() =>
+								setTitle("Réinitialisation mot de passe")
+							}
+						>
 							<Text
 								style={{
 									color: "rgb(180,180,180)",
@@ -99,9 +167,25 @@ const Login = ({ onTokenUpdate }) => {
 					) : (
 						<View></View>
 					)}
+					{title == "Vérification" ? (
+						<TouchableOpacity
+							style={styles.forgetPassword}
+							onPress={resendConfirmationMail}
+						>
+							<Text
+								style={{
+									color: "rgb(180,180,180)",
+								}}
+							>
+								Renvoyer code de vérification
+							</Text>
+						</TouchableOpacity>
+					) : (
+						<View></View>
+					)}
 					<TouchableOpacity
 						style={styles.confirmButton}
-						onPress={login}
+						onPress={handleSubmit}
 					>
 						<Icon
 							color="white"
@@ -116,21 +200,22 @@ const Login = ({ onTokenUpdate }) => {
 					</TouchableOpacity>
 				</View>
 			</View>
-			<TouchableOpacity
-				style={styles.registerButton}
-				onPress={() => {
-					if (title == "Connexion") {
-						setTitle("Enregistrement")
-						setAction("Se connecter")
-					} else {
-						setTitle("Connexion")
-						setAction("S'enregistrer")
-					}
-				}}
-			>
-				<Text style={styles.registerTextButton}>{action}</Text>
-			</TouchableOpacity>
-
+			{title === "Connexion" || title === "Enregistrement" ? (
+				<TouchableOpacity
+					style={styles.registerButton}
+					onPress={() => {
+						if (title == "Connexion") {
+							setTitle("Enregistrement")
+							setAction("Se connecter")
+						} else {
+							setTitle("Connexion")
+							setAction("S'enregistrer")
+						}
+					}}
+				>
+					<Text style={styles.registerTextButton}>{action}</Text>
+				</TouchableOpacity>
+			) : null}
 			<Image
 				style={{
 					width: "100%",
