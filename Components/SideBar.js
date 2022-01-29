@@ -13,6 +13,14 @@ export function SideBar(props) {
 		navigation.navigate("Login")
 	}
 
+	const handlePressAdmin = () => {
+		navigation.navigate("Admin")
+	}
+
+	const handlePressGestionClub = () => {
+		navigation.navigate("ListGestionClub")
+	}
+
 	return (
 		<View style={styles.main}>
 			<Image
@@ -25,8 +33,14 @@ export function SideBar(props) {
 				</Text>
 			</View>
 			<View style={styles.actions}>
-				<SideBarButton goto="Admin" txt="Page administrateur" />
-				<SideBarButton goto="ListGestionClub" txt="Gestion de club" />
+				<SideBarButton
+					onPress={handlePressAdmin}
+					txt="Page administrateur"
+				/>
+				<SideBarButton
+					onPress={handlePressGestionClub}
+					txt="Gestion de club"
+				/>
 				<SideBarButton
 					goto="Login"
 					txt="Se déconnecter"
