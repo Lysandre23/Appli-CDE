@@ -53,9 +53,9 @@ const Login = ({ onTokenUpdate }) => {
 		form.append("email", email)
 		form.append("password", password)
 
-		Api.post("/user/login/", form).then(function (response) {
-			onTokenUpdate(response.data.token)
-			AsyncStorage.setItem("cde-token", response.data.token)
+		Api.post("/login", form).then(function (response) {
+			onTokenUpdate(response.data.data.token)
+			AsyncStorage.setItem("cde-token", response.data.data.token)
 			setPassword("")
 			setEmail("")
 			navigation.navigate("Events")
@@ -67,7 +67,7 @@ const Login = ({ onTokenUpdate }) => {
 		form.append("email", email)
 		form.append("secret_word", verificationCode)
 
-		Api.post("/user/confirm-email/", form).then(function (response) {
+		Api.post("/user/confirm-email", form).then(function (response) {
 			setVerificationCode("")
 			setTitle("Connexion")
 		})
@@ -81,7 +81,7 @@ const Login = ({ onTokenUpdate }) => {
 		form.append("first_name", firstName)
 		form.append("last_name", lastName)
 
-		Api.post("/user/signup/", form).then(function (response) {
+		Api.post("/register", form).then(function (response) {
 			setPassword("")
 			setFirstName("")
 			setLastName("")

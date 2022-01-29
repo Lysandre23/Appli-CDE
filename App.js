@@ -42,7 +42,7 @@ function App() {
 	useEffect(() => {
 		if (token === null) {
 			AsyncStorage.getItem("cde-token").then((item) => {
-				if (item) {
+				if (item && typeof item !== undefined) {
 					setToken(item)
 				} else {
 					setIsLogged(false)
@@ -57,21 +57,21 @@ function App() {
 
 	const getUserInfo = () => {
 		setPendingUserInfo(true)
-		Api.get("/user/info/", {
+		Api.get("/users", {
 			headers: {
 				"Content-Type": "application/json; charset=UTF-8",
-				Authorization: `Token ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 		})
 			.then(function (response) {
 				let user = {
-					email: response.data.email,
-					first_name: response.data.first_name,
-					last_name: response.data.last_name,
-					registration_date: response.data.registration_date,
-					subscriptions: response.data.subscriptions,
-					admin_offices: response.data.admin_offices,
-					admin_clubs: response.data.admin_clubs,
+					email: response.data.data.email,
+					first_name: response.data.data.first_name,
+					last_name: response.data.data.last_name,
+					is_admin: response.data.data.is_admin,
+					//subscriptions: response.data.data.subscriptions,
+					office_responsible: response.data.data.office_responsible,
+					club_responsible: response.data.data.club_responsible,
 				}
 				setUser(user)
 				setIsLogged(true)
@@ -111,7 +111,9 @@ function App() {
 						<Login onTokenUpdate={(token) => setToken(token)} />
 					)}
 				</Drawer.Screen>
-				<Drawer.Screen name="Partenaires" component={Partenaires} />
+				<Drawer.Screen name="Partenaires">
+					{(props) => <Partenaires token={token} user={user} />}
+				</Drawer.Screen>
 				<Drawer.Screen name="PSN" component={PSN} />
 				<Drawer.Screen name="Message" component={Message} />
 				<Drawer.Screen name="Abonnements" component={Abonnement} />

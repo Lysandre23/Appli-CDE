@@ -25,7 +25,7 @@ function Loading(props) {
 
 	useEffect(() => {
 		if (props.logState === "logged") {
-			navigation.navigate("Events")
+			navigation.navigate("Partenaires")
 		} else if (props.logState === "disconnected") {
 			navigation.navigate("Login")
 		}
