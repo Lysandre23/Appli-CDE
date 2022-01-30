@@ -145,7 +145,7 @@ function App() {
 					{(props) => <PSN user={user} />}
 				</Drawer.Screen>
 				<Drawer.Screen name="Message">
-					{(props) => <Message user={user} />}
+					{(props) => <Message token={token} user={user} />}
 				</Drawer.Screen>
 				<Drawer.Screen name="Abonnements">
 					{(props) => <Abonnement user={user} />}

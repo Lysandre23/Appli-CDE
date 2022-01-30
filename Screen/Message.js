@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
 	View,
 	Text,
@@ -13,21 +13,74 @@ import {
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
-
-import data from "../assets/clubs.json"
-
-const dt = []
-for (var i = 0; i < data.length; i++) {
-	for (var j = 0; j < data[i].list.length; j++) {
-		dt.push({ label: data[i].list[j].name, value: data[i].list[j].slug })
-	}
-}
+import Api from "../Api"
 
 const Message = (props) => {
-	const [toggleCheckBox, setToggleCheckBox] = useState(false)
-	const [selectedClub, setSelectedClub] = useState(null)
-	const [message, setMessage] = useState(null)
-	const [isSelected, setSelection] = useState(false)
+	const [selectedClub, setSelectedClub] = useState(0)
+	const [message, setMessage] = useState("")
+	const [anonymous, setAnonymous] = useState(false)
+	const [clubs, setClubs] = useState([{ id: 1, name: "" }])
+
+	useEffect(() => {
+		getOfficesAndClubs()
+	}, [])
+
+	const getOfficesAndClubs = () => {
+		Api.get("/offices").then(function (response) {
+			let officesAndClubs = []
+			response.data.data.forEach(function (office) {
+				officesAndClubs.push({
+					id: "o-" + office.id,
+					name: office.name,
+					type: "office",
+				})
+			})
+			response.data.data.forEach(function (office) {
+				office.clubs.forEach(function (club) {
+					officesAndClubs.push({
+						id: "c-" + club.id,
+						name: club.name,
+						type: "club",
+					})
+				})
+			})
+			setClubs(officesAndClubs)
+		})
+	}
+
+	const postMessage = () => {
+		const splittedValue = selectedClub.split("-")
+		let url = ""
+		let payload = null
+		console.log(selectedClub, splittedValue)
+		if (splittedValue[0] === "c") {
+			payload = {
+				club_id: splittedValue[1],
+				content: message,
+				is_anonymous: anonymous,
+			}
+			url = "/clubs/messages"
+		} else if (splittedValue[0] === "o") {
+			payload = {
+				office_id: splittedValue[1],
+				content: message,
+				is_anonymous: anonymous,
+			}
+			url = "/offices/messages"
+		}
+		console.log(url, payload)
+		Api.post(url, payload, {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			setMessage("")
+			setAnonymous(false)
+			setSelectedClub(0)
+		})
+	}
+
 	return (
 		<View style={styles.main}>
 			<Header color="#da291c" title="MESSAGE" user={props.user} />
@@ -38,14 +91,24 @@ const Message = (props) => {
 					setSelectedClub(itemValue)
 				}
 			>
-				{dt.map((item) => (
-					<Picker.Item label={item.label} value={item.value} />
+				<Picker.Item
+					key={0}
+					label="Bureau ou club"
+					value={0}
+					enabled={false}
+				/>
+				{clubs.map((item) => (
+					<Picker.Item
+						key={item.type + item.id}
+						label={item.name}
+						value={item.id}
+					/>
 				))}
 			</Picker>
 			<TextInput
 				style={styles.input}
 				value={message}
-				onValueChange={setMessage}
+				onChangeText={setMessage}
 				placeholder="Message"
 				multiline={true}
 				numberOfLines={10}
@@ -69,15 +132,12 @@ const Message = (props) => {
 					textStyle={{
 						textDecorationLine: "none",
 					}}
+					onPress={(isChecked) => {
+						setAnonymous(isChecked)
+					}}
 				/>
 			</View>
-			<TouchableOpacity
-				style={styles.sendButton}
-				onPress={() => {
-					// Send request
-					Keyboard.dismiss()
-				}}
-			>
+			<TouchableOpacity style={styles.sendButton} onPress={postMessage}>
 				<Text style={{ color: "white", textAlign: "center" }}>
 					Envoyer
 				</Text>
