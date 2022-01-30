@@ -129,18 +129,20 @@ const Login = ({ onTokenUpdate }) => {
 					) : null}
 					{title == "Enregistrement" || title === "Connexion" ? (
 						<TextInput
-							style={[styles.inputBottom, styles.input]}
+							style={[styles.input, (title == "Connexion"? styles.inputBottom : null)]}
 							onChangeText={setPassword}
 							value={password}
 							placeholder="Mot de passe"
+							secureTextEntry={true}
 						/>
 					) : null}
 					{title == "Enregistrement" ? (
 						<TextInput
-							style={styles.input}
+							style={[styles.input, styles.inputBottom]}
 							onChangeText={setPasswordConfirm}
 							value={password_confirm}
 							placeholder="Mot de passe (confirmation)"
+							secureTextEntry={true}
 						/>
 					) : null}
 					{title == "Vérification" ? (

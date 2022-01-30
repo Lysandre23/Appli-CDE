@@ -61,6 +61,19 @@ const Navbar = (props) => {
 						<Icon name="envelope-o" size={iconSize} color="#fff" />
 					</TouchableOpacity>
 				) : null}
+				{!props.user.email ? (
+					<TouchableOpacity
+						onPress={() => {
+							switchScreen(
+								"Login",
+								navigation,
+								setVisibleMiniIconBar
+							)
+						}}
+					>
+						<Icon name="user" size={iconSize} color="#fff" />
+					</TouchableOpacity>
+				) : null}
 			</View>
 			{visibleMiniIconBar ? (
 				<View style={styles.mini}>
