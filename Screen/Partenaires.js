@@ -8,6 +8,7 @@ import {
 	FlatList,
 	Modal,
 	TextInput,
+	Platform,
 } from "react-native"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
@@ -41,23 +42,9 @@ const Partenaires = (props, navigation) => {
 		})
 	}
 
-	/*
-	const pickImage = async () => {
-		// No permissions request is necessary for launching the image library
-		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.All,
-			allowsEditing: true,
-			aspect: [4, 4],
-			quality: 1,
-		})
-
-		console.log(result)
-
-		if (!result.cancelled) {
-			setImageNewPart(result.uri)
-		}
+	const handleDelete = () => {
+		getPartners()
 	}
-    */
 
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
@@ -67,24 +54,8 @@ const Partenaires = (props, navigation) => {
 			quality: 1,
 		})
 
-		console.log(result)
-
 		if (!result.cancelled) {
 			setImageNewPart(result)
-		}
-	}
-
-	const getMimeType = (ext) => {
-		// mime type mapping for few of the sample file types
-		switch (ext) {
-			case "pdf":
-				return "application/pdf"
-			case "jpg":
-				return "image/jpeg"
-			case "jpeg":
-				return "image/jpeg"
-			case "png":
-				return "image/png"
 		}
 	}
 
@@ -92,11 +63,17 @@ const Partenaires = (props, navigation) => {
 		if (imageNewPart) {
 			let form = new FormData()
 
-			form.append("picture", {
-				uri: imageNewPart.uri,
-				name: imageNewPart.fileName,
-				type: imageNewPart.type,
-			})
+			form.append(
+				"picture",
+				JSON.stringify({
+					uri:
+						Platform.OS === "ios"
+							? imageNewPart.uri.replace("file://", "")
+							: imageNewPart.uri,
+					name: imageNewPart.fileName,
+					type: imageNewPart.type,
+				})
+			)
 			form.append("name", nameNewPart)
 			form.append("link", urlNewPart)
 			Api.post("/partners", form, {
@@ -105,60 +82,69 @@ const Partenaires = (props, navigation) => {
 					Authorization: `Bearer ${props.token}`,
 				},
 			}).then(function (response) {
-				console.log(response)
+				getPartners()
+				setModalVisible(false)
+				setImageNewPart(null)
+				setNameNewPart("")
+				setUrlNewPart("")
 			})
 		}
 	}
 
 	return (
 		<View style={styles.main}>
-			<Header color="#da291c" title="PARTENAIRES" />
-			<Modal
-				animationType="fade"
-				transparent={true}
-				visible={modalVisible}
-				onRequestClose={() => {
-					setModalVisible(!modalVisible)
-				}}
-			>
-				<View style={styles.modal}>
-					<View style={styles.addPanel}>
-						<TextInput
-							style={styles.input}
-							placeholder="Nom"
-							value={nameNewPart}
-							onChangeText={setNameNewPart}
-						/>
-						<TextInput
-							style={styles.input}
-							placeholder="Lien vers le site"
-							value={urlNewPart}
-							onChangeText={setUrlNewPart}
-						/>
+			<Header color="#da291c" title="PARTENAIRES" user={props.user} />
+			{props.user.is_admin ? (
+				<Modal
+					animationType="fade"
+					transparent={true}
+					visible={modalVisible}
+					onRequestClose={() => {
+						setModalVisible(!modalVisible)
+					}}
+				>
+					<View style={styles.modal}>
+						<View style={styles.addPanel}>
+							<TextInput
+								style={styles.input}
+								placeholder="Nom"
+								value={nameNewPart}
+								onChangeText={setNameNewPart}
+							/>
+							<TextInput
+								style={styles.input}
+								placeholder="Lien vers le site"
+								value={urlNewPart}
+								onChangeText={setUrlNewPart}
+							/>
 
-						<TouchableOpacity
-							style={styles.imagePicker}
-							onPress={pickImage}
-						>
-							<Text style={{ textAlign: "center" }}>
-								Choisir une image
-							</Text>
-						</TouchableOpacity>
-						<TouchableOpacity style={styles.bt} onPress={storePart}>
-							<Text style={styles.textBT}>Valider</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.bt}
-							onPress={() => {
-								resetInputNewPart()
-							}}
-						>
-							<Text style={styles.textBT}>Annuler</Text>
-						</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.imagePicker}
+								onPress={pickImage}
+							>
+								<Text style={{ textAlign: "center" }}>
+									Choisir une image
+								</Text>
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.bt}
+								onPress={storePart}
+							>
+								<Text style={styles.textBT}>Valider</Text>
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.bt}
+								onPress={() => {
+									resetInputNewPart()
+								}}
+							>
+								<Text style={styles.textBT}>Annuler</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
-				</View>
-			</Modal>
-			{admin ? (
+				</Modal>
+			) : null}
+			{props.user.is_admin ? (
 				<TouchableOpacity
 					style={styles.addButton}
 					onPress={() => {
@@ -190,11 +176,14 @@ const Partenaires = (props, navigation) => {
 							url={item.link}
 							image={item.picture}
 							id={item.id}
+							token={props.token}
+							user={props.user}
+							onDelete={handleDelete}
 						/>
 					</View>
 				)}
 			/>
-			<Navbar color="#da291c" />
+			<Navbar color="#da291c" user={props.user} />
 		</View>
 	)
 }

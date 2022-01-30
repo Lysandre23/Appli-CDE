@@ -33,10 +33,10 @@ function App() {
 		email: null,
 		first_name: null,
 		last_name: null,
-		registration_date: null,
-		subscriptions: null,
-		admin_offices: null,
-		admin_clubs: null,
+		is_admin: false,
+		//subscriptions: null,
+		office_responsible: [],
+		club_responsible: [],
 	})
 
 	useEffect(() => {
@@ -54,6 +54,21 @@ function App() {
 			getUserInfo()
 		}
 	})
+
+	const handleDisconnect = (value) => {
+		if (value) {
+			console.log("deconnexion")
+			setUser({
+				email: null,
+				first_name: null,
+				last_name: null,
+				is_admin: null,
+				//subscriptions: null,
+				office_responsible: null,
+				club_responsible: null,
+			})
+		}
+	}
 
 	const getUserInfo = () => {
 		setPendingUserInfo(true)
@@ -80,14 +95,20 @@ function App() {
 			.catch(function (response) {
 				setIsLogged(false)
 				setPendingUserInfo(false)
+				setToken(null)
+				AsyncStorage.removeItem("cde-token")
 			})
 	}
 
 	return (
 		<NavigationContainer>
 			<Drawer.Navigator
-				initialRouteName="Loading"
-				drawerContent={(props) => <SideBar user={user} />}
+				initialRouteName="Events"
+				drawerContent={(props) =>
+					user.email ? (
+						<SideBar user={user} onDisconnect={handleDisconnect} />
+					) : null
+				}
 				screenOptions={{ headerShown: false }}
 			>
 				<Drawer.Screen name="Loading">
@@ -103,9 +124,15 @@ function App() {
 						/>
 					)}
 				</Drawer.Screen>
-				<Drawer.Screen name="Events" component={Events} />
-				<Drawer.Screen name="Goodies" component={Goodies} />
-				<Drawer.Screen name="Clubs" component={Clubs} />
+				<Drawer.Screen name="Events">
+					{(props) => <Events user={user} />}
+				</Drawer.Screen>
+				<Drawer.Screen name="Goodies">
+					{(props) => <Goodies user={user} />}
+				</Drawer.Screen>
+				<Drawer.Screen name="Clubs">
+					{(props) => <Clubs token={token} user={user} />}
+				</Drawer.Screen>
 				<Drawer.Screen name="Login">
 					{(props) => (
 						<Login onTokenUpdate={(token) => setToken(token)} />
@@ -114,18 +141,33 @@ function App() {
 				<Drawer.Screen name="Partenaires">
 					{(props) => <Partenaires token={token} user={user} />}
 				</Drawer.Screen>
-				<Drawer.Screen name="PSN" component={PSN} />
-				<Drawer.Screen name="Message" component={Message} />
-				<Drawer.Screen name="Abonnements" component={Abonnement} />
-				<Drawer.Screen name="GestionClub" component={GestionClub} />
-				<Drawer.Screen name="Role" component={Role} />
-				<Drawer.Screen name="Club" component={Club} />
-				<Drawer.Screen name="Admin" component={Admin} />
-				<Drawer.Screen name="RoleOneUser" component={RoleOneUser} />
-				<Drawer.Screen
-					name="ListGestionClub"
-					component={ListGestionClub}
-				/>
+				<Drawer.Screen name="PSN">
+					{(props) => <PSN user={user} />}
+				</Drawer.Screen>
+				<Drawer.Screen name="Message">
+					{(props) => <Message user={user} />}
+				</Drawer.Screen>
+				<Drawer.Screen name="Abonnements">
+					{(props) => <Abonnement user={user} />}
+				</Drawer.Screen>
+				<Drawer.Screen name="GestionClub">
+					{(props) => <GestionClub user={user} />}
+				</Drawer.Screen>
+				<Drawer.Screen name="Role">
+					{(props) => <Role user={user} />}
+				</Drawer.Screen>
+				<Drawer.Screen name="Club">
+					{(props) => <Club user={user} token={token} />}
+				</Drawer.Screen>
+				<Drawer.Screen name="Admin">
+					{(props) => <Admin user={user} />}
+				</Drawer.Screen>
+				<Drawer.Screen name="RoleOneUser">
+					{(props) => <RoleOneUser user={user} />}
+				</Drawer.Screen>
+				<Drawer.Screen name="ListGestionClub">
+					{(props) => <ListGestionClub user={user} />}
+				</Drawer.Screen>
 			</Drawer.Navigator>
 		</NavigationContainer>
 	)

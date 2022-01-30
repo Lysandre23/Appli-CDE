@@ -45,7 +45,9 @@ const Login = ({ onTokenUpdate }) => {
 	const resetPasswordMail = () => {
 		let form = new FormData()
 		form.append("email", email)
-		Api.post("/user/reset-password/send-email/", form)
+		Api.post("/password/email", form).then(function (response) {
+			setTitle("Connexion")
+		})
 	}
 
 	const login = () => {
@@ -77,7 +79,7 @@ const Login = ({ onTokenUpdate }) => {
 		let form = new FormData()
 		form.append("email", email)
 		form.append("password", password)
-		form.append("password_confirm", password_confirm)
+		form.append("confirm_password", password_confirm)
 		form.append("first_name", firstName)
 		form.append("last_name", lastName)
 
@@ -86,7 +88,7 @@ const Login = ({ onTokenUpdate }) => {
 			setFirstName("")
 			setLastName("")
 			setPasswordConfirm("")
-			setTitle("Vérification")
+			setTitle("Connexion")
 		})
 	}
 

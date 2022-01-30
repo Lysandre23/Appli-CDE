@@ -2,9 +2,22 @@ import React from "react"
 import { View, Image, StyleSheet, TouchableOpacity, Text } from "react-native"
 import Icon from "react-native-vector-icons/FontAwesome"
 import { useState } from "react"
+import Api from "../Api"
 
 const PartenaireCard = (props) => {
 	const [admin, setAdmin] = useState(true)
+
+	const deletePartner = () => {
+		Api.delete("/partners/" + props.id, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			props.onDelete()
+		})
+	}
+
 	return (
 		<View>
 			<TouchableOpacity style={styles.main}>
@@ -20,12 +33,10 @@ const PartenaireCard = (props) => {
 			>
 				{props.name}
 			</Text>
-			{admin ? (
+			{props.user.is_admin ? (
 				<TouchableOpacity
 					style={styles.adminButton}
-					onPress={() => {
-						// Envoi requête
-					}}
+					onPress={deletePartner}
 				>
 					<Icon name="trash" size={20} color="#000" />
 				</TouchableOpacity>

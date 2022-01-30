@@ -10,6 +10,7 @@ export function SideBar(props) {
 
 	const handleDisconnect = () => {
 		AsyncStorage.removeItem("cde-token")
+		props.onDisconnect(true)
 		navigation.navigate("Login")
 	}
 
