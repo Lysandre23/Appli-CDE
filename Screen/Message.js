@@ -14,9 +14,16 @@ import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import Api from "../Api"
+import { useRoute } from "@react-navigation/core"
 
 const Message = (props) => {
-	const [selectedClub, setSelectedClub] = useState(0)
+	const route = useRoute()
+	console.log(route.params)
+	const [selectedClub, setSelectedClub] = useState(
+		typeof route.params !== "undefined" && route.params.preClub !== null
+			? route.params.preClub
+			: 0
+	)
 	const [message, setMessage] = useState("")
 	const [anonymous, setAnonymous] = useState(false)
 	const [clubs, setClubs] = useState([{ id: 1, name: "" }])

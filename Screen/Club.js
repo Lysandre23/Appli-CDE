@@ -69,7 +69,7 @@ const Club = (props) => {
 							style={styles.bt}
 							onPress={() => {
 								navigation.navigate("Message", {
-									preClub: club.name,
+									preClub: "c-" + club.id,
 								})
 							}}
 						>
