@@ -16,6 +16,7 @@ import Navbar from "../Components/Navbar"
 import { useState, useEffect } from "react"
 import * as ImagePicker from "expo-image-picker"
 import Api from "../Api"
+import modalStyle from "./Modal.style"
 
 const Goodies = (props) => {
 	const [modalVisible, setModalVisible] = useState(false)
@@ -81,22 +82,22 @@ const Goodies = (props) => {
 					setModalVisible(!modalVisible)
 				}}
 			>
-				<View style={styles.modal}>
-					<View style={styles.addPanel}>
+				<View style={modalStyle.modal}>
+					<View style={modalStyle.addPanel}>
 						<TextInput
-							style={styles.input}
+							style={modalStyle.input}
 							placeholder="Nom"
 							value={nameNewGoodie}
 							onChangeText={setNameNewGoodie}
 						/>
 						<TextInput
-							style={styles.input}
+							style={modalStyle.input}
 							placeholder="Prix"
 							value={priceNewGoodie}
 							onChangeText={setPriceNewGoodie}
 						/>
 						<TouchableOpacity
-							style={styles.imagePicker}
+							style={modalStyle.imagePicker}
 							onPress={pickImage}
 						>
 							<Text style={{ textAlign: "center" }}>
@@ -104,7 +105,7 @@ const Goodies = (props) => {
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={styles.bt}
+							style={modalStyle.bt}
 							onPress={() => {
 								data.push({
 									name: nameNewGoodie,
@@ -114,15 +115,15 @@ const Goodies = (props) => {
 								resetInputNewGoodie()
 							}}
 						>
-							<Text style={styles.textBT}>Valider</Text>
+							<Text style={modalStyle.textBT}>Valider</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={styles.bt}
+							style={modalStyle.bt}
 							onPress={() => {
 								resetInputNewGoodie()
 							}}
 						>
-							<Text style={styles.textBT}>Annuler</Text>
+							<Text style={modalStyle.textBT}>Annuler</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -170,46 +171,6 @@ const styles = StyleSheet.create({
 		justifyContent: "space-around",
 		marginTop: 15,
 		marginBottom: 15,
-	},
-	modal: {
-		flex: 1,
-		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "rgba(0,0,0,0.15)",
-	},
-	addPanel: {
-		backgroundColor: "white",
-		width: "70%",
-		padding: 50,
-		borderRadius: 20,
-	},
-	input: {
-		width: "100%",
-		borderColor: "rgb(200,200,200)",
-		borderWidth: 1,
-		borderRadius: 7,
-		padding: 5,
-		marginBottom: 5,
-	},
-	bt: {
-		marginTop: 10,
-		backgroundColor: "#da291c",
-		padding: 9,
-		borderRadius: 100,
-	},
-	textBT: {
-		color: "white",
-		fontSize: 16,
-		textAlign: "center",
-	},
-	imagePicker: {
-		borderColor: "rgb(150,150,150)",
-		borderWidth: 1,
-		padding: 5,
-		borderRadius: 4,
-		marginTop: 10,
-		marginBottom: 10,
 	},
 })
 

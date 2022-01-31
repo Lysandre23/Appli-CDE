@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Image, StyleSheet, TouchableOpacity, Text } from "react-native"
+import { View, Image, StyleSheet, TouchableOpacity, Text, Linking } from "react-native"
 import Icon from "react-native-vector-icons/FontAwesome"
 import { useState } from "react"
 import Api from "../Api"
@@ -20,7 +20,9 @@ const PartenaireCard = (props) => {
 
 	return (
 		<View>
-			<TouchableOpacity style={styles.main}>
+			<TouchableOpacity style={styles.main} onPress={() => {
+				Linking.openURL(props.url);
+			}}>
 				<Image style={styles.img} source={props.image} />
 			</TouchableOpacity>
 			<Text
