@@ -1,11 +1,12 @@
 import React from "react"
-import { View, Image, StyleSheet, TouchableOpacity, Text, Linking } from "react-native"
+import { View, Image, StyleSheet, TouchableOpacity, Text, Linking, Modal } from "react-native"
 import Icon from "react-native-vector-icons/FontAwesome"
 import { useState } from "react"
 import Api from "../Api"
+import modalStyle from "../Screen/Modal.style"
 
 const PartenaireCard = (props) => {
-	const [admin, setAdmin] = useState(true)
+	const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
 
 	const deletePartner = () => {
 		Api.delete("/partners/" + props.id, {
@@ -20,6 +21,37 @@ const PartenaireCard = (props) => {
 
 	return (
 		<View>
+			{props.user.is_admin ? (
+				<Modal
+					animationType="fade"
+					transparent={true}
+					visible={modalDeleteVisible}
+					onRequestClose={() => {
+						setModalDeleteVisible(!modalDeleteVisible)
+					}}
+				>
+					<View style={modalStyle.modal}>
+						<View style={modalStyle.addPanel}>
+							<TouchableOpacity
+								style={modalStyle.bt}
+								onPress={() => {
+									deletePartner();
+								}}
+							>
+								<Text style={modalStyle.textBT}>Valider</Text>
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={modalStyle.bt}
+								onPress={() => {
+									setModalDeleteVisible(false);
+								}}
+							>
+								<Text style={modalStyle.textBT}>Annuler</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
+				</Modal>
+			) : null}
 			<TouchableOpacity style={styles.main} onPress={() => {
 				Linking.openURL(props.url);
 			}}>
@@ -38,7 +70,9 @@ const PartenaireCard = (props) => {
 			{props.user.is_admin ? (
 				<TouchableOpacity
 					style={styles.adminButton}
-					onPress={deletePartner}
+					onPress={() => {
+						setModalDeleteVisible(true);
+					}}
 				>
 					<Icon name="trash" size={20} color="#000" />
 				</TouchableOpacity>
