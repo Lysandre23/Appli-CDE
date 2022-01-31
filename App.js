@@ -102,7 +102,7 @@ function App() {
 	return (
 		<NavigationContainer>
 			<Drawer.Navigator
-				initialRouteName="Admin"
+				initialRouteName="Events"
 				drawerContent={(props) =>
 					user.email ? (
 						<SideBar user={user} onDisconnect={handleDisconnect} />

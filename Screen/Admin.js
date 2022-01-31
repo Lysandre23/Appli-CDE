@@ -34,15 +34,42 @@ const Admin = (props) => {
 	const [descriptionNewOffice, setDescriptionNewOffice] = useState("")
 	const [imageNewOffice, setImageNewOffice] = useState(null)
 
+	const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false)
+	const [selectedNewAdmin, setSelectedNewAdmin] = useState(0)
+
 	const [offices, setOffices] = useState([])
+	const [admins, setAdmins] = useState([])
+	const [users, setUsers] = useState([])
 
 	useEffect(() => {
 		getOffices()
+		getAdmins()
+		getUsers()
 	}, [])
 
 	const getOffices = () => {
 		Api.get("/offices").then(function (response) {
 			setOffices(response.data.data)
+		})
+	}
+
+	const getAdmins = () => {
+		Api.get("/admins", {
+			headers: {
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			setAdmins(response.data.data)
+		})
+	}
+
+	const getUsers = () => {
+		Api.get("/users/list", {
+			headers: {
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			setUsers(response.data.data)
 		})
 	}
 
@@ -58,6 +85,11 @@ const Admin = (props) => {
 		setNameNewOffice("")
 		setDescriptionNewOffice("")
 		setImageNewOffice(null)
+	}
+
+	const handleCloseAddAdminModal = () => {
+		setModalAddAdminVisible(false)
+		setSelectedNewAdmin(0)
 	}
 
 	const pickImageClub = async () => {
@@ -147,6 +179,23 @@ const Admin = (props) => {
 				setDescriptionNewOffice("")
 			})
 		}
+	}
+
+	const storeAdmin = () => {
+		Api.post(
+			"/admins",
+			{
+				user_id: selectedNewAdmin,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${props.token}`,
+				},
+			}
+		).then(function (response) {
+			setModalAddAdminVisible(false)
+			setSelectedNewAdmin(0)
+		})
 	}
 
 	return (
@@ -267,6 +316,65 @@ const Admin = (props) => {
 					</View>
 				</View>
 			</Modal>
+			<Modal
+				animationType="fade"
+				transparent={true}
+				visible={modalAddAdminVisible}
+				onRequestClose={() => {
+					setModalAddAdminVisible(!modalAddAdminVisible)
+				}}
+			>
+				<View style={modalStyle.modal}>
+					<View style={modalStyle.addPanel}>
+						<Picker
+							selectedValue={selectedNewAdmin}
+							style={modalStyle.picker}
+							onValueChange={(itemValue, itemIndex) =>
+								setSelectedNewAdmin(itemValue)
+							}
+						>
+							<Picker.Item
+								key={0}
+								label="Choisir un utilisateur"
+								value={0}
+								enabled={false}
+							/>
+							{users
+								.filter(
+									(item) =>
+										!admins.find(
+											(admin) => admin.id === item.id
+										)
+								)
+								.map((item) => (
+									<Picker.Item
+										key={item.id}
+										label={
+											item.first_name +
+											" " +
+											item.last_name
+										}
+										value={item.id}
+									/>
+								))}
+						</Picker>
+						<TouchableOpacity
+							style={modalStyle.bt}
+							onPress={storeAdmin}
+						>
+							<Text style={modalStyle.textBT}>Valider</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={modalStyle.bt}
+							onPress={() => {
+								handleCloseAddAdminModal()
+							}}
+						>
+							<Text style={modalStyle.textBT}>Annuler</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</Modal>
 
 			<ScrollView>
 				<TouchableOpacity
@@ -292,6 +400,14 @@ const Admin = (props) => {
 					}}
 				>
 					<AdminButton text="Créer un club" />
+				</TouchableOpacity>
+				<TouchableOpacity
+					style={styles.category}
+					onPress={() => {
+						setModalAddAdminVisible(true)
+					}}
+				>
+					<AdminButton text="Ajouter un admin" />
 				</TouchableOpacity>
 			</ScrollView>
 			<Navbar color="#da291c" user={props.user} />
