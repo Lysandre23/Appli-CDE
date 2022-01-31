@@ -66,7 +66,7 @@ const PartenaireCard = (props) => {
 			</Text>
 			{props.user.is_admin ? (
 				<TouchableOpacity
-					style={styles.adminButton}
+					style={[styles.adminButton, styles.adminButtonRight]}
 					onPress={handleDelete}
 				>
 					<Icon name="trash" size={20} color="#000" />
@@ -105,12 +105,14 @@ const styles = StyleSheet.create({
 	adminButton: {
 		position: "absolute",
 		top: 2,
-		right: 2,
 		zIndex: 2,
 	},
 	adminButtonLeft: {
 		left: 2,
 	},
+	adminButtonRight: {
+		right: 2,
+	}
 })
 
 export default PartenaireCard
