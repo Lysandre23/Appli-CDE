@@ -18,8 +18,6 @@ import * as ImagePicker from "expo-image-picker"
 import Api from "../Api"
 
 const Clubs = (props, navigation) => {
-	console.log(props)
-	console.log(navigation)
 	const [admin, setAdmin] = useState(true)
 	const [offices, setOffices] = useState([])
 

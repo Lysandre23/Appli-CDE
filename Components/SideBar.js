@@ -22,6 +22,10 @@ export function SideBar(props) {
 		navigation.navigate("ListGestionClub")
 	}
 
+	const handlePressProfile = () => {
+		console.log("page profil")
+	}
+
 	return (
 		<View style={styles.main}>
 			<Image
@@ -34,14 +38,19 @@ export function SideBar(props) {
 				</Text>
 			</View>
 			<View style={styles.actions}>
-				<SideBarButton
-					onPress={handlePressAdmin}
-					txt="Page administrateur"
-				/>
-				<SideBarButton
-					onPress={handlePressGestionClub}
-					txt="Gestion de club"
-				/>
+				<SideBarButton onPress={handlePressProfile} txt="Profil" />
+				{props.user.is_admin ? (
+					<SideBarButton
+						onPress={handlePressAdmin}
+						txt="Page administrateur"
+					/>
+				) : null}
+				{props.user.club_responsible.length > 0 ? (
+					<SideBarButton
+						onPress={handlePressGestionClub}
+						txt="Gestion de club"
+					/>
+				) : null}
 				<SideBarButton
 					goto="Login"
 					txt="Se déconnecter"

@@ -55,13 +55,17 @@ const Login = ({ onTokenUpdate }) => {
 		form.append("email", email)
 		form.append("password", password)
 
-		Api.post("/login", form).then(function (response) {
-			onTokenUpdate(response.data.data.token)
-			AsyncStorage.setItem("cde-token", response.data.data.token)
-			setPassword("")
-			setEmail("")
-			navigation.navigate("Events")
-		})
+		Api.post("/login", form)
+			.then(function (response) {
+				onTokenUpdate(response.data.data.token)
+				AsyncStorage.setItem("cde-token", response.data.data.token)
+				setPassword("")
+				setEmail("")
+				navigation.navigate("Events")
+			})
+			.catch(function (response) {
+				setPassword("")
+			})
 	}
 
 	const sendVerificationCode = () => {
@@ -129,7 +133,12 @@ const Login = ({ onTokenUpdate }) => {
 					) : null}
 					{title == "Enregistrement" || title === "Connexion" ? (
 						<TextInput
-							style={[styles.input, (title == "Connexion"? styles.inputBottom : null)]}
+							style={[
+								styles.input,
+								title == "Connexion"
+									? styles.inputBottom
+									: null,
+							]}
 							onChangeText={setPassword}
 							value={password}
 							placeholder="Mot de passe"
