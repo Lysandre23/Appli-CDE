@@ -20,16 +20,20 @@ import Api from "../Api"
 const Partenaires = (props, navigation) => {
 	const [admin, setAdmin] = useState(true)
 	const [partners, setPartners] = useState([])
-	const [modalVisible, setModalVisible] = useState(false)
+	const [storeModalVisible, setStoreModalVisible] = useState(false)
+	const [deleteModalVisible, setDeleteModalVisible] = useState(false)
 	const [nameNewPart, setNameNewPart] = useState("")
 	const [imageNewPart, setImageNewPart] = useState(null)
 	const [urlNewPart, setUrlNewPart] = useState("")
+	const [pendingDelete, setPendingDelete] = useState(null)
+	const [pendingEdit, setPendingEdit] = useState(null)
 
-	const resetInputNewPart = () => {
+	const handleCloseStoreModal = () => {
+		setStoreModalVisible(false)
 		setNameNewPart("")
 		setUrlNewPart("")
 		setImageNewPart(null)
-		setModalVisible(false)
+		setPendingEdit(null)
 	}
 
 	useEffect(() => {
@@ -42,8 +46,20 @@ const Partenaires = (props, navigation) => {
 		})
 	}
 
-	const handleDelete = () => {
-		getPartners()
+	const handleDelete = (id) => {
+		setPendingDelete(id)
+		setDeleteModalVisible(true)
+	}
+
+	const handleEdit = (id) => {
+		for (let i = 0; i < partners.length; i++) {
+			if (partners[i].id === id) {
+				setPendingEdit(partners[i])
+				setNameNewPart(partners[i].name)
+				setUrlNewPart(partners[i].link)
+				setStoreModalVisible(true)
+			}
+		}
 	}
 
 	const pickImage = async () => {
@@ -59,7 +75,33 @@ const Partenaires = (props, navigation) => {
 		}
 	}
 
-	const storePart = () => {
+	const confirmDelete = () => {
+		Api.delete("/partners/" + pendingDelete, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			setPendingDelete(null)
+			setDeleteModalVisible(false)
+			getPartners()
+		})
+	}
+
+	const cancelDelete = () => {
+		setDeleteModalVisible(false)
+		setPendingDelete(null)
+	}
+
+	const handleSubmitStore = () => {
+		if (pendingEdit === null) {
+			storePartner()
+		} else {
+			updatePartner()
+		}
+	}
+
+	const storePartner = () => {
 		if (imageNewPart) {
 			let form = new FormData()
 
@@ -83,12 +125,47 @@ const Partenaires = (props, navigation) => {
 				},
 			}).then(function (response) {
 				getPartners()
-				setModalVisible(false)
+				setStoreModalVisible(false)
 				setImageNewPart(null)
 				setNameNewPart("")
 				setUrlNewPart("")
 			})
 		}
+	}
+
+	const updatePartner = () => {
+		let form = new FormData()
+
+		if (imageNewPart !== null) {
+			form.append(
+				"picture",
+				JSON.stringify({
+					uri:
+						Platform.OS === "ios"
+							? imageNewPart.uri.replace("file://", "")
+							: imageNewPart.uri,
+					name: imageNewPart.fileName,
+					type: imageNewPart.type,
+				})
+			)
+		}
+		form.append("name", nameNewPart)
+		form.append("link", urlNewPart)
+
+		// pas de formdata avec un PUT donc on spoof avec un POST
+		Api.post("/partners/" + pendingEdit.id + "?_method=PUT", form, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			getPartners()
+			setStoreModalVisible(false)
+			setImageNewPart(null)
+			setNameNewPart("")
+			setUrlNewPart("")
+			setPendingEdit(null)
+		})
 	}
 
 	return (
@@ -98,7 +175,7 @@ const Partenaires = (props, navigation) => {
 				<Modal
 					animationType="fade"
 					transparent={true}
-					visible={modalVisible}
+					visible={storeModalVisible}
 					onRequestClose={() => {
 						setModalVisible(!modalVisible)
 					}}
@@ -123,20 +200,47 @@ const Partenaires = (props, navigation) => {
 								onPress={pickImage}
 							>
 								<Text style={{ textAlign: "center" }}>
-									Choisir une image
+									{pendingEdit
+										? "Modifier l'image"
+										: "Choisir une image"}
 								</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
 								style={styles.bt}
-								onPress={storePart}
+								onPress={handleSubmitStore}
 							>
 								<Text style={styles.textBT}>Valider</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
 								style={styles.bt}
-								onPress={() => {
-									resetInputNewPart()
-								}}
+								onPress={handleCloseStoreModal}
+							>
+								<Text style={styles.textBT}>Annuler</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
+				</Modal>
+			) : null}
+			{props.user.is_admin ? (
+				<Modal
+					animationType="fade"
+					transparent={true}
+					visible={deleteModalVisible}
+					onRequestClose={() => {
+						setModalVisible(!deleteModalVisible)
+					}}
+				>
+					<View style={styles.modal}>
+						<View style={styles.addPanel}>
+							<TouchableOpacity
+								style={styles.bt}
+								onPress={confirmDelete}
+							>
+								<Text style={styles.textBT}>Valider</Text>
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.bt}
+								onPress={cancelDelete}
 							>
 								<Text style={styles.textBT}>Annuler</Text>
 							</TouchableOpacity>
@@ -148,7 +252,7 @@ const Partenaires = (props, navigation) => {
 				<TouchableOpacity
 					style={styles.addButton}
 					onPress={() => {
-						setModalVisible(true)
+						setStoreModalVisible(true)
 					}}
 				>
 					<Text style={{ color: "white", fontSize: 18 }}>
@@ -179,6 +283,7 @@ const Partenaires = (props, navigation) => {
 							token={props.token}
 							user={props.user}
 							onDelete={handleDelete}
+							onEdit={handleEdit}
 						/>
 					</View>
 				)}

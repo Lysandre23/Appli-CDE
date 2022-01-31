@@ -14,7 +14,7 @@ const ClubCard = (props) => {
 			}}
 			style={styles.main}
 		>
-			<Image source={require("../assets/event.jpg")} style={styles.img} />
+			<Image source={props.image} style={styles.img} />
 			<Text style={styles.text}>{props.name}</Text>
 		</TouchableOpacity>
 	)

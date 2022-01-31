@@ -8,15 +8,12 @@ import modalStyle from "../Screen/Modal.style"
 const PartenaireCard = (props) => {
 	const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
 
-	const deletePartner = () => {
-		Api.delete("/partners/" + props.id, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-				Authorization: `Bearer ${props.token}`,
-			},
-		}).then(function (response) {
-			props.onDelete()
-		})
+	const handleDelete = () => {
+		props.onDelete(props.id)
+	}
+
+	const handleEdit = () => {
+		props.onEdit(props.id)
 	}
 
 	return (
@@ -70,11 +67,19 @@ const PartenaireCard = (props) => {
 			{props.user.is_admin ? (
 				<TouchableOpacity
 					style={styles.adminButton}
-					onPress={() => {
-						setModalDeleteVisible(true);
-					}}
+					onPress={handleDelete}
 				>
 					<Icon name="trash" size={20} color="#000" />
+				</TouchableOpacity>
+			) : (
+				<View></View>
+			)}
+			{props.user.is_admin ? (
+				<TouchableOpacity
+					style={[styles.adminButton, styles.adminButtonLeft]}
+					onPress={handleEdit}
+				>
+					<Icon name="edit" size={20} color="#000" />
 				</TouchableOpacity>
 			) : (
 				<View></View>
@@ -102,6 +107,9 @@ const styles = StyleSheet.create({
 		top: 2,
 		right: 2,
 		zIndex: 2,
+	},
+	adminButtonLeft: {
+		left: 2,
 	},
 })
 

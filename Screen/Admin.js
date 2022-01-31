@@ -7,7 +7,8 @@ import {
 	TouchableOpacity,
 	Modal,
 	TextInput,
-	Picker
+	Picker,
+	Platform,
 } from "react-native"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
@@ -20,17 +21,20 @@ import { useEffect } from "react"
 import Api from "../Api"
 
 const Admin = (props) => {
-	const navigation = useNavigation();
-	const [modalClubVisible, setModalClubVisible] = useState(false);
-	const [nameNewClub, setNameNewClub] = useState("");
-	const [descriptionNewClub, setDescriptionNewClub] = useState("");
-	const [imageNewClub, setImageNewClub] = useState(null);
-	const [bureauNewClub, setBureauNewClub] = useState(null);
+	const navigation = useNavigation()
+
+	const [modalClubVisible, setModalClubVisible] = useState(false)
+	const [nameNewClub, setNameNewClub] = useState("")
+	const [descriptionNewClub, setDescriptionNewClub] = useState("")
+	const [imageNewClub, setImageNewClub] = useState(null)
+	const [selectedOfficeNewClub, setSelectedOfficeNewClub] = useState(0)
+
+	const [modalOfficeVisible, setModalOfficeVisible] = useState(false)
+	const [nameNewOffice, setNameNewOffice] = useState("")
+	const [descriptionNewOffice, setDescriptionNewOffice] = useState("")
+	const [imageNewOffice, setImageNewOffice] = useState(null)
+
 	const [offices, setOffices] = useState([])
-	const [modalBureauVisible, setModalBureauVisible] = useState(false);
-	const [nameNewBureau, setNameNewBureau] = useState("");
-	const [descriptionNewBureau, setDescriptionNewBureau] = useState("");
-	const [imageNewBureau, setImageNewBureau] = useState(null);
 
 	useEffect(() => {
 		getOffices()
@@ -42,18 +46,18 @@ const Admin = (props) => {
 		})
 	}
 
-	const resetInputNewClub = () => {
+	const handleCloseClubModal = () => {
 		setModalClubVisible(false)
-		setNameNewClub(null)
-		setDescriptionNewClub(null)
+		setNameNewClub("")
+		setDescriptionNewClub("")
 		setImageNewClub(null)
-		setBureauNewClub(null)
+		setSelectedOfficeNewClub(0)
 	}
-	const resetInputNewBureau = () => {
-		setModalBureauVisible(false)
-		setNameNewBureau(null)
-		setDescriptionNewBureau(null)
-		setImageNewBureau(null)
+	const handleCloseOfficeModal = () => {
+		setModalOfficeVisible(false)
+		setNameNewOffice("")
+		setDescriptionNewOffice("")
+		setImageNewOffice(null)
 	}
 
 	const pickImageClub = async () => {
@@ -68,7 +72,7 @@ const Admin = (props) => {
 			setImageNewClub(result)
 		}
 	}
-	const pickImageBureau = async () => {
+	const pickImageOffice = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
 			allowsEditing: true,
@@ -77,126 +81,193 @@ const Admin = (props) => {
 		})
 
 		if (!result.cancelled) {
-			setImageNewBureau(result)
+			setImageNewOffice(result)
+		}
+	}
+
+	const storeClub = () => {
+		if (imageNewClub) {
+			let form = new FormData()
+
+			form.append(
+				"picture",
+				JSON.stringify({
+					uri:
+						Platform.OS === "ios"
+							? imageNewClub.uri.replace("file://", "")
+							: imageNewClub.uri,
+					name: imageNewClub.fileName,
+					type: imageNewClub.type,
+				})
+			)
+			form.append("name", nameNewClub)
+			form.append("description", descriptionNewClub)
+			form.append("office_id", selectedOfficeNewClub)
+			Api.post("/clubs", form, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${props.token}`,
+				},
+			}).then(function (response) {
+				setModalClubVisible(false)
+				setImageNewClub(null)
+				setNameNewClub("")
+				setDescriptionNewClub("")
+			})
+		}
+	}
+
+	const storeOffice = () => {
+		if (imageNewOffice) {
+			let form = new FormData()
+
+			form.append(
+				"picture",
+				JSON.stringify({
+					uri:
+						Platform.OS === "ios"
+							? imageNewOffice.uri.replace("file://", "")
+							: imageNewOffice.uri,
+					name: imageNewOffice.fileName,
+					type: imageNewOffice.type,
+				})
+			)
+			form.append("name", nameNewOffice)
+			form.append("description", descriptionNewOffice)
+			Api.post("/offices", form, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${props.token}`,
+				},
+			}).then(function (response) {
+				getOffices()
+				setModalOfficeVisible(false)
+				setImageNewOffice(null)
+				setNameNewOffice("")
+				setDescriptionNewOffice("")
+			})
 		}
 	}
 
 	return (
 		<View style={styles.main}>
 			<Header title="ADMIN" color="#da291c" user={props.user} />
-			{props.user.is_admin ? (
-				<Modal
-					animationType="fade"
-					transparent={true}
-					visible={modalClubVisible}
-					onRequestClose={() => {
-						setModalClubVisible(!modalClubVisible)
-					}}
-				>
-					<View style={modalStyle.modal}>
-						<View style={modalStyle.addPanel}>
-							<TextInput
-								style={modalStyle.input}
-								placeholder="Nom"
-								value={nameNewClub}
-								onChangeText={setNameNewClub}
+			<Modal
+				animationType="fade"
+				transparent={true}
+				visible={modalClubVisible}
+				onRequestClose={() => {
+					setModalClubVisible(!modalClubVisible)
+				}}
+			>
+				<View style={modalStyle.modal}>
+					<View style={modalStyle.addPanel}>
+						<TextInput
+							style={modalStyle.input}
+							placeholder="Nom"
+							value={nameNewClub}
+							onChangeText={setNameNewClub}
+						/>
+						<TextInput
+							style={modalStyle.input}
+							placeholder="Description"
+							value={descriptionNewClub}
+							onChangeText={setDescriptionNewClub}
+						/>
+						<TouchableOpacity
+							style={modalStyle.imagePicker}
+							onPress={pickImageClub}
+						>
+							<Text style={{ textAlign: "center" }}>
+								Choisir une image
+							</Text>
+						</TouchableOpacity>
+						<Picker
+							selectedValue={selectedOfficeNewClub}
+							style={modalStyle.picker}
+							onValueChange={(itemValue, itemIndex) =>
+								setSelectedOfficeNewClub(itemValue)
+							}
+						>
+							<Picker.Item
+								key={0}
+								label="Choisir un bureau"
+								value={0}
+								enabled={false}
 							/>
-							<TextInput
-								style={modalStyle.input}
-								placeholder="Description"
-								value={descriptionNewClub}
-								onChangeText={setDescriptionNewClub}
-							/>
-							<TouchableOpacity
-								style={modalStyle.imagePicker}
-								onPress={pickImageClub}
-							>
-								<Text style={{ textAlign: "center" }}>
-									Choisir une image
-								</Text>
-							</TouchableOpacity>
-							<Picker
-								selectedValue={bureauNewClub}
-								style={modalStyle.picker}
-								onValueChange={(itemValue, itemIndex) =>
-									setBureauNewClub(itemValue)
-								}
-							>
-								{offices.map((item) => (
-									<Picker.Item
-										key={item.id}
-										label={item.label}
-										value={item.value}
-									/>
-								))}
-							</Picker>
-							<TouchableOpacity
-								style={modalStyle.bt}
-								onPress={() => {}}
-							>
-								<Text style={modalStyle.textBT}>Valider</Text>
-							</TouchableOpacity>
-							<TouchableOpacity
-								style={modalStyle.bt}
-								onPress={() => {
-									resetInputNewClub()
-								}}
-							>
-								<Text style={modalStyle.textBT}>Annuler</Text>
-							</TouchableOpacity>
-						</View>
+							{offices.map((item) => (
+								<Picker.Item
+									key={item.id}
+									label={item.name}
+									value={item.id}
+								/>
+							))}
+						</Picker>
+						<TouchableOpacity
+							style={modalStyle.bt}
+							onPress={storeClub}
+						>
+							<Text style={modalStyle.textBT}>Valider</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={modalStyle.bt}
+							onPress={() => {
+								handleCloseClubModal()
+							}}
+						>
+							<Text style={modalStyle.textBT}>Annuler</Text>
+						</TouchableOpacity>
 					</View>
-				</Modal>
-			) : null}
-			{props.user.is_admin ? (
-				<Modal
-					animationType="fade"
-					transparent={true}
-					visible={modalBureauVisible}
-					onRequestClose={() => {
-						setModalBureauVisible(!modalBureauVisible)
-					}}
-				>
-					<View style={modalStyle.modal}>
-						<View style={modalStyle.addPanel}>
-							<TextInput
-								style={modalStyle.input}
-								placeholder="Nom"
-								value={nameNewBureau}
-								onChangeText={setNameNewBureau}
-							/>
-							<TextInput
-								style={modalStyle.input}
-								placeholder="Description"
-								value={descriptionNewBureau}
-								onChangeText={setDescriptionNewBureau}
-							/>
-							<TouchableOpacity
-								style={modalStyle.imagePicker}
-								onPress={pickImageBureau}
-							>
-								<Text style={{ textAlign: "center" }}>
-									Choisir une image
-								</Text>
-							</TouchableOpacity>
-							<TouchableOpacity
-								style={modalStyle.bt}
-								onPress={() => {}}
-							>
-								<Text style={modalStyle.textBT}>Valider</Text>
-							</TouchableOpacity>
-							<TouchableOpacity
-								style={modalStyle.bt}
-								onPress={() => {
-									resetInputNewBureau()
-								}}
-							>
-								<Text style={modalStyle.textBT}>Annuler</Text>
-							</TouchableOpacity>
-						</View>
+				</View>
+			</Modal>
+			<Modal
+				animationType="fade"
+				transparent={true}
+				visible={modalOfficeVisible}
+				onRequestClose={() => {
+					setModalBureauVisible(!modalOfficeVisible)
+				}}
+			>
+				<View style={modalStyle.modal}>
+					<View style={modalStyle.addPanel}>
+						<TextInput
+							style={modalStyle.input}
+							placeholder="Nom"
+							value={nameNewOffice}
+							onChangeText={setNameNewOffice}
+						/>
+						<TextInput
+							style={modalStyle.input}
+							placeholder="Description"
+							value={descriptionNewOffice}
+							onChangeText={setDescriptionNewOffice}
+						/>
+						<TouchableOpacity
+							style={modalStyle.imagePicker}
+							onPress={pickImageOffice}
+						>
+							<Text style={{ textAlign: "center" }}>
+								Choisir une image
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={modalStyle.bt}
+							onPress={storeOffice}
+						>
+							<Text style={modalStyle.textBT}>Valider</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={modalStyle.bt}
+							onPress={() => {
+								handleCloseOfficeModal()
+							}}
+						>
+							<Text style={modalStyle.textBT}>Annuler</Text>
+						</TouchableOpacity>
 					</View>
-				</Modal>
-			) : null}
+				</View>
+			</Modal>
+
 			<ScrollView>
 				<TouchableOpacity
 					style={styles.category}
@@ -209,7 +280,7 @@ const Admin = (props) => {
 				<TouchableOpacity
 					style={styles.category}
 					onPress={() => {
-						setModalBureauVisible(true);
+						setModalOfficeVisible(true)
 					}}
 				>
 					<AdminButton text="Créer un bureau" />
@@ -217,7 +288,7 @@ const Admin = (props) => {
 				<TouchableOpacity
 					style={styles.category}
 					onPress={() => {
-						setModalClubVisible(true);
+						setModalClubVisible(true)
 					}}
 				>
 					<AdminButton text="Créer un club" />

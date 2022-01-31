@@ -18,7 +18,6 @@ import * as ImagePicker from "expo-image-picker"
 import Api from "../Api"
 
 const Clubs = (props, navigation) => {
-	const [admin, setAdmin] = useState(true)
 	const [offices, setOffices] = useState([])
 
 	useEffect(() => {
@@ -47,8 +46,7 @@ const Clubs = (props, navigation) => {
 											id={item.id}
 											name={item.name}
 											description={item.description}
-											image={item.image}
-											email={item.email}
+											image={item.picture}
 											navigation={navigation}
 										/>
 									</View>
