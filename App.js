@@ -57,7 +57,6 @@ function App() {
 
 	const handleDisconnect = (value) => {
 		if (value) {
-			console.log("deconnexion")
 			setUser({
 				email: null,
 				first_name: null,

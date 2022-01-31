@@ -7,15 +7,12 @@ import Api from "../Api"
 const PartenaireCard = (props) => {
 	const [admin, setAdmin] = useState(true)
 
-	const deletePartner = () => {
-		Api.delete("/partners/" + props.id, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-				Authorization: `Bearer ${props.token}`,
-			},
-		}).then(function (response) {
-			props.onDelete()
-		})
+	const handleDelete = () => {
+		props.onDelete(props.id)
+	}
+
+	const handleEdit = () => {
+		props.onEdit(props.id)
 	}
 
 	return (
@@ -36,9 +33,19 @@ const PartenaireCard = (props) => {
 			{props.user.is_admin ? (
 				<TouchableOpacity
 					style={styles.adminButton}
-					onPress={deletePartner}
+					onPress={handleDelete}
 				>
 					<Icon name="trash" size={20} color="#000" />
+				</TouchableOpacity>
+			) : (
+				<View></View>
+			)}
+			{props.user.is_admin ? (
+				<TouchableOpacity
+					style={[styles.adminButton, styles.adminButtonLeft]}
+					onPress={handleEdit}
+				>
+					<Icon name="edit" size={20} color="#000" />
 				</TouchableOpacity>
 			) : (
 				<View></View>
@@ -66,6 +73,9 @@ const styles = StyleSheet.create({
 		top: 2,
 		right: 2,
 		zIndex: 2,
+	},
+	adminButtonLeft: {
+		left: 2,
 	},
 })
 

@@ -38,6 +38,21 @@ const Club = (props) => {
 		})
 	}
 
+	const handleClickFollow = () => {
+		Api.post(
+			"/subscribings",
+			{
+				club_id: club.id,
+			},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${props.token}`,
+				},
+			}
+		).then(function (response) {})
+	}
+
 	return (
 		<View style={styles.main}>
 			<Header
@@ -52,7 +67,10 @@ const Club = (props) => {
 				/>
 				<View style={styles.headButton}>
 					{props.user.email ? (
-						<TouchableOpacity style={styles.bt} onPress={() => {}}>
+						<TouchableOpacity
+							style={styles.bt}
+							onPress={handleClickFollow}
+						>
 							<Text style={styles.btText}>Suivre</Text>
 						</TouchableOpacity>
 					) : null}

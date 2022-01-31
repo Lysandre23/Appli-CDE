@@ -20,8 +20,8 @@ import Api from "../Api"
 const Clubs = (props, navigation) => {
 	const [admin, setAdmin] = useState(true)
 	const [modalVisible, setModalVisible] = useState(false)
-	const [nameNewClub, setNameNewClub] = useState(null)
-	const [descriptionNewClub, setDescriptionNewClub] = useState(null)
+	const [nameNewClub, setNameNewClub] = useState("")
+	const [descriptionNewClub, setDescriptionNewClub] = useState("")
 	const [imageNewClub, setImageNewClub] = useState(null)
 	const [bureauNewClub, setBureauNewClub] = useState(null)
 	const [offices, setOffices] = useState([])
@@ -61,7 +61,7 @@ const Clubs = (props, navigation) => {
 	return (
 		<View style={styles.main}>
 			<Header color="#da291c" title="CLUBS" user={props.user} />
-			{props.user.id_admin ? (
+			{props.user.is_admin ? (
 				<TouchableOpacity
 					style={styles.addButton}
 					onPress={() => {
@@ -75,7 +75,7 @@ const Clubs = (props, navigation) => {
 			) : (
 				<View></View>
 			)}
-			{props.user.id_admin ? (
+			{props.user.is_admin ? (
 				<Modal
 					animationType="fade"
 					transparent={true}
@@ -152,8 +152,7 @@ const Clubs = (props, navigation) => {
 											id={item.id}
 											name={item.name}
 											description={item.description}
-											image={item.image}
-											email={item.email}
+											image={item.picture}
 											navigation={navigation}
 										/>
 									</View>
