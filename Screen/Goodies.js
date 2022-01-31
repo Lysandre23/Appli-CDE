@@ -11,12 +11,12 @@ import {
 	TouchableOpacity,
 } from "react-native"
 import Header from "../Components/Header"
-import GoodiesCard from "../Components/GoodiesCard"
 import Navbar from "../Components/Navbar"
 import { useState, useEffect } from "react"
 import * as ImagePicker from "expo-image-picker"
 import Api from "../Api"
 import modalStyle from "./Modal.style"
+import OfficeGoodies from "../Components/OfficeGoodies"
 
 const Goodies = (props) => {
 	const [modalVisible, setModalVisible] = useState(false)
@@ -24,7 +24,8 @@ const Goodies = (props) => {
 	const [nameNewGoodie, setNameNewGoodie] = useState(null)
 	const [priceNewGoodie, setPriceNewGoodie] = useState(null)
 	const [imageNewGoodie, setImageNewGoodie] = useState(null)
-	const [goodies, setGoodies] = useState([])
+	const [goodies, setGoodies] = useState([]);
+	const [offices, setOffices] = useState([]);
 
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
@@ -128,21 +129,17 @@ const Goodies = (props) => {
 					</View>
 				</View>
 			</Modal>
+			
 			<FlatList
-				data={goodies}
-				renderItem={({ item }) => (
-					<View style={styles.rowcol}>
-						<GoodiesCard
-							name={item.name}
-							price={item.price}
-							src={item.image}
-						/>
-					</View>
-				)}
+				data={offices}
 				keyExtractor={(item) => item.key}
-				numColumns={2}
-			/>
+				renderItem={({ item }) => (
+					<OfficeGoodies name={item.officeName} goodiesList={item.goodiesList}/>
+				)}
+			>
 
+			</FlatList>
+			
 			<Navbar color="#da291c" user={props.user} />
 		</View>
 	)
@@ -151,13 +148,6 @@ const Goodies = (props) => {
 const styles = StyleSheet.create({
 	main: {
 		flex: 1,
-	},
-	rowcol: {
-		width: "50%",
-		marginTop: 20,
-		display: "flex",
-		flexDirection: "row",
-		justifyContent: "space-around",
 	},
 	addButton: {
 		zIndex: 2,
