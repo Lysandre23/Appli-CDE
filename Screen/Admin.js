@@ -185,11 +185,11 @@ const Admin = (props) => {
 		}
 	}
 
-	const storeAdmin = () => {
+	const storeAdmin = (id) => {
 		Api.post(
 			"/admins",
 			{
-				user_id: selectedNewAdmin,
+				user_id: id,
 			},
 			{
 				headers: {
@@ -199,6 +199,7 @@ const Admin = (props) => {
 		).then(function (response) {
 			setModalAddAdminVisible(false)
 			setSelectedNewAdmin(0)
+			getAdmins()
 		})
 	}
 
@@ -211,6 +212,16 @@ const Admin = (props) => {
 			})
 		})
 		return array
+	}
+
+	const deleteAdmin = (id) => {
+		Api.delete("/admins/" + id, {
+			headers: {
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			getAdmins()
+		})
 	}
 
 	return (
@@ -331,65 +342,17 @@ const Admin = (props) => {
 					</View>
 				</View>
 			</Modal>
-			<Modal
-				animationType="fade"
-				transparent={true}
+			<ListModal
 				visible={modalAddAdminVisible}
-				onRequestClose={() => {
-					setModalAddAdminVisible(!modalAddAdminVisible)
-				}}
-			>
-				<View style={modalStyle.modal}>
-					<View style={modalStyle.addPanel}>
-						<Picker
-							selectedValue={selectedNewAdmin}
-							style={modalStyle.picker}
-							onValueChange={(itemValue, itemIndex) =>
-								setSelectedNewAdmin(itemValue)
-							}
-						>
-							<Picker.Item
-								key={0}
-								label="Choisir un utilisateur"
-								value={0}
-								enabled={false}
-							/>
-							{users
-								.filter(
-									(item) =>
-										!admins.find(
-											(admin) => admin.id === item.id
-										)
-								)
-								.map((item) => (
-									<Picker.Item
-										key={item.id}
-										label={
-											item.first_name +
-											" " +
-											item.last_name
-										}
-										value={item.id}
-									/>
-								))}
-						</Picker>
-						<TouchableOpacity
-							style={modalStyle.bt}
-							onPress={storeAdmin}
-						>
-							<Text style={modalStyle.textBT}>Valider</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={modalStyle.bt}
-							onPress={() => {
-								handleCloseAddAdminModal()
-							}}
-						>
-							<Text style={modalStyle.textBT}>Annuler</Text>
-						</TouchableOpacity>
-					</View>
-				</View>
-			</Modal>
+				list={serializeAdmins(
+					users.filter(
+						(item) => !admins.find((admin) => admin.id === item.id)
+					)
+				)}
+				selectable={true}
+				onClose={() => setModalAddAdminVisible(!modalAddAdminVisible)}
+				onConfirm={storeAdmin}
+			/>
 
 			<ListModal
 				visible={modalDeleteAdminVisible}
@@ -398,6 +361,7 @@ const Admin = (props) => {
 				onClose={() =>
 					setModalDeleteAdminVisible(!modalDeleteAdminVisible)
 				}
+				onConfirm={deleteAdmin}
 			/>
 
 			<ScrollView>

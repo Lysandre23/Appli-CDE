@@ -27,6 +27,12 @@ class ListModal extends Component {
 		this.setState({ selectedValue: value })
 	}
 
+	handleConfirm = () => {
+		this.props.onConfirm(this.state.selectedValue)
+		this.handleClose()
+		this.setState({ selectedValue: null })
+	}
+
 	render() {
 		const { visible, list, selectable } = this.props
 		const { selectedValue } = this.state
@@ -60,7 +66,10 @@ class ListModal extends Component {
 					</ScrollView>
 					{selectable ? (
 						<View style={styles.btnList}>
-							<BigButton text="Confirmer" />
+							<BigButton
+								text="Confirmer"
+								onPress={this.handleConfirm}
+							/>
 							<BigButton
 								type="secondary"
 								text="Annuler"
