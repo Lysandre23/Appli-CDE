@@ -57,15 +57,17 @@ function App() {
 
 	const handleDisconnect = (value) => {
 		if (value) {
+			AsyncStorage.removeItem("cde-token")
 			setUser({
 				email: null,
 				first_name: null,
 				last_name: null,
-				is_admin: null,
+				is_admin: false,
 				//subscriptions: null,
-				office_responsible: null,
-				club_responsible: null,
+				office_responsible: [],
+				club_responsible: [],
 			})
+			setToken(null)
 		}
 	}
 
@@ -127,7 +129,7 @@ function App() {
 					{(props) => <Events user={user} />}
 				</Drawer.Screen>
 				<Drawer.Screen name="Goodies">
-					{(props) => <Goodies user={user} />}
+					{(props) => <Goodies user={user} token={token} />}
 				</Drawer.Screen>
 				<Drawer.Screen name="Clubs">
 					{(props) => <Clubs token={token} user={user} />}

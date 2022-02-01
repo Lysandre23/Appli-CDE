@@ -9,9 +9,7 @@ export function SideBar(props) {
 	const navigation = useNavigation()
 
 	const handleDisconnect = () => {
-		AsyncStorage.removeItem("cde-token")
 		props.onDisconnect(true)
-		navigation.navigate("Login")
 	}
 
 	const handlePressAdmin = () => {

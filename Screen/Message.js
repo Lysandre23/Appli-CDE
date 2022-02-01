@@ -18,7 +18,6 @@ import { useRoute } from "@react-navigation/core"
 
 const Message = (props) => {
 	const route = useRoute()
-	console.log(route.params)
 	const [selectedClub, setSelectedClub] = useState(
 		typeof route.params !== "undefined" && route.params.preClub !== null
 			? route.params.preClub

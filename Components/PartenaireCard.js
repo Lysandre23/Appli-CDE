@@ -1,12 +1,20 @@
 import React from "react"
-import { View, Image, StyleSheet, TouchableOpacity, Text, Linking, Modal } from "react-native"
+import {
+	View,
+	Image,
+	StyleSheet,
+	TouchableOpacity,
+	Text,
+	Linking,
+	Modal,
+} from "react-native"
 import Icon from "react-native-vector-icons/FontAwesome"
 import { useState } from "react"
 import Api from "../Api"
 import modalStyle from "../Screen/Modal.style"
 
 const PartenaireCard = (props) => {
-	const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
+	const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
 
 	const handleDelete = () => {
 		props.onDelete(props.id)
@@ -32,7 +40,7 @@ const PartenaireCard = (props) => {
 							<TouchableOpacity
 								style={modalStyle.bt}
 								onPress={() => {
-									deletePartner();
+									deletePartner()
 								}}
 							>
 								<Text style={modalStyle.textBT}>Valider</Text>
@@ -40,7 +48,7 @@ const PartenaireCard = (props) => {
 							<TouchableOpacity
 								style={modalStyle.bt}
 								onPress={() => {
-									setModalDeleteVisible(false);
+									setModalDeleteVisible(false)
 								}}
 							>
 								<Text style={modalStyle.textBT}>Annuler</Text>
@@ -49,9 +57,12 @@ const PartenaireCard = (props) => {
 					</View>
 				</Modal>
 			) : null}
-			<TouchableOpacity style={styles.main} onPress={() => {
-				Linking.openURL(props.url);
-			}}>
+			<TouchableOpacity
+				style={styles.main}
+				onPress={() => {
+					Linking.openURL(props.url)
+				}}
+			>
 				<Image style={styles.img} source={props.image} />
 			</TouchableOpacity>
 			<Text
@@ -112,7 +123,7 @@ const styles = StyleSheet.create({
 	},
 	adminButtonRight: {
 		right: 2,
-	}
+	},
 })
 
 export default PartenaireCard
