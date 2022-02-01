@@ -19,6 +19,7 @@ import { useState } from "react"
 import modalStyle from "./Modal.style.js"
 import { useEffect } from "react"
 import Api from "../Api"
+import ListModal from "../Components/ListModal"
 
 const Admin = (props) => {
 	const navigation = useNavigation()
@@ -36,6 +37,9 @@ const Admin = (props) => {
 
 	const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false)
 	const [selectedNewAdmin, setSelectedNewAdmin] = useState(0)
+
+	const [modalDeleteAdminVisible, setModalDeleteAdminVisible] =
+		useState(false)
 
 	const [offices, setOffices] = useState([])
 	const [admins, setAdmins] = useState([])
@@ -198,6 +202,17 @@ const Admin = (props) => {
 		})
 	}
 
+	const serializeAdmins = (admins) => {
+		let array = []
+		admins.forEach((item) => {
+			array.push({
+				value: item.id,
+				label: item.first_name + " " + item.last_name,
+			})
+		})
+		return array
+	}
+
 	return (
 		<View style={styles.main}>
 			<Header title="ADMIN" color="#da291c" user={props.user} />
@@ -274,7 +289,7 @@ const Admin = (props) => {
 				transparent={true}
 				visible={modalOfficeVisible}
 				onRequestClose={() => {
-					setModalBureauVisible(!modalOfficeVisible)
+					setModalOfficeVisible(!modalOfficeVisible)
 				}}
 			>
 				<View style={modalStyle.modal}>
@@ -376,6 +391,15 @@ const Admin = (props) => {
 				</View>
 			</Modal>
 
+			<ListModal
+				visible={modalDeleteAdminVisible}
+				list={serializeAdmins(admins)}
+				selectable={true}
+				onClose={() =>
+					setModalDeleteAdminVisible(!modalDeleteAdminVisible)
+				}
+			/>
+
 			<ScrollView>
 				<TouchableOpacity
 					style={styles.category}
@@ -409,6 +433,14 @@ const Admin = (props) => {
 				>
 					<AdminButton text="Ajouter un admin" />
 				</TouchableOpacity>
+				<TouchableOpacity
+					style={styles.category}
+					onPress={() => {
+						setModalDeleteAdminVisible(true)
+					}}
+				>
+					<AdminButton text="Retirer un admin" />
+				</TouchableOpacity>
 			</ScrollView>
 			<Navbar color="#da291c" user={props.user} />
 		</View>
@@ -420,6 +452,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		display: "flex",
 		backgroundColor: "#F8F8F8",
+	},
+	modal: {
+		flex: 1,
+		backgroundColor: "rgba(0,0,0,0.2)",
 	},
 })
 
