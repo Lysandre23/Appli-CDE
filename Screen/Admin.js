@@ -36,10 +36,11 @@ const Admin = (props) => {
 	const [imageNewOffice, setImageNewOffice] = useState(null)
 
 	const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false)
-	const [selectedNewAdmin, setSelectedNewAdmin] = useState(0)
 
 	const [modalDeleteAdminVisible, setModalDeleteAdminVisible] =
 		useState(false)
+
+	const [modalListClubVisible, setModalListClubVisible] = useState(false)
 
 	const [offices, setOffices] = useState([])
 	const [admins, setAdmins] = useState([])
@@ -214,6 +215,25 @@ const Admin = (props) => {
 		return array
 	}
 
+	const serializeOffices = (offices) => {
+		let array = []
+		offices.forEach((item) => {
+			array.push({
+				value: "o-" + item.id,
+				label: item.name,
+			})
+		})
+		offices.forEach((item) => {
+			item.clubs.forEach((club) => {
+				array.push({
+					value: "c-" + club.id,
+					label: club.name,
+				})
+			})
+		})
+		return array
+	}
+
 	const deleteAdmin = (id) => {
 		Api.delete("/admins/" + id, {
 			headers: {
@@ -222,6 +242,19 @@ const Admin = (props) => {
 		}).then(function (response) {
 			getAdmins()
 		})
+	}
+
+	const goToClub = (id) => {
+		const splitted = id.split("-")
+		if (splitted[0] === "c") {
+			navigation.navigate("GestionClub", {
+				id: splitted[1],
+			})
+		} else if (splitted[0] === "o") {
+			navigation.navigate("GestionOffice", {
+				id: splitted[1],
+			})
+		}
 	}
 
 	return (
@@ -343,6 +376,7 @@ const Admin = (props) => {
 				</View>
 			</Modal>
 			<ListModal
+				title="Ajouter un admin"
 				visible={modalAddAdminVisible}
 				list={serializeAdmins(
 					users.filter(
@@ -355,6 +389,7 @@ const Admin = (props) => {
 			/>
 
 			<ListModal
+				title="Retirer un admin"
 				visible={modalDeleteAdminVisible}
 				list={serializeAdmins(admins)}
 				selectable={true}
@@ -364,47 +399,46 @@ const Admin = (props) => {
 				onConfirm={deleteAdmin}
 			/>
 
+			<ListModal
+				title="Aller à la gestion"
+				visible={modalListClubVisible}
+				list={serializeOffices(offices)}
+				selectable={true}
+				onClose={() => setModalListClubVisible(!modalListClubVisible)}
+				onConfirm={goToClub}
+			/>
+
 			<ScrollView>
-				<TouchableOpacity
-					style={styles.category}
-					onPress={() => {
-						navigation.navigate("Role")
-					}}
-				>
-					<AdminButton text="Gestion des rôles" />
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.category}
+				<AdminButton
 					onPress={() => {
 						setModalOfficeVisible(true)
 					}}
-				>
-					<AdminButton text="Créer un bureau" />
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.category}
+					text="Créer un bureau"
+				/>
+				<AdminButton
 					onPress={() => {
 						setModalClubVisible(true)
 					}}
-				>
-					<AdminButton text="Créer un club" />
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.category}
+					text="Créer un club"
+				/>
+				<AdminButton
 					onPress={() => {
 						setModalAddAdminVisible(true)
 					}}
-				>
-					<AdminButton text="Ajouter un admin" />
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.category}
+					text="Ajouter un admin"
+				/>
+				<AdminButton
 					onPress={() => {
 						setModalDeleteAdminVisible(true)
 					}}
-				>
-					<AdminButton text="Retirer un admin" />
-				</TouchableOpacity>
+					text="Retirer un admin"
+				/>
+				<AdminButton
+					onPress={() => {
+						setModalListClubVisible(true)
+					}}
+					text="Allez à la gestion"
+				/>
 			</ScrollView>
 			<Navbar color="#da291c" user={props.user} />
 		</View>

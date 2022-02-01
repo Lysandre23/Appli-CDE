@@ -34,7 +34,7 @@ class ListModal extends Component {
 	}
 
 	render() {
-		const { visible, list, selectable } = this.props
+		const { visible, list, selectable, title } = this.props
 		const { selectedValue } = this.state
 		return (
 			<Modal
@@ -52,7 +52,7 @@ class ListModal extends Component {
 							<Icon name="close" size={30} color="#fff" />
 						</TouchableOpacity>
 					) : null}
-					<Text style={styles.modalHeader}>Retirer un admin</Text>
+					<Text style={styles.modalHeader}>{title}</Text>
 					<ScrollView style={styles.list}>
 						{list.map((item) => (
 							<ListModalItem
