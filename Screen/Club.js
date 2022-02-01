@@ -19,7 +19,7 @@ import Api from "../Api"
 const Club = (props) => {
 	const navigation = useNavigation()
 	const route = useRoute()
-	const [membresVisible, setMembresVisible] = useState(false)
+	const [modalMembresVisible, setModalMembresVisible] = useState(false)
 	const [club, setClub] = useState({
 		id: null,
 		name: "",
@@ -77,7 +77,7 @@ const Club = (props) => {
 					<TouchableOpacity
 						style={styles.bt}
 						onPress={() => {
-							setMembresVisible(true)
+							setModalMembresVisible(true)
 						}}
 					>
 						<Text style={styles.btText}>Membres</Text>
@@ -111,7 +111,7 @@ const Club = (props) => {
 			<Modal
 				animationType="fade"
 				transparent={true}
-				visible={membresVisible}
+				visible={modalMembresVisible}
 				onRequestClose={() => {
 					setModalVisible(!modalVisible)
 				}}

@@ -35,6 +35,7 @@ const Clubs = (props, navigation) => {
 			<Header color="#da291c" title="CLUBS" user={props.user} />
 			<FlatList
 				data={offices}
+				style={{flex: 1}}
 				renderItem={({ item }) => (
 					<View key={item.id}>
 						<List.Accordion style={styles.office} title={item.name}>
