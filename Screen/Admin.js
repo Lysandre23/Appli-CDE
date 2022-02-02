@@ -19,6 +19,7 @@ import { useState } from "react"
 import modalStyle from "./Modal.style.js"
 import { useEffect } from "react"
 import Api from "../Api"
+import ListModal from "../Components/ListModal"
 
 const Admin = (props) => {
 	const navigation = useNavigation()
@@ -35,7 +36,11 @@ const Admin = (props) => {
 	const [imageNewOffice, setImageNewOffice] = useState(null)
 
 	const [modalAddAdminVisible, setModalAddAdminVisible] = useState(false)
-	const [selectedNewAdmin, setSelectedNewAdmin] = useState(0)
+
+	const [modalDeleteAdminVisible, setModalDeleteAdminVisible] =
+		useState(false)
+
+	const [modalListClubVisible, setModalListClubVisible] = useState(false)
 
 	const [offices, setOffices] = useState([])
 	const [admins, setAdmins] = useState([])
@@ -181,11 +186,11 @@ const Admin = (props) => {
 		}
 	}
 
-	const storeAdmin = () => {
+	const storeAdmin = (id) => {
 		Api.post(
 			"/admins",
 			{
-				user_id: selectedNewAdmin,
+				user_id: id,
 			},
 			{
 				headers: {
@@ -195,7 +200,61 @@ const Admin = (props) => {
 		).then(function (response) {
 			setModalAddAdminVisible(false)
 			setSelectedNewAdmin(0)
+			getAdmins()
 		})
+	}
+
+	const serializeAdmins = (admins) => {
+		let array = []
+		admins.forEach((item) => {
+			array.push({
+				value: item.id,
+				label: item.first_name + " " + item.last_name,
+			})
+		})
+		return array
+	}
+
+	const serializeOffices = (offices) => {
+		let array = []
+		offices.forEach((item) => {
+			array.push({
+				value: "o-" + item.id,
+				label: item.name,
+			})
+		})
+		offices.forEach((item) => {
+			item.clubs.forEach((club) => {
+				array.push({
+					value: "c-" + club.id,
+					label: club.name,
+				})
+			})
+		})
+		return array
+	}
+
+	const deleteAdmin = (id) => {
+		Api.delete("/admins/" + id, {
+			headers: {
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			getAdmins()
+		})
+	}
+
+	const goToClub = (id) => {
+		const splitted = id.split("-")
+		if (splitted[0] === "c") {
+			navigation.navigate("GestionClub", {
+				id: splitted[1],
+			})
+		} else if (splitted[0] === "o") {
+			navigation.navigate("GestionOffice", {
+				id: splitted[1],
+			})
+		}
 	}
 
 	return (
@@ -316,99 +375,70 @@ const Admin = (props) => {
 					</View>
 				</View>
 			</Modal>
-			<Modal
-				animationType="fade"
-				transparent={true}
+			<ListModal
+				title="Ajouter un admin"
 				visible={modalAddAdminVisible}
-				onRequestClose={() => {
-					setModalAddAdminVisible(!modalAddAdminVisible)
-				}}
-			>
-				<View style={modalStyle.modal}>
-					<View style={modalStyle.addPanel}>
-						<Picker
-							selectedValue={selectedNewAdmin}
-							style={modalStyle.picker}
-							onValueChange={(itemValue, itemIndex) =>
-								setSelectedNewAdmin(itemValue)
-							}
-						>
-							<Picker.Item
-								key={0}
-								label="Choisir un utilisateur"
-								value={0}
-								enabled={false}
-							/>
-							{users
-								.filter(
-									(item) =>
-										!admins.find(
-											(admin) => admin.id === item.id
-										)
-								)
-								.map((item) => (
-									<Picker.Item
-										key={item.id}
-										label={
-											item.first_name +
-											" " +
-											item.last_name
-										}
-										value={item.id}
-									/>
-								))}
-						</Picker>
-						<TouchableOpacity
-							style={modalStyle.bt}
-							onPress={storeAdmin}
-						>
-							<Text style={modalStyle.textBT}>Valider</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={modalStyle.bt}
-							onPress={() => {
-								handleCloseAddAdminModal()
-							}}
-						>
-							<Text style={modalStyle.textBT}>Annuler</Text>
-						</TouchableOpacity>
-					</View>
-				</View>
-			</Modal>
+				list={serializeAdmins(
+					users.filter(
+						(item) => !admins.find((admin) => admin.id === item.id)
+					)
+				)}
+				selectable={true}
+				onClose={() => setModalAddAdminVisible(!modalAddAdminVisible)}
+				onConfirm={storeAdmin}
+			/>
+
+			<ListModal
+				title="Retirer un admin"
+				visible={modalDeleteAdminVisible}
+				list={serializeAdmins(admins)}
+				selectable={true}
+				onClose={() =>
+					setModalDeleteAdminVisible(!modalDeleteAdminVisible)
+				}
+				onConfirm={deleteAdmin}
+			/>
+
+			<ListModal
+				title="Aller à la gestion"
+				visible={modalListClubVisible}
+				list={serializeOffices(offices)}
+				selectable={true}
+				onClose={() => setModalListClubVisible(!modalListClubVisible)}
+				onConfirm={goToClub}
+			/>
 
 			<ScrollView>
-				<TouchableOpacity
-					style={styles.category}
-					onPress={() => {
-						navigation.navigate("Role")
-					}}
-				>
-					<AdminButton text="Gestion des rôles" />
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.category}
+				<AdminButton
 					onPress={() => {
 						setModalOfficeVisible(true)
 					}}
-				>
-					<AdminButton text="Créer un bureau" />
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.category}
+					text="Créer un bureau"
+				/>
+				<AdminButton
 					onPress={() => {
 						setModalClubVisible(true)
 					}}
-				>
-					<AdminButton text="Créer un club" />
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.category}
+					text="Créer un club"
+				/>
+				<AdminButton
 					onPress={() => {
 						setModalAddAdminVisible(true)
 					}}
-				>
-					<AdminButton text="Ajouter un admin" />
-				</TouchableOpacity>
+					text="Ajouter un admin"
+				/>
+				<AdminButton
+					onPress={() => {
+						setModalDeleteAdminVisible(true)
+					}}
+					text="Retirer un admin"
+				/>
+				<AdminButton
+					onPress={() => {
+						setModalListClubVisible(true)
+					}}
+					text="Allez à la gestion"
+				/>
 			</ScrollView>
 			<Navbar color="#da291c" user={props.user} />
 		</View>
@@ -420,6 +450,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		display: "flex",
 		backgroundColor: "#F8F8F8",
+	},
+	modal: {
+		flex: 1,
+		backgroundColor: "rgba(0,0,0,0.2)",
 	},
 })
 

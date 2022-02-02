@@ -11,17 +11,99 @@ import {
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
 import RedLine from "../Components/RedLine"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import EventsCard from "../Components/EventsCard"
-// Aller chercher les droits de l'user pour voir quel club il gère
+import { useRoute } from "@react-navigation/core"
+import Api from "../Api"
+import AdminButton from "../Components/AdminButton"
+import ListModal from "../Components/ListModal"
 
-const GestionClub = ({ route }) => {
-	const { name, slug, email, presentationText, messages } = route.params
+const GestionClub = (props) => {
+	const route = useRoute()
 	const [modalPresVisible, setModalPresVisible] = useState(false)
 	const [modalPostVisible, setModalPostVisible] = useState(false)
-	const [presText, setPresText] = useState(presentationText)
+	const [presText, setPresText] = useState("")
 	const [titleNewPost, setTitleNewPost] = useState(null)
 	const [descriptionNewPost, setDescriptionNewPost] = useState(null)
+	const [club, setClub] = useState({
+		id: null,
+		name: "",
+		description: "",
+	})
+
+	const [modalAddMemberVisible, setModalAddMemberVisible] = useState(false)
+	const [modalRemoveMemberVisible, setModalRemoveMemberVisible] =
+		useState(false)
+	const [modalAddResponsibleVisible, setModalAddResponsibleVisible] =
+		useState(false)
+	const [modalRemoveResponsibleVisible, setModalRemoveResponsibleVisible] =
+		useState(false)
+
+	const [users, setUsers] = useState([])
+	const [members, setMembers] = useState([])
+	const [responsibles, setResponsibles] = useState([])
+
+	useEffect(() => {
+		getUsers()
+		if (parseInt(route.params.id) !== club.id) {
+			getClub()
+			getMembers()
+			getResponsibles()
+		}
+	}, [club])
+
+	const getClub = () => {
+		Api.get("/clubs/" + route.params.id).then(function (response) {
+			setClub(response.data.data)
+		})
+	}
+
+	const getUsers = () => {
+		Api.get("/users/list", {
+			headers: {
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			setUsers(response.data.data)
+		})
+	}
+
+	const getMembers = () => {
+		Api.get("/clubs/members/" + route.params.id, {
+			headers: {
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			setMembers(response.data.data)
+		})
+	}
+
+	const getResponsibles = () => {
+		Api.get("/clubs/responsibles/" + route.params.id, {
+			headers: {
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			setResponsibles(response.data.data)
+		})
+	}
+
+	const serializeUsers = (users) => {
+		let array = []
+		users.forEach((item) => {
+			array.push({
+				value: item.id,
+				label: item.first_name + " " + item.last_name,
+			})
+		})
+		return array
+	}
+
+	const handleAddResponsible = () => {}
+	const handleRemoveResponsible = () => {}
+	const handleAddMember = () => {}
+	const handleRemoveMember = () => {}
+
 	return (
 		<View style={styles.main}>
 			<Modal
@@ -90,7 +172,49 @@ const GestionClub = ({ route }) => {
 					</View>
 				</View>
 			</Modal>
-			<Header title="GESTION DE CLUB" color="#da291c" />
+
+			<ListModal
+				title="Ajouter un membre"
+				visible={modalAddMemberVisible}
+				list={serializeUsers(users)}
+				selectable={true}
+				onClose={() => setModalAddMemberVisible(!modalAddMemberVisible)}
+				onConfirm={handleAddResponsible}
+			/>
+			<ListModal
+				title="Retirer un membre"
+				visible={modalRemoveMemberVisible}
+				list={serializeUsers(members)}
+				selectable={true}
+				onClose={() =>
+					setModalRemoveMemberVisible(!modalRemoveMemberVisible)
+				}
+				onConfirm={handleRemoveResponsible}
+			/>
+			<ListModal
+				title="Ajouter un responsible"
+				visible={modalAddResponsibleVisible}
+				list={serializeUsers(members)}
+				selectable={true}
+				onClose={() =>
+					setModalAddResponsibleVisible(!modalAddResponsibleVisible)
+				}
+				onConfirm={handleAddMember}
+			/>
+			<ListModal
+				title="Retirer un responsable"
+				visible={modalRemoveResponsibleVisible}
+				list={serializeUsers(responsibles)}
+				selectable={true}
+				onClose={() =>
+					setModalRemoveResponsibleVisible(
+						!modalRemoveResponsibleVisible
+					)
+				}
+				onConfirm={handleRemoveMember}
+			/>
+
+			<Header title="GESTION DE CLUB" color="#da291c" user={props.user} />
 			<View
 				style={{
 					display: "flex",
@@ -101,33 +225,37 @@ const GestionClub = ({ route }) => {
 				}}
 			>
 				<Image
-					source={require("../assets/event.jpg")}
+					source={club.picture}
 					style={{
 						width: 100,
 						height: 100,
 						borderRadius: 15,
 					}}
 				/>
-				<Text style={{ fontSize: 20, fontWeight: "bold" }}>{name}</Text>
+				<Text style={{ fontSize: 20, fontWeight: "bold" }}>
+					{club.name}
+				</Text>
 			</View>
-			<TouchableOpacity
-				style={styles.bt}
-				onPress={() => {
-					setModalPresVisible(true)
-				}}
-			>
-				<Text style={styles.btText}>Modifier la présentation</Text>
-			</TouchableOpacity>
-			<TouchableOpacity
-				style={styles.bt}
-				onPress={() => {
-					setModalPostVisible(true)
-				}}
-			>
-				<Text style={styles.btText}>Ecrire un nouveau post</Text>
-			</TouchableOpacity>
 			<RedLine />
-			<Navbar color="#da291c" />
+			<AdminButton text="Modifier le club" />
+			<AdminButton text="Ecrire un nouveau post" />
+			<AdminButton
+				text="Ajouter un responsable"
+				onPress={() => setModalAddResponsibleVisible(true)}
+			/>
+			<AdminButton
+				text="Retirer un responsable"
+				onPress={() => setModalRemoveResponsibleVisible(true)}
+			/>
+			<AdminButton
+				text="Ajouter un membre"
+				onPress={() => setModalAddMemberVisible(true)}
+			/>
+			<AdminButton
+				text="Retirer un membre"
+				onPress={() => setModalRemoveMemberVisible(true)}
+			/>
+			<Navbar color="#da291c" user={props.user} />
 		</View>
 	)
 }

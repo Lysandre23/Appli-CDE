@@ -153,7 +153,7 @@ function App() {
 					{(props) => <Abonnement user={user} />}
 				</Drawer.Screen>
 				<Drawer.Screen name="GestionClub">
-					{(props) => <GestionClub user={user} />}
+					{(props) => <GestionClub user={user} token={token} />}
 				</Drawer.Screen>
 				<Drawer.Screen name="Role">
 					{(props) => <Role user={user} />}
