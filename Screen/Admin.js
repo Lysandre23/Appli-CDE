@@ -274,7 +274,7 @@ const Admin = (props) => {
 				transparent={true}
 				visible={modalOfficeVisible}
 				onRequestClose={() => {
-					setModalBureauVisible(!modalOfficeVisible)
+					setModalOfficeVisible(!modalOfficeVisible)
 				}}
 			>
 				<View style={modalStyle.modal}>

@@ -21,7 +21,7 @@ export function SideBar(props) {
 	}
 
 	const handlePressProfile = () => {
-		console.log("page profil")
+		navigation.navigate("Profil");
 	}
 
 	return (

@@ -22,6 +22,7 @@ import RoleOneUser from "./Screen/RoleOneUser"
 import ListGestionClub from "./Screen/ListGestionClub"
 import Api from "./Api"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import Profil from "./Screen/Profil"
 
 const Drawer = createDrawerNavigator()
 
@@ -104,7 +105,7 @@ function App() {
 	return (
 		<NavigationContainer>
 			<Drawer.Navigator
-				initialRouteName="Events"
+				initialRouteName="Profil"
 				drawerContent={(props) =>
 					user.email ? (
 						<SideBar user={user} onDisconnect={handleDisconnect} />
@@ -168,6 +169,9 @@ function App() {
 				</Drawer.Screen>
 				<Drawer.Screen name="ListGestionClub">
 					{(props) => <ListGestionClub user={user} />}
+				</Drawer.Screen>
+				<Drawer.Screen name="Profil">
+					{(props) => <Profil user={user} />}
 				</Drawer.Screen>
 			</Drawer.Navigator>
 		</NavigationContainer>
