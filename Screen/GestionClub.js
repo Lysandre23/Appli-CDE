@@ -99,10 +99,39 @@ const GestionClub = (props) => {
 		return array
 	}
 
-	const handleAddResponsible = () => {}
-	const handleRemoveResponsible = () => {}
-	const handleAddMember = () => {}
-	const handleRemoveMember = () => {}
+	const handleToggleResponsible = (userId) => {
+		Api.post(
+			"/clubs/responsibles/",
+			{
+				user_id: userId,
+				club_id: club.id,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${props.token}`,
+				},
+			}
+		).then(function (response) {
+			getMembers()
+			getResponsibles()
+		})
+	}
+	const handleToggleMember = (userId) => {
+		Api.post(
+			"/clubs/members/",
+			{
+				user_id: userId,
+				club_id: club.id,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${props.token}`,
+				},
+			}
+		).then(function (response) {
+			getMembers()
+		})
+	}
 
 	return (
 		<View style={styles.main}>
@@ -176,10 +205,15 @@ const GestionClub = (props) => {
 			<ListModal
 				title="Ajouter un membre"
 				visible={modalAddMemberVisible}
-				list={serializeUsers(users)}
+				list={serializeUsers(
+					users.filter(
+						(item) =>
+							!members.find((member) => member.id === item.id)
+					)
+				)}
 				selectable={true}
 				onClose={() => setModalAddMemberVisible(!modalAddMemberVisible)}
-				onConfirm={handleAddResponsible}
+				onConfirm={handleToggleMember}
 			/>
 			<ListModal
 				title="Retirer un membre"
@@ -189,17 +223,24 @@ const GestionClub = (props) => {
 				onClose={() =>
 					setModalRemoveMemberVisible(!modalRemoveMemberVisible)
 				}
-				onConfirm={handleRemoveResponsible}
+				onConfirm={handleToggleMember}
 			/>
 			<ListModal
 				title="Ajouter un responsible"
 				visible={modalAddResponsibleVisible}
-				list={serializeUsers(members)}
+				list={serializeUsers(
+					members.filter(
+						(item) =>
+							!responsibles.find(
+								(responsible) => responsible.id === item.id
+							)
+					)
+				)}
 				selectable={true}
 				onClose={() =>
 					setModalAddResponsibleVisible(!modalAddResponsibleVisible)
 				}
-				onConfirm={handleAddMember}
+				onConfirm={handleToggleResponsible}
 			/>
 			<ListModal
 				title="Retirer un responsable"
@@ -211,7 +252,7 @@ const GestionClub = (props) => {
 						!modalRemoveResponsibleVisible
 					)
 				}
-				onConfirm={handleRemoveMember}
+				onConfirm={handleToggleResponsible}
 			/>
 
 			<Header title="GESTION DE CLUB" color="#da291c" user={props.user} />

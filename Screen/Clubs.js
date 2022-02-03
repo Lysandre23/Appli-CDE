@@ -1,14 +1,5 @@
 import * as React from "react"
-import {
-	View,
-	Text,
-	StyleSheet,
-	FlatList,
-	Modal,
-	Picker,
-	TouchableOpacity,
-	TextInput,
-} from "react-native"
+import { View, StyleSheet, FlatList } from "react-native"
 import { List } from "react-native-paper"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
@@ -33,9 +24,10 @@ const Clubs = (props, navigation) => {
 	return (
 		<View style={styles.main}>
 			<Header color="#da291c" title="CLUBS" user={props.user} />
+
 			<FlatList
 				data={offices}
-				style={{flex: 1}}
+				style={{ flex: 1 }}
 				renderItem={({ item }) => (
 					<View key={item.id}>
 						<List.Accordion style={styles.office} title={item.name}>
