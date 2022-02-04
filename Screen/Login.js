@@ -24,6 +24,13 @@ const Login = ({ onTokenUpdate }) => {
 	const [action, setAction] = useState("S'enregistrer")
 	const [title, setTitle] = useState("Connexion") // "Connexion", "Enregistrement", "Vérification", "Réinitialisation mot de passe"
 
+	const [formError, setFormError] = useState("")
+	const [emailError, setEmailError] = useState(false)
+	const [passwordError, setPasswordError] = useState(false)
+	const [password_confirmError, setPassword_confirmError] = useState(false)
+	const [firstNameError, setFirstNameError] = useState(false)
+	const [lastNameError, setLastNameError] = useState(false)
+
 	const handleSubmit = () => {
 		if (title === "Connexion") {
 			login()
@@ -51,21 +58,33 @@ const Login = ({ onTokenUpdate }) => {
 	}
 
 	const login = () => {
-		let form = new FormData()
-		form.append("email", email)
-		form.append("password", password)
-
-		Api.post("/login", form)
-			.then(function (response) {
-				onTokenUpdate(response.data.data.token)
-				AsyncStorage.setItem("cde-token", response.data.data.token)
-				setPassword("")
-				setEmail("")
-				navigation.navigate("Events")
+		if (email !== "" && password !== "") {
+			Api.post("/login", {
+				email: email,
+				password: password,
 			})
-			.catch(function (response) {
-				setPassword("")
-			})
+				.then(function (response) {
+					onTokenUpdate(response.data.data.token)
+					AsyncStorage.setItem("cde-token", response.data.data.token)
+					setPassword("")
+					setEmail("")
+					navigation.navigate("Events")
+				})
+				.catch(function (error) {
+					console.log(error.response)
+					console.log("erreur : " + error.response.data.data.error)
+					setPassword("")
+					setFormError(error.response.data.data.error)
+					throw error
+				})
+		} else {
+			if (email === "") {
+				setEmailError(true)
+			}
+			if (password === "") {
+				setPasswordError(true)
+			}
+		}
 	}
 
 	const sendVerificationCode = () => {
@@ -87,7 +106,13 @@ const Login = ({ onTokenUpdate }) => {
 		form.append("first_name", firstName)
 		form.append("last_name", lastName)
 
-		Api.post("/register", form).then(function (response) {
+		Api.post("/register", {
+			email: email,
+			password: password,
+			confirm_password: password_confirm,
+			first_name: firstName,
+			last_name: lastName,
+		}).then(function (response) {
 			setPassword("")
 			setFirstName("")
 			setLastName("")
@@ -109,15 +134,23 @@ const Login = ({ onTokenUpdate }) => {
 			</View>
 			<View style={styles.form}>
 				<View>
+					<Text>{formError}</Text>
 					<TextInput
-						style={[styles.inputTop, styles.input]}
+						style={[
+							styles.inputTop,
+							styles.input,
+							emailError && styles.inputError,
+						]}
 						onChangeText={setEmail}
 						value={email}
 						placeholder="E-mail"
 					/>
 					{title == "Enregistrement" ? (
 						<TextInput
-							style={styles.input}
+							style={[
+								styles.input,
+								firstNameError && styles.inputError,
+							]}
 							onChangeText={setFirstName}
 							value={firstName}
 							placeholder="Prénom"
@@ -125,7 +158,10 @@ const Login = ({ onTokenUpdate }) => {
 					) : null}
 					{title == "Enregistrement" ? (
 						<TextInput
-							style={styles.input}
+							style={[
+								styles.input,
+								lastNameError && styles.inputError,
+							]}
 							onChangeText={setLastName}
 							value={lastName}
 							placeholder="Nom"
@@ -138,6 +174,7 @@ const Login = ({ onTokenUpdate }) => {
 								title == "Connexion"
 									? styles.inputBottom
 									: null,
+								passwordError && styles.inputError,
 							]}
 							onChangeText={setPassword}
 							value={password}
@@ -147,7 +184,11 @@ const Login = ({ onTokenUpdate }) => {
 					) : null}
 					{title == "Enregistrement" ? (
 						<TextInput
-							style={[styles.input, styles.inputBottom]}
+							style={[
+								styles.input,
+								styles.inputBottom,
+								password_confirmError && styles.inputError,
+							]}
 							onChangeText={setPasswordConfirm}
 							value={password_confirm}
 							placeholder="Mot de passe (confirmation)"
@@ -308,6 +349,9 @@ const styles = StyleSheet.create({
 		},
 		shadowOpacity: 0.1,
 		shadowRadius: 15,
+	},
+	inputError: {
+		borderColor: "red",
 	},
 	registerButton: {
 		backgroundColor: "white",

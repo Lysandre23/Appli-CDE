@@ -16,9 +16,13 @@ const Clubs = (props, navigation) => {
 	}, [])
 
 	const getOffices = () => {
-		Api.get("/offices").then(function (response) {
-			setOffices(response.data.data)
-		})
+		Api.get("/offices")
+			.then(function (response) {
+				setOffices(response.data.data)
+			})
+			.catch(function (error) {
+				throw error
+			})
 	}
 
 	return (

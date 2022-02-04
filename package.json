@@ -30,6 +30,7 @@
     "react-native": "0.64.2",
     "react-native-animated-loader": "0.0.9",
     "react-native-bouncy-checkbox": "^2.1.9",
+    "react-native-datepicker": "^1.7.2",
     "react-native-drop-down-item": "^1.1.0",
     "react-native-dropdown-picker": "^5.2.3",
     "react-native-gesture-handler": "^1.10.3",

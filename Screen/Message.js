@@ -58,7 +58,6 @@ const Message = (props) => {
 		const splittedValue = selectedClub.split("-")
 		let url = ""
 		let payload = null
-		console.log(selectedClub, splittedValue)
 		if (splittedValue[0] === "c") {
 			payload = {
 				club_id: splittedValue[1],
@@ -74,17 +73,20 @@ const Message = (props) => {
 			}
 			url = "/offices/messages"
 		}
-		console.log(url, payload)
 		Api.post(url, payload, {
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${props.token}`,
 			},
-		}).then(function (response) {
-			setMessage("")
-			setAnonymous(false)
-			setSelectedClub(0)
 		})
+			.then(function (response) {
+				setMessage("")
+				setAnonymous(false)
+				setSelectedClub(0)
+			})
+			.catch(function (error) {
+				throw error
+			})
 	}
 
 	return (
