@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Modal, TextInput} from "react-native";
+import { View, StyleSheet, TouchableOpacity, Modal, TextInput, Text} from "react-native";
 import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
 import AdminButton from "../Components/AdminButton";
@@ -10,9 +10,11 @@ const Profil = (props) => {
     const [modalPasswordVisible, setModalPasswordVisible] = useState(false);
     const [newPassword, setNewPassword] = useState("");
     const [confirmedPassword, setConfirmedPassword] = useState("");
+    const [oldPassword, setOldPassword] = useState("");
 
     const resetModalNewPassword = () => {
         setNewPassword("");
+        setOldPassword("");
         setConfirmedPassword("");
         setModalPasswordVisible(false);
     }
@@ -30,6 +32,12 @@ const Profil = (props) => {
             >
                 <View style={modalStyle.modal}>
                     <View style={modalStyle.addPanel}>
+                        <TextInput
+							style={modalStyle.input}
+							placeholder="Ancien mot de passe"
+							value={oldPassword}
+							onChangeText={setOldPassword}
+						/>
                         <TextInput
 							style={modalStyle.input}
 							placeholder="Nouveau mot de passe"
@@ -64,7 +72,7 @@ const Profil = (props) => {
             <TouchableOpacity onPress={() => {
                 setModalPasswordVisible(true);
             }}>
-                <AdminButton text="Changer de mot de passe"/>
+                <AdminButton text="Changer de mot de passe" onPress={() => {}}/>
             </TouchableOpacity>
             <Navbar color="#da291c" user={props.user} />
         </View>

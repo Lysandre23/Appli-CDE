@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react";
 import {
 	View,
 	Text,
@@ -15,53 +15,32 @@ import EventsCard from "../Components/EventsCard"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { useState, useEffect } from "react"
 import Api from "../Api"
-import modalStyle from "./Modal.style"
+import modalStyle from "../Screen/Modal.style"
 
-const Club = (props) => {
-	const navigation = useNavigation()
+const Office = (props) => {
+    const navigation = useNavigation()
 	const route = useRoute()
 	const [modalMembresVisible, setModalMembresVisible] = useState(false)
-	const [club, setClub] = useState({
-		id: null,
-		name: "",
-		description: "",
-	})
+    const [office, setOffice] = useState({
+        id: null,
+        name: "",
+        description: ""
+    })
 
-	useEffect(() => {
-		if (route.params.id !== club.id) {
-			getClub()
+    useEffect(() => {
+		if (route.params.id !== office.id) {
+			// getOffice()
 		}
 	})
 
-	const getClub = () => {
-		Api.get("/clubs/" + route.params.id).then(function (response) {
-			setClub(response.data.data)
-		})
-	}
-
-	const handleClickFollow = () => {
-		Api.post(
-			"/subscribings",
-			{
-				club_id: club.id,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${props.token}`,
-				},
-			}
-		).then(function (response) {})
-	}
-
-	return (
-		<View style={styles.main}>
-			<Header
+    return (
+        <View style={styles.main}>
+            <Header
 				color="#da291c"
-				title={club.name.toUpperCase()}
+				title={office.name.toUpperCase()}
 				user={props.user}
 			/>
-			<View style={styles.head}>
+            <View style={styles.head}>
 				<Image
 					style={styles.img}
 					source={require("../assets/event.jpg")}
@@ -88,7 +67,7 @@ const Club = (props) => {
 							style={styles.bt}
 							onPress={() => {
 								navigation.navigate("Message", {
-									preClub: "c-" + club.id,
+									preClub: "c-" + office.id,
 								})
 							}}
 						>
@@ -98,16 +77,11 @@ const Club = (props) => {
 				</View>
 			</View>
 			<View style={styles.presText}>
-				<Text>{club.description}</Text>
+				<Text>{office.description}</Text>
 			</View>
 			<View style={styles.line}></View>
 			<ScrollView style={styles.list}>
-				<EventsCard
-					title="Event"
-					date="27/10/2021"
-					src={require("../assets/event.jpg")}
-					description=""
-				/>
+				
 			</ScrollView>
 			<Modal
 				animationType="fade"
@@ -123,9 +97,9 @@ const Club = (props) => {
 					</View>
 				</View>
 			</Modal>
-			<Navbar color="#da291c" user={props.user} />
-		</View>
-	)
+            <Navbar color="#da291c" user={props.user} />
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -186,4 +160,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default Club
+export default Office

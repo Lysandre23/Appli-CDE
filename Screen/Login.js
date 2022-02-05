@@ -23,6 +23,7 @@ const Login = ({ onTokenUpdate }) => {
 	const [verificationCode, setVerificationCode] = useState("")
 	const [action, setAction] = useState("S'enregistrer")
 	const [title, setTitle] = useState("Connexion") // "Connexion", "Enregistrement", "Vérification", "Réinitialisation mot de passe"
+	const [wrongMessage, setWrongMessage] = useState(false);
 
 	const handleSubmit = () => {
 		if (title === "Connexion") {
@@ -162,24 +163,33 @@ const Login = ({ onTokenUpdate }) => {
 							placeholder="Code de vérification"
 						/>
 					) : null}
-					{title == "Connexion" ? (
-						<TouchableOpacity
-							style={styles.forgetPassword}
-							onPress={() =>
-								setTitle("Réinitialisation mot de passe")
-							}
-						>
-							<Text
-								style={{
-									color: "rgb(180,180,180)",
-								}}
+					<View style={{
+						marginTop: 90,
+						position: 'absolute',
+						marginLeft: 5
+					}}>
+						{title == "Connexion" && wrongMessage ? (
+							<Text style={{color: "#da291c", fontSize: 10, marginBottom: 5}}>E-mail ou mot de passe incorrect</Text>
+						) : null}
+						{title == "Connexion" ? (
+							<TouchableOpacity
+								onPress={() =>
+									setTitle("Réinitialisation mot de passe")
+								}
+								style={{marginTop: (!wrongMessage ? 10 : 0)}}
 							>
-								Mot de passe oublié
-							</Text>
-						</TouchableOpacity>
-					) : (
-						<View></View>
-					)}
+								<Text
+									style={{
+										color: "rgb(180,180,180)",
+									}}
+								>
+									Mot de passe oublié
+								</Text>
+							</TouchableOpacity>
+						) : (
+							<View></View>
+						)}
+					</View>
 					{title == "Vérification" ? (
 						<TouchableOpacity
 							style={styles.forgetPassword}
@@ -329,11 +339,6 @@ const styles = StyleSheet.create({
 		color: "#da291c",
 		fontSize: 25,
 		textAlign: "center",
-	},
-	forgetPassword: {
-		marginTop: "30%",
-		marginLeft: 5,
-		position: "absolute",
 	},
 })
 
