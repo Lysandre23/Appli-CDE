@@ -12,24 +12,31 @@ import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
 import RedLine from "../Components/RedLine"
 import { useState, useEffect } from "react"
-import EventsCard from "../Components/EventsCard"
 import { useRoute } from "@react-navigation/core"
 import Api from "../Api"
 import AdminButton from "../Components/AdminButton"
 import ListModal from "../Components/ListModal"
+import modalStyle from "./Modal.style.js"
+import BouncyCheckbox from "react-native-bouncy-checkbox"
+import * as ImagePicker from "expo-image-picker"
+import DateTimePicker from "@react-native-community/datetimepicker"
 
 const GestionClub = (props) => {
 	const route = useRoute()
-	const [modalPresVisible, setModalPresVisible] = useState(false)
+
+	const [modalUpdateVisible, setModalUpdateVisible] = useState(false)
+	const [nameUpdateClub, setNameUpdateClub] = useState("")
+	const [descriptionUpdateClub, setDescriptionUpdateClub] = useState("")
+	const [imageUpdateClub, setImageUpdateClub] = useState(null)
+	const [roomUpdateClub, setRoomUpdateClub] = useState("")
+
 	const [modalPostVisible, setModalPostVisible] = useState(false)
-	const [presText, setPresText] = useState("")
-	const [titleNewPost, setTitleNewPost] = useState(null)
-	const [descriptionNewPost, setDescriptionNewPost] = useState(null)
-	const [club, setClub] = useState({
-		id: null,
-		name: "",
-		description: "",
-	})
+	const [titleNewPost, setTitleNewPost] = useState("")
+	const [descriptionNewPost, setDescriptionNewPost] = useState("")
+	const [imageNewPost, setImageNewPost] = useState(null)
+	const [dateNewPost, setDateNewPost] = useState("")
+	const [enableNotificationNewPost, setEnableNotificationNewPost] =
+		useState(false)
 
 	const [modalAddMemberVisible, setModalAddMemberVisible] = useState(false)
 	const [modalRemoveMemberVisible, setModalRemoveMemberVisible] =
@@ -38,6 +45,12 @@ const GestionClub = (props) => {
 		useState(false)
 	const [modalRemoveResponsibleVisible, setModalRemoveResponsibleVisible] =
 		useState(false)
+
+	const [club, setClub] = useState({
+		id: null,
+		name: "",
+		description: "",
+	})
 
 	const [users, setUsers] = useState([])
 	const [members, setMembers] = useState([])
@@ -55,6 +68,9 @@ const GestionClub = (props) => {
 	const getClub = () => {
 		Api.get("/clubs/" + route.params.id).then(function (response) {
 			setClub(response.data.data)
+			setNameUpdateClub(response.data.data.name)
+			setDescriptionUpdateClub(response.data.data.description)
+			setRoomUpdateClub(response.data.data.room)
 		})
 	}
 
@@ -99,39 +115,161 @@ const GestionClub = (props) => {
 		return array
 	}
 
-	const handleAddResponsible = () => {}
-	const handleRemoveResponsible = () => {}
-	const handleAddMember = () => {}
-	const handleRemoveMember = () => {}
+	const handleToggleResponsible = (userId) => {
+		Api.post(
+			"/clubs/responsibles/",
+			{
+				user_id: userId,
+				club_id: club.id,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${props.token}`,
+				},
+			}
+		).then(function (response) {
+			getMembers()
+			getResponsibles()
+		})
+	}
+	const handleToggleMember = (userId) => {
+		Api.post(
+			"/clubs/members/",
+			{
+				user_id: userId,
+				club_id: club.id,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${props.token}`,
+				},
+			}
+		).then(function (response) {
+			getMembers()
+			getResponsibles()
+		})
+	}
+
+	const pickImageClub = async () => {
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			allowsEditing: true,
+			aspect: [4, 3],
+			quality: 1,
+		})
+
+		if (!result.cancelled) {
+			setImageUpdateClub(result)
+		}
+	}
+
+	const pickImagePost = async () => {
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			allowsEditing: true,
+			aspect: [4, 3],
+			quality: 1,
+		})
+
+		if (!result.cancelled) {
+			setImageNewPost(result)
+		}
+	}
+
+	const handleCloseClubModal = () => {
+		setModalUpdateVisible(false)
+	}
+
+	const handleClosePostModal = () => {
+		setModalPostVisible(false)
+		setTitleNewPost("")
+		setDescriptionNewPost("")
+		setImageNewPost(null)
+	}
+
+	const updateClub = () => {
+		let form = new FormData()
+		if (imageUpdateClub) {
+			form.append(
+				"picture",
+				JSON.stringify({
+					uri:
+						Platform.OS === "ios"
+							? imageUpdateClub.uri.replace("file://", "")
+							: imageUpdateClub.uri,
+					name: imageUpdateClub.fileName,
+					type: imageUpdateClub.type,
+				})
+			)
+		}
+		form.append("name", nameUpdateClub)
+		form.append("description", descriptionUpdateClub)
+		form.append("room", roomUpdateClub)
+
+		Api.post("/clubs/" + club.id + "?_method=PUT", form, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
+			setModalUpdateVisible(false)
+			setImageUpdateClub(null)
+			setNameUpdateClub("")
+			setDescriptionUpdateClub("")
+		})
+	}
 
 	return (
 		<View style={styles.main}>
 			<Modal
 				animationType="fade"
 				transparent={true}
-				visible={modalPresVisible}
+				visible={modalUpdateVisible}
 				onRequestClose={() => {
-					setModalPresVisible(!modalPresVisible)
+					setModalUpdateVisible(!modalUpdateVisible)
 				}}
 			>
-				<View style={styles.modal}>
-					<View style={styles.panel}>
+				<View style={modalStyle.modal}>
+					<View style={modalStyle.addPanel}>
 						<TextInput
-							placeholder="Texte de présentation de club/bureau"
-							value={presText}
-							onChangeText={setPresText}
-							style={styles.input}
-							multiline={true}
-							numberOfLines={10}
-							maxLength={200}
+							style={modalStyle.input}
+							placeholder="Nom"
+							value={nameUpdateClub}
+							onChangeText={setNameUpdateClub}
+						/>
+						<TextInput
+							style={modalStyle.input}
+							placeholder="Description"
+							value={descriptionUpdateClub}
+							onChangeText={setDescriptionUpdateClub}
+						/>
+						<TextInput
+							style={modalStyle.input}
+							placeholder="Salle"
+							value={roomUpdateClub}
+							onChangeText={setRoomUpdateClub}
 						/>
 						<TouchableOpacity
-							style={styles.modalButton}
+							style={modalStyle.imagePicker}
+							onPress={pickImageClub}
+						>
+							<Text style={{ textAlign: "center" }}>
+								Modifier l'image
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={modalStyle.bt}
+							onPress={updateClub}
+						>
+							<Text style={modalStyle.textBT}>Valider</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={modalStyle.bt}
 							onPress={() => {
-								setModalPresVisible(false)
+								handleCloseClubModal()
 							}}
 						>
-							<Text style={styles.btModalText}>Enregistrer</Text>
+							<Text style={modalStyle.textBT}>Annuler</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -141,7 +279,7 @@ const GestionClub = (props) => {
 				transparent={true}
 				visible={modalPostVisible}
 				onRequestClose={() => {
-					setModalPresVisible(!modalPostVisible)
+					setModalPostVisible(!modalPostVisible)
 				}}
 			>
 				<View style={styles.modal}>
@@ -161,6 +299,45 @@ const GestionClub = (props) => {
 							numberOfLines={3}
 							maxLength={200}
 						/>
+						<DateTimePicker
+							testID="dateTimePicker"
+							value={dateNewPost}
+							mode={"date"}
+							is24Hour={true}
+							display="default"
+							onChange={setDateNewPost}
+						/>
+						<TouchableOpacity
+							style={modalStyle.imagePicker}
+							onPress={pickImagePost}
+						>
+							<Text style={{ textAlign: "center" }}>
+								Choisir une image
+							</Text>
+						</TouchableOpacity>
+						<View
+							style={{
+								display: "flex",
+								flexDirection: "row",
+								justifyContent: "center",
+								alignItems: "center",
+								marginTop: 15,
+							}}
+						>
+							<BouncyCheckbox
+								size={25}
+								fillColor="#da291c"
+								unfillColor="#FFFFFF"
+								text="Activer les notifications"
+								iconStyle={{ borderColor: "#da291c" }}
+								textStyle={{
+									textDecorationLine: "none",
+								}}
+								onPress={(isChecked) => {
+									setEnableNotificationNewPost(isChecked)
+								}}
+							/>
+						</View>
 						<TouchableOpacity
 							style={styles.modalButton}
 							onPress={() => {
@@ -169,6 +346,14 @@ const GestionClub = (props) => {
 						>
 							<Text style={styles.btModalText}>Valider</Text>
 						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.modalButton}
+							onPress={() => {
+								handleClosePostModal(false)
+							}}
+						>
+							<Text style={styles.btModalText}>Annuler</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
 			</Modal>
@@ -176,10 +361,15 @@ const GestionClub = (props) => {
 			<ListModal
 				title="Ajouter un membre"
 				visible={modalAddMemberVisible}
-				list={serializeUsers(users)}
+				list={serializeUsers(
+					users.filter(
+						(item) =>
+							!members.find((member) => member.id === item.id)
+					)
+				)}
 				selectable={true}
 				onClose={() => setModalAddMemberVisible(!modalAddMemberVisible)}
-				onConfirm={handleAddResponsible}
+				onConfirm={handleToggleMember}
 			/>
 			<ListModal
 				title="Retirer un membre"
@@ -189,17 +379,24 @@ const GestionClub = (props) => {
 				onClose={() =>
 					setModalRemoveMemberVisible(!modalRemoveMemberVisible)
 				}
-				onConfirm={handleRemoveResponsible}
+				onConfirm={handleToggleMember}
 			/>
 			<ListModal
 				title="Ajouter un responsible"
 				visible={modalAddResponsibleVisible}
-				list={serializeUsers(members)}
+				list={serializeUsers(
+					members.filter(
+						(item) =>
+							!responsibles.find(
+								(responsible) => responsible.id === item.id
+							)
+					)
+				)}
 				selectable={true}
 				onClose={() =>
 					setModalAddResponsibleVisible(!modalAddResponsibleVisible)
 				}
-				onConfirm={handleAddMember}
+				onConfirm={handleToggleResponsible}
 			/>
 			<ListModal
 				title="Retirer un responsable"
@@ -211,7 +408,7 @@ const GestionClub = (props) => {
 						!modalRemoveResponsibleVisible
 					)
 				}
-				onConfirm={handleRemoveMember}
+				onConfirm={handleToggleResponsible}
 			/>
 
 			<Header title="GESTION DE CLUB" color="#da291c" user={props.user} />
@@ -232,13 +429,37 @@ const GestionClub = (props) => {
 						borderRadius: 15,
 					}}
 				/>
-				<Text style={{ fontSize: 20, fontWeight: "bold" }}>
-					{club.name}
-				</Text>
+				<View>
+					<Text
+						style={{
+							fontSize: 20,
+							fontWeight: "bold",
+							marginBottom: 5,
+						}}
+					>
+						{club.name}
+					</Text>
+					<Text style={{ fontSize: 17 }}>
+						{responsibles.length +
+							" responsable" +
+							(responsibles.length > 1 ? "s" : "")}
+					</Text>
+					<Text style={{ fontSize: 17 }}>
+						{members.length +
+							" membre" +
+							(members.length > 1 ? "s" : "")}
+					</Text>
+				</View>
 			</View>
 			<RedLine />
-			<AdminButton text="Modifier le club" />
-			<AdminButton text="Ecrire un nouveau post" />
+			<AdminButton
+				text="Modifier le club"
+				onPress={() => setModalUpdateVisible(true)}
+			/>
+			<AdminButton
+				text="Ecrire un nouveau post"
+				onPress={() => setModalPostVisible(true)}
+			/>
 			<AdminButton
 				text="Ajouter un responsable"
 				onPress={() => setModalAddResponsibleVisible(true)}

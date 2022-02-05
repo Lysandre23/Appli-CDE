@@ -14,28 +14,43 @@ import Icon from "react-native-vector-icons/FontAwesome"
 import EventsCard from "../Components/EventsCard"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { useState, useEffect } from "react"
+import ListModal from "../Components/ListModal"
 import Api from "../Api"
 import modalStyle from "./Modal.style"
 
 const Club = (props) => {
 	const navigation = useNavigation()
 	const route = useRoute()
-	const [modalMembresVisible, setModalMembresVisible] = useState(false)
+	const [modalMemberVisible, setModalMemberVisible] = useState(false)
 	const [club, setClub] = useState({
 		id: null,
 		name: "",
 		description: "",
 	})
 
+	const [members, setMembers] = useState([])
+
 	useEffect(() => {
 		if (route.params.id !== club.id) {
 			getClub()
+			getMembers()
 		}
 	})
 
 	const getClub = () => {
-		Api.get("/clubs/" + route.params.id).then(function (response) {
+		Api.get("/clubs/" + route.params.id, {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then(function (response) {
 			setClub(response.data.data)
+		})
+	}
+
+	const getMembers = () => {
+		Api.get("/clubs/members/" + route.params.id).then(function (response) {
+			setMembers(response.data.data)
 		})
 	}
 
@@ -51,34 +66,54 @@ const Club = (props) => {
 					Authorization: `Bearer ${props.token}`,
 				},
 			}
-		).then(function (response) {})
+		).then(function (response) {
+			getClub()
+		})
+	}
+
+	const serializeUsers = (users) => {
+		let array = []
+		users.forEach((item) => {
+			array.push({
+				value: item.id,
+				label: item.first_name + " " + item.last_name,
+			})
+		})
+		return array
 	}
 
 	return (
 		<View style={styles.main}>
+			<ListModal
+				title="Membres du club"
+				visible={modalMemberVisible}
+				list={serializeUsers(members)}
+				selectable={false}
+				onClose={() => setModalMemberVisible(false)}
+			/>
+
 			<Header
 				color="#da291c"
 				title={club.name.toUpperCase()}
 				user={props.user}
 			/>
 			<View style={styles.head}>
-				<Image
-					style={styles.img}
-					source={require("../assets/event.jpg")}
-				/>
+				<Image style={styles.img} source={club.picture} />
 				<View style={styles.headButton}>
 					{props.user.email ? (
 						<TouchableOpacity
 							style={styles.bt}
 							onPress={handleClickFollow}
 						>
-							<Text style={styles.btText}>Suivre</Text>
+							<Text style={styles.btText}>
+								{club.is_followed ? "Ne plus suivre" : "Suivre"}
+							</Text>
 						</TouchableOpacity>
 					) : null}
 					<TouchableOpacity
 						style={styles.bt}
 						onPress={() => {
-							setModalMembresVisible(true)
+							setModalMemberVisible(true)
 						}}
 					>
 						<Text style={styles.btText}>Membres</Text>
@@ -112,9 +147,9 @@ const Club = (props) => {
 			<Modal
 				animationType="fade"
 				transparent={true}
-				visible={modalMembresVisible}
+				visible={modalMemberVisible}
 				onRequestClose={() => {
-					setModalMembresVisible(!modalMembresVisible)
+					setModalMemberVisible(!modalMemberVisible)
 				}}
 			>
 				<View style={modalStyle.modal}>

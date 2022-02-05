@@ -7,9 +7,10 @@ import {
 	TouchableOpacity,
 	Modal,
 	TextInput,
-	Picker,
+	//Picker,
 	Platform,
 } from "react-native"
+import { Picker } from "@react-native-picker/picker"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
 import AdminButton from "../Components/AdminButton"
@@ -102,7 +103,7 @@ const Admin = (props) => {
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
 			allowsEditing: true,
 			aspect: [4, 3],
-			quality: 1,
+			quality: 0.1,
 		})
 
 		if (!result.cancelled) {
@@ -122,6 +123,7 @@ const Admin = (props) => {
 		}
 	}
 
+	/*
 	const storeClub = () => {
 		if (imageNewClub) {
 			let form = new FormData()
@@ -153,6 +155,43 @@ const Admin = (props) => {
 			})
 		}
 	}
+	*/
+
+	const storeClub = () => {
+		if (imageNewClub) {
+			Api.post(
+				"/clubs",
+				{
+					name: nameNewClub,
+					description: descriptionNewClub,
+					office_id: selectedOfficeNewClub,
+					picture: JSON.stringify({
+						uri:
+							Platform.OS === "ios"
+								? imageNewClub.uri.replace("file://", "")
+								: imageNewClub.uri,
+						name: imageNewClub.fileName,
+						type: imageNewClub.type,
+					}),
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${props.token}`,
+					},
+				}
+			)
+				.then(function (response) {
+					setModalClubVisible(false)
+					setImageNewClub(null)
+					setNameNewClub("")
+					setDescriptionNewClub("")
+				})
+				.catch(function (error) {
+					throw error
+				})
+		}
+	}
 
 	const storeOffice = () => {
 		if (imageNewOffice) {
@@ -176,13 +215,17 @@ const Admin = (props) => {
 					"Content-Type": "multipart/form-data",
 					Authorization: `Bearer ${props.token}`,
 				},
-			}).then(function (response) {
-				getOffices()
-				setModalOfficeVisible(false)
-				setImageNewOffice(null)
-				setNameNewOffice("")
-				setDescriptionNewOffice("")
 			})
+				.then(function (response) {
+					getOffices()
+					setModalOfficeVisible(false)
+					setImageNewOffice(null)
+					setNameNewOffice("")
+					setDescriptionNewOffice("")
+				})
+				.catch(function (error) {
+					throw error
+				})
 		}
 	}
 
@@ -197,11 +240,15 @@ const Admin = (props) => {
 					Authorization: `Bearer ${props.token}`,
 				},
 			}
-		).then(function (response) {
-			setModalAddAdminVisible(false)
-			setSelectedNewAdmin(0)
-			getAdmins()
-		})
+		)
+			.then(function (response) {
+				setModalAddAdminVisible(false)
+				setSelectedNewAdmin(0)
+				getAdmins()
+			})
+			.catch(function (error) {
+				throw error
+			})
 	}
 
 	const serializeAdmins = (admins) => {

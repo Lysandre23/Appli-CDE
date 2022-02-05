@@ -19,20 +19,20 @@ const Profil = (props) => {
         setModalPasswordVisible(false);
     }
 
-    return (
-        <View style={styles.main}>
-            <Header color="#da291c" title="PROFIL" user={props.user} />
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={modalPasswordVisible}
-                onRequestClose={() => {
-                    setModalPasswordVisible(!modalPasswordVisible)
-                }}
-            >
-                <View style={modalStyle.modal}>
-                    <View style={modalStyle.addPanel}>
-                        <TextInput
+	return (
+		<View style={styles.main}>
+			<Header color="#da291c" title="PROFIL" user={props.user} />
+			<Modal
+				animationType="fade"
+				transparent={true}
+				visible={modalPasswordVisible}
+				onRequestClose={() => {
+					setModalPasswordVisible(!modalPasswordVisible)
+				}}
+			>
+				<View style={modalStyle.modal}>
+					<View style={modalStyle.addPanel}>
+						<TextInput
 							style={modalStyle.input}
 							placeholder="Ancien mot de passe"
 							value={oldPassword}
@@ -44,25 +44,23 @@ const Profil = (props) => {
 							value={newPassword}
 							onChangeText={setNewPassword}
 						/>
-                        <TextInput
+						<TextInput
 							style={modalStyle.input}
 							placeholder="Confirmation du nouveau mot de passe"
 							value={confirmedPassword}
 							onChangeText={setConfirmedPassword}
 						/>
-                        <TouchableOpacity
+						<TouchableOpacity
 							style={modalStyle.bt}
-							onPress={() => {
-
-                            }}
+							onPress={() => {}}
 						>
 							<Text style={modalStyle.textBT}>Valider</Text>
 						</TouchableOpacity>
-                        <TouchableOpacity
+						<TouchableOpacity
 							style={modalStyle.bt}
 							onPress={() => {
-                                resetModalNewPassword();
-                            }}
+								resetModalNewPassword()
+							}}
 						>
 							<Text style={modalStyle.textBT}>Annuler</Text>
 						</TouchableOpacity>
@@ -80,10 +78,10 @@ const Profil = (props) => {
 }
 
 const styles = StyleSheet.create({
-    main: {
-        flex: 1,
-        backgroundColor: "#F8F8F8",
-    }
+	main: {
+		flex: 1,
+		backgroundColor: "#F8F8F8",
+	},
 })
 
-export default Profil;
+export default Profil
