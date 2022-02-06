@@ -1,5 +1,5 @@
 import * as React from "react"
-import { View, StyleSheet, FlatList } from "react-native"
+import { View, StyleSheet, FlatList, TouchableOpacity, Text } from "react-native"
 import { List } from "react-native-paper"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"

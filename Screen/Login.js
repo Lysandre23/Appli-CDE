@@ -124,6 +124,18 @@ const Login = ({ onTokenUpdate }) => {
 
 	return (
 		<View style={styles.main}>
+			<TouchableOpacity style={{
+				zIndex: 30,
+				position: 'absolute',
+				left: 20,
+				top: 20
+			}}>
+				<Icon
+					color="white"
+					name="arrow-left"
+					size={30}
+				/>
+			</TouchableOpacity>
 			<View style={styles.logoCDE}>
 				<Image
 					style={styles.img}
@@ -286,6 +298,7 @@ const Login = ({ onTokenUpdate }) => {
 					height: "35%",
 					position: "absolute",
 					top: -25,
+					zIndex: 5
 				}}
 				source={require("../assets/svg1.png")}
 			/>

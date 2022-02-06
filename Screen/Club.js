@@ -7,6 +7,7 @@ import {
 	Image,
 	TouchableOpacity,
 	Modal,
+	FlatList
 } from "react-native"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
@@ -137,27 +138,9 @@ const Club = (props) => {
 			</View>
 			<View style={styles.line}></View>
 			<ScrollView style={styles.list}>
-				<EventsCard
-					title="Event"
-					date="27/10/2021"
-					src={require("../assets/event.jpg")}
-					description=""
-				/>
+				
 			</ScrollView>
-			<Modal
-				animationType="fade"
-				transparent={true}
-				visible={modalMemberVisible}
-				onRequestClose={() => {
-					setModalMemberVisible(!modalMemberVisible)
-				}}
-			>
-				<View style={modalStyle.modal}>
-					<View style={modalStyle.addPanel}>
-						
-					</View>
-				</View>
-			</Modal>
+			
 			<Navbar color="#da291c" user={props.user} />
 		</View>
 	)
@@ -186,7 +169,7 @@ const styles = StyleSheet.create({
 		justifyContent: "space-around",
 	},
 	bt: {
-		borderRadius: 100,
+		borderRadius: 7,
 		padding: 10,
 		fontSize: 20,
 		marginRight: 5,

@@ -49,7 +49,7 @@ const Office = (props) => {
 					{props.user.email ? (
 						<TouchableOpacity
 							style={styles.bt}
-							onPress={handleClickFollow}
+							onPress={() => {}}
 						>
 							<Text style={styles.btText}>Suivre</Text>
 						</TouchableOpacity>
