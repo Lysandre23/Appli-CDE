@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react";
 import {
 	View,
 	Text,
@@ -7,7 +7,6 @@ import {
 	Image,
 	TouchableOpacity,
 	Modal,
-	FlatList
 } from "react-native"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
@@ -15,106 +14,50 @@ import Icon from "react-native-vector-icons/FontAwesome"
 import EventsCard from "../Components/EventsCard"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { useState, useEffect } from "react"
-import ListModal from "../Components/ListModal"
 import Api from "../Api"
-import modalStyle from "./Modal.style"
+import modalStyle from "../Screen/Modal.style"
 
-const Club = (props) => {
-	const navigation = useNavigation()
+const Office = (props) => {
+    const navigation = useNavigation()
 	const route = useRoute()
-	const [modalMemberVisible, setModalMemberVisible] = useState(false)
-	const [club, setClub] = useState({
-		id: null,
-		name: "",
-		description: "",
-	})
+	const [modalMembresVisible, setModalMembresVisible] = useState(false)
+    const [office, setOffice] = useState({
+        id: null,
+        name: "",
+        description: ""
+    })
 
-	const [members, setMembers] = useState([])
-
-	useEffect(() => {
-		if (route.params.id !== club.id) {
-			getClub()
-			getMembers()
+    useEffect(() => {
+		if (route.params.id !== office.id) {
+			// getOffice()
 		}
 	})
 
-	const getClub = () => {
-		Api.get("/clubs/" + route.params.id, {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${props.token}`,
-			},
-		}).then(function (response) {
-			setClub(response.data.data)
-		})
-	}
-
-	const getMembers = () => {
-		Api.get("/clubs/members/" + route.params.id).then(function (response) {
-			setMembers(response.data.data)
-		})
-	}
-
-	const handleClickFollow = () => {
-		Api.post(
-			"/subscribings",
-			{
-				club_id: club.id,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${props.token}`,
-				},
-			}
-		).then(function (response) {
-			getClub()
-		})
-	}
-
-	const serializeUsers = (users) => {
-		let array = []
-		users.forEach((item) => {
-			array.push({
-				value: item.id,
-				label: item.first_name + " " + item.last_name,
-			})
-		})
-		return array
-	}
-
-	return (
-		<View style={styles.main}>
-			<ListModal
-				title="Membres du club"
-				visible={modalMemberVisible}
-				list={serializeUsers(members)}
-				selectable={false}
-				onClose={() => setModalMemberVisible(false)}
-			/>
-
-			<Header
+    return (
+        <View style={styles.main}>
+            <Header
 				color="#da291c"
-				title={club.name.toUpperCase()}
+				title={office.name.toUpperCase()}
 				user={props.user}
 			/>
-			<View style={styles.head}>
-				<Image style={styles.img} source={club.picture} />
+            <View style={styles.head}>
+				<Image
+					style={styles.img}
+					source={require("../assets/event.jpg")}
+				/>
 				<View style={styles.headButton}>
 					{props.user.email ? (
 						<TouchableOpacity
 							style={styles.bt}
-							onPress={handleClickFollow}
+							onPress={() => {}}
 						>
-							<Text style={styles.btText}>
-								{club.is_followed ? "Ne plus suivre" : "Suivre"}
-							</Text>
+							<Text style={styles.btText}>Suivre</Text>
 						</TouchableOpacity>
 					) : null}
 					<TouchableOpacity
 						style={styles.bt}
 						onPress={() => {
-							setModalMemberVisible(true)
+							setModalMembresVisible(true)
 						}}
 					>
 						<Text style={styles.btText}>Membres</Text>
@@ -124,7 +67,7 @@ const Club = (props) => {
 							style={styles.bt}
 							onPress={() => {
 								navigation.navigate("Message", {
-									preClub: "c-" + club.id,
+									preClub: "c-" + office.id,
 								})
 							}}
 						>
@@ -134,16 +77,29 @@ const Club = (props) => {
 				</View>
 			</View>
 			<View style={styles.presText}>
-				<Text>{club.description}</Text>
+				<Text>{office.description}</Text>
 			</View>
 			<View style={styles.line}></View>
 			<ScrollView style={styles.list}>
 				
 			</ScrollView>
-			
-			<Navbar color="#da291c" user={props.user} />
-		</View>
-	)
+			<Modal
+				animationType="fade"
+				transparent={true}
+				visible={modalMembresVisible}
+				onRequestClose={() => {
+					setModalMembresVisible(!modalMembresVisible)
+				}}
+			>
+				<View style={modalStyle.modal}>
+					<View style={modalStyle.addPanel}>
+						
+					</View>
+				</View>
+			</Modal>
+            <Navbar color="#da291c" user={props.user} />
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -169,7 +125,7 @@ const styles = StyleSheet.create({
 		justifyContent: "space-around",
 	},
 	bt: {
-		borderRadius: 7,
+		borderRadius: 100,
 		padding: 10,
 		fontSize: 20,
 		marginRight: 5,
@@ -204,4 +160,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default Club
+export default Office

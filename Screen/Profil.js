@@ -1,28 +1,23 @@
-import React from "react"
-import {
-	View,
-	StyleSheet,
-	TouchableOpacity,
-	Modal,
-	TextInput,
-	Text,
-} from "react-native"
-import Header from "../Components/Header"
-import Navbar from "../Components/Navbar"
-import AdminButton from "../Components/AdminButton"
-import modalStyle from "./Modal.style"
-import { useState } from "react"
+import React from "react";
+import { View, StyleSheet, TouchableOpacity, Modal, TextInput, Text} from "react-native";
+import Header from "../Components/Header";
+import Navbar from "../Components/Navbar";
+import AdminButton from "../Components/AdminButton";
+import modalStyle from "./Modal.style";
+import { useState } from "react";
 
 const Profil = (props) => {
-	const [modalPasswordVisible, setModalPasswordVisible] = useState(false)
-	const [newPassword, setNewPassword] = useState("")
-	const [confirmedPassword, setConfirmedPassword] = useState("")
+    const [modalPasswordVisible, setModalPasswordVisible] = useState(false);
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmedPassword, setConfirmedPassword] = useState("");
+    const [oldPassword, setOldPassword] = useState("");
 
-	const resetModalNewPassword = () => {
-		setNewPassword("")
-		setConfirmedPassword("")
-		setModalPasswordVisible(false)
-	}
+    const resetModalNewPassword = () => {
+        setNewPassword("");
+        setOldPassword("");
+        setConfirmedPassword("");
+        setModalPasswordVisible(false);
+    }
 
 	return (
 		<View style={styles.main}>
@@ -38,6 +33,12 @@ const Profil = (props) => {
 				<View style={modalStyle.modal}>
 					<View style={modalStyle.addPanel}>
 						<TextInput
+							style={modalStyle.input}
+							placeholder="Ancien mot de passe"
+							value={oldPassword}
+							onChangeText={setOldPassword}
+						/>
+                        <TextInput
 							style={modalStyle.input}
 							placeholder="Nouveau mot de passe"
 							value={newPassword}
@@ -63,19 +64,17 @@ const Profil = (props) => {
 						>
 							<Text style={modalStyle.textBT}>Annuler</Text>
 						</TouchableOpacity>
-					</View>
-				</View>
-			</Modal>
-			<TouchableOpacity
-				onPress={() => {
-					setModalPasswordVisible(true)
-				}}
-			>
-				<AdminButton text="Changer de mot de passe" />
-			</TouchableOpacity>
-			<Navbar color="#da291c" user={props.user} />
-		</View>
-	)
+                    </View>
+                </View>
+            </Modal>
+            <TouchableOpacity onPress={() => {
+                setModalPasswordVisible(true);
+            }}>
+                <AdminButton text="Changer de mot de passe" onPress={() => {}}/>
+            </TouchableOpacity>
+            <Navbar color="#da291c" user={props.user} />
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
