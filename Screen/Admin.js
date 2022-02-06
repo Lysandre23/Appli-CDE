@@ -123,76 +123,39 @@ const Admin = (props) => {
     }
   };
 
-  /*
-	const storeClub = () => {
-		if (imageNewClub) {
-			let form = new FormData()
-
-			form.append(
-				"picture",
-				JSON.stringify({
-					uri:
-						Platform.OS === "ios"
-							? imageNewClub.uri.replace("file://", "")
-							: imageNewClub.uri,
-					name: imageNewClub.fileName,
-					type: imageNewClub.type,
-				})
-			)
-			form.append("name", nameNewClub)
-			form.append("description", descriptionNewClub)
-			form.append("office_id", selectedOfficeNewClub)
-			Api.post("/clubs", form, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-					Authorization: `Bearer ${props.token}`,
-				},
-			}).then(function (response) {
-				setModalClubVisible(false)
-				setImageNewClub(null)
-				setNameNewClub("")
-				setDescriptionNewClub("")
-			})
-		}
-	}
-	*/
-
   const storeClub = () => {
     if (imageNewClub) {
-      Api.post(
-        "/clubs",
-        {
-          name: nameNewClub,
-          description: descriptionNewClub,
-          office_id: selectedOfficeNewClub,
-          picture: JSON.stringify({
-            uri:
-              Platform.OS === "ios"
-                ? imageNewClub.uri.replace("file://", "")
-                : imageNewClub.uri,
-            name: imageNewClub.fileName,
-            type: imageNewClub.type,
-          }),
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${props.token}`,
-          },
-        }
-      )
-        .then(function (response) {
-          setModalClubVisible(false);
-          setImageNewClub(null);
-          setNameNewClub("");
-          setDescriptionNewClub("");
+      let form = new FormData();
+
+      form.append(
+        "picture",
+        JSON.stringify({
+          uri:
+            Platform.OS === "ios"
+              ? imageNewClub.uri.replace("file://", "")
+              : imageNewClub.uri,
+          name: imageNewClub.fileName,
+          type: imageNewClub.type,
         })
-        .catch(function (error) {
-          throw error;
-        });
+      );
+      form.append("name", nameNewClub);
+      form.append("description", descriptionNewClub);
+      form.append("office_id", selectedOfficeNewClub);
+      Api.post("/clubs", form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${props.token}`,
+        },
+      }).then(function (response) {
+        setModalClubVisible(false);
+        setImageNewClub(null);
+        setNameNewClub("");
+        setDescriptionNewClub("");
+        getOffices();
+      });
     }
   };
-  /*
+
   const storeOffice = () => {
     if (imageNewOffice) {
       let form = new FormData();
@@ -230,41 +193,6 @@ const Admin = (props) => {
           throw error;
         });
     }
-  };
-  */
-
-  const storeOffice = () => {
-    //create object with uri, type, image name
-    var photo = {
-      uri:
-        Platform.OS === "ios"
-          ? imageNewOffice.uri.replace("file://", "")
-          : imageNewOffice.uri,
-      name: imageNewOffice.fileName,
-      type: imageNewOffice.type,
-    };
-
-    //use formdata
-    var formData = new FormData();
-    //append created photo{} to formdata
-    formData.append("image", photo);
-    //use axios to POST
-    axios({
-      method: "POST",
-      url: "https://cercle.polytech-services-nancy.fr/api/offices",
-      data: formData,
-      headers: {
-        Authorization: `Bearer ${props.token}`,
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data;",
-      },
-    })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error.response);
-      });
   };
 
   const storeAdmin = (id) => {

@@ -14,7 +14,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ onTokenUpdate }) => {
-<<<<<<< HEAD
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,18 +23,7 @@ const Login = ({ onTokenUpdate }) => {
   const [verificationCode, setVerificationCode] = useState("");
   const [action, setAction] = useState("S'enregistrer");
   const [title, setTitle] = useState("Connexion"); // "Connexion", "Enregistrement", "Vérification", "Réinitialisation mot de passe"
-=======
-	const navigation = useNavigation()
-	const [email, setEmail] = useState("")
-	const [password, setPassword] = useState("")
-	const [password_confirm, setPasswordConfirm] = useState("")
-	const [firstName, setFirstName] = useState("")
-	const [lastName, setLastName] = useState("")
-	const [verificationCode, setVerificationCode] = useState("")
-	const [action, setAction] = useState("S'enregistrer")
-	const [title, setTitle] = useState("Connexion") // "Connexion", "Enregistrement", "Vérification", "Réinitialisation mot de passe"
-	const [wrongMessage, setWrongMessage] = useState(false);
->>>>>>> be5ed59a74f39397605904610906a3f0ae9c2506
+  const [wrongMessage, setWrongMessage] = useState(false);
 
   const [formError, setFormError] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -43,6 +31,14 @@ const Login = ({ onTokenUpdate }) => {
   const [password_confirmError, setPassword_confirmError] = useState(false);
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
+
+  const handleBack = () => {
+    if (title === "Réinitialisation mot de passe") {
+      setTitle("Connexion");
+    } else {
+      navigation.navigate("Events");
+    }
+  };
 
   const handleSubmit = () => {
     if (title === "Connexion") {
@@ -83,9 +79,9 @@ const Login = ({ onTokenUpdate }) => {
           setEmail("");
           navigation.navigate("Events");
         })
-        .catch(function (error) {
-          console.log(error.response);
-          console.log("erreur : " + error.response.data.data.error);
+        .catch((error) => {
+          //console.log(error.response);
+          console.log("erreur : " + error.message);
           setPassword("");
           setFormError(error.response.data.data.error);
           throw error;
@@ -125,18 +121,32 @@ const Login = ({ onTokenUpdate }) => {
       confirm_password: password_confirm,
       first_name: firstName,
       last_name: lastName,
-    }).then(function (response) {
-      setPassword("");
-      setFirstName("");
-      setLastName("");
-      setPasswordConfirm("");
-      setTitle("Connexion");
-    });
+    })
+      .then(function (response) {
+        setPassword("");
+        setFirstName("");
+        setLastName("");
+        setPasswordConfirm("");
+        setTitle("Connexion");
+      })
+      .catch((error) => {
+        throw error;
+      });
   };
 
-<<<<<<< HEAD
   return (
     <View style={styles.main}>
+      <TouchableOpacity
+        style={{
+          zIndex: 30,
+          position: "absolute",
+          left: 20,
+          top: 50,
+        }}
+        onPress={handleBack}
+      >
+        <Icon color="white" name="arrow-left" size={30} />
+      </TouchableOpacity>
       <View style={styles.logoCDE}>
         <Image style={styles.img} source={require("../assets/CDELogo.png")} />
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>{title}</Text>
@@ -153,8 +163,8 @@ const Login = ({ onTokenUpdate }) => {
             onChangeText={setEmail}
             value={email}
             placeholder="E-mail"
-            autoCapitalize="none"
             autoComplete="email"
+            autoCapitalize="none"
             keyboardType="email-address"
           />
           {title == "Enregistrement" ? (
@@ -200,7 +210,6 @@ const Login = ({ onTokenUpdate }) => {
               value={password_confirm}
               placeholder="Mot de passe (confirmation)"
               secureTextEntry={true}
-              autoComplete="off"
             />
           ) : null}
           {title == "Vérification" ? (
@@ -211,22 +220,35 @@ const Login = ({ onTokenUpdate }) => {
               placeholder="Code de vérification"
             />
           ) : null}
-          {title == "Connexion" ? (
-            <TouchableOpacity
-              style={styles.forgetPassword}
-              onPress={() => setTitle("Réinitialisation mot de passe")}
-            >
-              <Text
-                style={{
-                  color: "rgb(180,180,180)",
-                }}
-              >
-                Mot de passe oublié
+          <View
+            style={{
+              marginTop: 90,
+              position: "absolute",
+              marginLeft: 5,
+            }}
+          >
+            {title == "Connexion" && wrongMessage ? (
+              <Text style={{ color: "#da291c", fontSize: 10, marginBottom: 5 }}>
+                E-mail ou mot de passe incorrect
               </Text>
-            </TouchableOpacity>
-          ) : (
-            <View></View>
-          )}
+            ) : null}
+            {title == "Connexion" ? (
+              <TouchableOpacity
+                onPress={() => setTitle("Réinitialisation mot de passe")}
+                style={{ marginTop: !wrongMessage ? 10 : 0 }}
+              >
+                <Text
+                  style={{
+                    color: "rgb(180,180,180)",
+                  }}
+                >
+                  Mot de passe oublié
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <View></View>
+            )}
+          </View>
           {title == "Vérification" ? (
             <TouchableOpacity
               style={styles.forgetPassword}
@@ -279,6 +301,7 @@ const Login = ({ onTokenUpdate }) => {
           height: "35%",
           position: "absolute",
           top: -25,
+          zIndex: 5,
         }}
         source={require("../assets/svg1.png")}
       />
@@ -377,289 +400,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: "center",
   },
-  forgetPassword: {
-    marginTop: "30%",
-    marginLeft: 5,
-    position: "absolute",
-  },
 });
-=======
-	return (
-		<View style={styles.main}>
-			<TouchableOpacity style={{
-				zIndex: 30,
-				position: 'absolute',
-				left: 20,
-				top: 20
-			}}>
-				<Icon
-					color="white"
-					name="arrow-left"
-					size={30}
-				/>
-			</TouchableOpacity>
-			<View style={styles.logoCDE}>
-				<Image
-					style={styles.img}
-					source={require("../assets/CDELogo.png")}
-				/>
-				<Text style={{ fontSize: 20, fontWeight: "bold" }}>
-					{title}
-				</Text>
-			</View>
-			<View style={styles.form}>
-				<View>
-					<Text>{formError}</Text>
-					<TextInput
-						style={[
-							styles.inputTop,
-							styles.input,
-							emailError && styles.inputError,
-						]}
-						onChangeText={setEmail}
-						value={email}
-						placeholder="E-mail"
-					/>
-					{title == "Enregistrement" ? (
-						<TextInput
-							style={[
-								styles.input,
-								firstNameError && styles.inputError,
-							]}
-							onChangeText={setFirstName}
-							value={firstName}
-							placeholder="Prénom"
-						/>
-					) : null}
-					{title == "Enregistrement" ? (
-						<TextInput
-							style={[
-								styles.input,
-								lastNameError && styles.inputError,
-							]}
-							onChangeText={setLastName}
-							value={lastName}
-							placeholder="Nom"
-						/>
-					) : null}
-					{title == "Enregistrement" || title === "Connexion" ? (
-						<TextInput
-							style={[
-								styles.input,
-								title == "Connexion"
-									? styles.inputBottom
-									: null,
-								passwordError && styles.inputError,
-							]}
-							onChangeText={setPassword}
-							value={password}
-							placeholder="Mot de passe"
-							secureTextEntry={true}
-						/>
-					) : null}
-					{title == "Enregistrement" ? (
-						<TextInput
-							style={[
-								styles.input,
-								styles.inputBottom,
-								password_confirmError && styles.inputError,
-							]}
-							onChangeText={setPasswordConfirm}
-							value={password_confirm}
-							placeholder="Mot de passe (confirmation)"
-							secureTextEntry={true}
-						/>
-					) : null}
-					{title == "Vérification" ? (
-						<TextInput
-							style={styles.input}
-							onChangeText={setVerificationCode}
-							value={verificationCode}
-							placeholder="Code de vérification"
-						/>
-					) : null}
-					<View style={{
-						marginTop: 90,
-						position: 'absolute',
-						marginLeft: 5
-					}}>
-						{title == "Connexion" && wrongMessage ? (
-							<Text style={{color: "#da291c", fontSize: 10, marginBottom: 5}}>E-mail ou mot de passe incorrect</Text>
-						) : null}
-						{title == "Connexion" ? (
-							<TouchableOpacity
-								onPress={() =>
-									setTitle("Réinitialisation mot de passe")
-								}
-								style={{marginTop: (!wrongMessage ? 10 : 0)}}
-							>
-								<Text
-									style={{
-										color: "rgb(180,180,180)",
-									}}
-								>
-									Mot de passe oublié
-								</Text>
-							</TouchableOpacity>
-						) : (
-							<View></View>
-						)}
-					</View>
-					{title == "Vérification" ? (
-						<TouchableOpacity
-							style={styles.forgetPassword}
-							onPress={resendConfirmationMail}
-						>
-							<Text
-								style={{
-									color: "rgb(180,180,180)",
-								}}
-							>
-								Renvoyer code de vérification
-							</Text>
-						</TouchableOpacity>
-					) : (
-						<View></View>
-					)}
-					<TouchableOpacity
-						style={styles.confirmButton}
-						onPress={handleSubmit}
-					>
-						<Icon
-							color="white"
-							name="arrow-right"
-							size={30}
-							style={{
-								backgroundColor: "#da291c",
-								padding: 15,
-								borderRadius: 100,
-							}}
-						/>
-					</TouchableOpacity>
-				</View>
-			</View>
-			{title === "Connexion" || title === "Enregistrement" ? (
-				<TouchableOpacity
-					style={styles.registerButton}
-					onPress={() => {
-						if (title == "Connexion") {
-							setTitle("Enregistrement")
-							setAction("Se connecter")
-						} else {
-							setTitle("Connexion")
-							setAction("S'enregistrer")
-						}
-					}}
-				>
-					<Text style={styles.registerTextButton}>{action}</Text>
-				</TouchableOpacity>
-			) : null}
-			<Image
-				style={{
-					width: "100%",
-					height: "35%",
-					position: "absolute",
-					top: -25,
-					zIndex: 5
-				}}
-				source={require("../assets/svg1.png")}
-			/>
-			<Image
-				style={{
-					width: "100%",
-					height: "35%",
-					position: "absolute",
-					bottom: -25,
-				}}
-				source={require("../assets/svg2.png")}
-			/>
-		</View>
-	)
-}
-
-const styles = StyleSheet.create({
-	main: {
-		flex: 1,
-		backgroundColor: "rgb(250,250,250)",
-	},
-	bt: {
-		position: "absolute",
-		top: "20%",
-		left: "50%",
-	},
-	logoCDE: {
-		position: "absolute",
-		width: "100%",
-		top: "15%",
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-	},
-	img: {
-		width: 100,
-		height: 100,
-	},
-	form: {
-		position: "absolute",
-		width: "85%",
-		height: "100%",
-		display: "flex",
-		flexDirection: "column",
-		justifyContent: "space-around",
-	},
-	confirmButton: {
-		position: "absolute",
-		top: "50%",
-		left: "100%",
-		transform: [{ translateX: -30 }, { translateY: -30 }],
-		borderRadius: 100,
-		overflow: "hidden",
-	},
-	inputTop: {
-		borderTopRightRadius: 100,
-	},
-	inputBottom: {
-		borderBottomRightRadius: 100,
-	},
-	input: {
-		fontSize: 20,
-		borderColor: "rgb(220,220,220)",
-		padding: 10,
-		borderWidth: 1,
-		backgroundColor: "white",
-		shadowColor: "#000",
-		shadowOffset: {
-			width: 0,
-			height: 1,
-		},
-		shadowOpacity: 0.1,
-		shadowRadius: 15,
-	},
-	inputError: {
-		borderColor: "red",
-	},
-	registerButton: {
-		backgroundColor: "white",
-		shadowColor: "#000",
-		shadowOffset: {
-			width: 0,
-			height: 1,
-		},
-		shadowOpacity: 0.1,
-		shadowRadius: 15,
-		padding: 10,
-		borderTopRightRadius: 100,
-		borderBottomRightRadius: 100,
-		width: "50%",
-		top: "70%",
-		zIndex: 5,
-	},
-	registerTextButton: {
-		color: "#da291c",
-		fontSize: 25,
-		textAlign: "center",
-	},
-})
->>>>>>> be5ed59a74f39397605904610906a3f0ae9c2506
 
 export default Login;
