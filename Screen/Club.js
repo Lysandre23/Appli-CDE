@@ -6,8 +6,8 @@ import {
 	ScrollView,
 	Image,
 	TouchableOpacity,
-	Modal,
-	FlatList
+	FlatList,
+	Dimensions,
 } from "react-native"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
@@ -17,7 +17,6 @@ import { useNavigation, useRoute } from "@react-navigation/core"
 import { useState, useEffect } from "react"
 import ListModal from "../Components/ListModal"
 import Api from "../Api"
-import modalStyle from "./Modal.style"
 
 const Club = (props) => {
 	const navigation = useNavigation()
@@ -30,11 +29,13 @@ const Club = (props) => {
 	})
 
 	const [members, setMembers] = useState([])
+	const [posts, setPosts] = useState([])
 
 	useEffect(() => {
 		if (route.params.id !== club.id) {
 			getClub()
 			getMembers()
+			getPosts()
 		}
 	})
 
@@ -52,6 +53,12 @@ const Club = (props) => {
 	const getMembers = () => {
 		Api.get("/clubs/members/" + route.params.id).then(function (response) {
 			setMembers(response.data.data)
+		})
+	}
+
+	const getPosts = () => {
+		Api.get("/clubs/posts/" + route.params.id).then(function (response) {
+			setPosts(response.data.data)
 		})
 	}
 
@@ -138,9 +145,19 @@ const Club = (props) => {
 			</View>
 			<View style={styles.line}></View>
 			<ScrollView style={styles.list}>
-				
+				{posts.map((post) => (
+					<EventsCard
+						key={post.id}
+						user={props.user}
+						description={post.description}
+						title={post.title}
+						date={post.start_date}
+						image={post.picture}
+						editable={true}
+					/>
+				))}
 			</ScrollView>
-			
+
 			<Navbar color="#da291c" user={props.user} />
 		</View>
 	)
