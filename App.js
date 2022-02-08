@@ -106,7 +106,7 @@ function App() {
 	return (
 		<NavigationContainer>
 			<Drawer.Navigator
-				initialRouteName="Clubs"
+				initialRouteName="Events"
 				drawerContent={(props) =>
 					user.email ? (
 						<SideBar user={user} onDisconnect={handleDisconnect} />
@@ -151,7 +151,7 @@ function App() {
 					{(props) => <Message token={token} user={user} />}
 				</Drawer.Screen>
 				<Drawer.Screen name="Abonnements">
-					{(props) => <Abonnement user={user} />}
+					{(props) => <Abonnement user={user} token={token} />}
 				</Drawer.Screen>
 				<Drawer.Screen name="GestionClub">
 					{(props) => <GestionClub user={user} token={token} />}

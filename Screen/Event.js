@@ -1,184 +1,41 @@
 import * as React from "react"
-import {
-	View,
-	Text,
-	StyleSheet,
-	FlatList,
-	TouchableOpacity,
-	Modal,
-	TextInput,
-	Button,
-	Image,
-	Touchable,
-} from "react-native"
+import { View, StyleSheet, ScrollView } from "react-native"
 import Header from "../Components/Header"
 import EventsCard from "../Components/EventsCard"
 import Navbar from "../Components/Navbar"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import * as ImagePicker from "expo-image-picker"
 import DateTimePicker from "@react-native-community/datetimepicker"
+import Api from "../Api"
 
-import data from "../assets/events.json"
+const Events = (props) => {
+	const [posts, setPosts] = useState([])
 
-const Events = (props, navigation) => {
-	const [admin, setAdmin] = useState(true)
-	const [modalVisible, setModalVisible] = useState(false)
-	const [nameNewEvent, setNameNewEvent] = useState(null)
-	const [descriptionNewEvent, setDescriptionNewEvent] = useState(null)
-	const [dateNewEvent, setDateNewEvent] = useState(null)
-	const [imageNewEvent, setImageNewEvent] = useState(null)
-	const [imageCalendar, setImageCalendar] = useState(null)
-	const [date, setDate] = useState(new Date(1598051730000))
-	const [mode, setMode] = useState("date")
-	const [show, setShow] = useState(true)
-	const onChange = (event, selectedDate) => {
-		const currentDate = selectedDate || date
-		setShow(Platform.OS === "ios")
-		setDate(currentDate)
-	}
+	useEffect(() => {
+		getPosts()
+	}, [])
 
-	const showMode = (currentMode) => {
-		setShow(true)
-		setMode(currentMode)
-	}
-
-	const pickImage = async () => {
-		// No permissions request is necessary for launching the image library
-		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.All,
-			allowsEditing: true,
-			aspect: [4, 4],
-			quality: 1,
+	const getPosts = () => {
+		Api.get("/posts").then(function (response) {
+			setPosts(response.data.data)
 		})
-
-		if (!result.cancelled) {
-			setImageNewEvent(result.uri)
-		}
-	}
-
-	const resetInputNewEvent = () => {
-		setNameNewEvent(null)
-		setDescriptionNewEvent(null)
-		setDateNewEvent(null)
-		setModalVisible(false)
-		setImageNewEvent(null)
 	}
 
 	return (
 		<View style={styles.main}>
 			<Header color="#da291c" title="EVENTS" user={props.user} />
-			<TouchableOpacity style={styles.calendar}></TouchableOpacity>
-			<Modal
-				animationType="fade"
-				transparent={true}
-				visible={modalVisible}
-				onRequestClose={() => {
-					setModalVisible(!modalVisible)
-				}}
-			>
-				<View style={styles.modal}>
-					<View style={styles.addPanel}>
-						<TextInput
-							style={styles.input}
-							placeholder="Nom"
-							value={nameNewEvent}
-							onChangeText={setNameNewEvent}
-						/>
-						<TextInput
-							style={styles.input}
-							placeholder="Description"
-							value={descriptionNewEvent}
-							onChangeText={setDescriptionNewEvent}
-						/>
-
-						{show && (
-							<DateTimePicker
-								testID="dateTimePicker"
-								value={date}
-								mode={mode}
-								is24Hour={true}
-								display="default"
-								onChange={onChange}
-								style={styles.datePicker}
-							/>
-						)}
-
-						<TouchableOpacity
-							style={styles.imagePicker}
-							onPress={pickImage}
-						>
-							<Text style={{ textAlign: "center" }}>
-								Choisir une image
-							</Text>
-						</TouchableOpacity>
-						{imageNewEvent != null ? (
-							<Image
-								width={50}
-								height={50}
-								source={imageNewEvent}
-							/>
-						) : (
-							<View></View>
-						)}
-						<TouchableOpacity
-							style={styles.bt}
-							onPress={() => {
-								data.push({
-									name: nameNewEvent,
-									slug: nameNewEvent,
-									image: imageNewEvent,
-									description: descriptionNewEvent,
-									date:
-										(date.getDate() <= 9 ? "0" : "") +
-										date.getDate() +
-										"/" +
-										(date.getMonth() <= 9 ? "0" : "") +
-										(date.getMonth() + 1),
-								})
-								resetInputNewEvent()
-							}}
-						>
-							<Text style={styles.textBT}>Valider</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.bt}
-							onPress={() => {
-								resetInputNewEvent()
-							}}
-						>
-							<Text style={styles.textBT}>Annuler</Text>
-						</TouchableOpacity>
-					</View>
-				</View>
-			</Modal>
-
-			{props.user.is_admin ? (
-				<TouchableOpacity
-					style={styles.addButton}
-					onPress={() => {
-						setModalVisible(true)
-					}}
-				>
-					<Text style={{ color: "white", fontSize: 18 }}>
-						Ajouter un event
-					</Text>
-				</TouchableOpacity>
-			) : (
-				<View></View>
-			)}
-			<FlatList
-				data={data}
-				renderItem={({ item }) => (
+			<ScrollView style={styles.AbonnementList}>
+				{posts.map((post) => (
 					<EventsCard
-						name={item.name}
-						date={item.date}
-						src={item.image}
-						description={item.description}
-						keyExtractor={(item) => item.key}
+						key={post.id}
+						title={post.title}
+						date={post.date}
+						image={post.picture}
+						editable={false}
+						description={post.description}
 					/>
-				)}
-				style={{ marginBottom: "25%" }}
-			/>
+				))}
+			</ScrollView>
 			<Navbar color="#da291c" user={props.user} />
 		</View>
 	)

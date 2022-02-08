@@ -7,6 +7,7 @@ import {
 	TouchableOpacity,
 	Modal,
 	TextInput,
+	Platform,
 } from "react-native"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
@@ -31,12 +32,11 @@ const GestionClub = (props) => {
 	const [roomUpdateClub, setRoomUpdateClub] = useState("")
 
 	const [modalPostVisible, setModalPostVisible] = useState(false)
-	const [titleNewPost, setTitleNewPost] = useState("")
-	const [descriptionNewPost, setDescriptionNewPost] = useState("")
-	const [imageNewPost, setImageNewPost] = useState(null)
-	const [dateNewPost, setDateNewPost] = useState("")
-	const [enableNotificationNewPost, setEnableNotificationNewPost] =
-		useState(false)
+	const [titlePost, setTitlePost] = useState("")
+	const [descriptionPost, setDescriptionPost] = useState("")
+	const [imagePost, setImagePost] = useState(null)
+	const [datePost, setDatePost] = useState("")
+	const [enableNotificationPost, setEnableNotificationPost] = useState(false)
 
 	const [modalAddMemberVisible, setModalAddMemberVisible] = useState(false)
 	const [modalRemoveMemberVisible, setModalRemoveMemberVisible] =
@@ -132,6 +132,7 @@ const GestionClub = (props) => {
 			getResponsibles()
 		})
 	}
+
 	const handleToggleMember = (userId) => {
 		Api.post(
 			"/clubs/members/",
@@ -172,7 +173,7 @@ const GestionClub = (props) => {
 		})
 
 		if (!result.cancelled) {
-			setImageNewPost(result)
+			setImagePost(result)
 		}
 	}
 
@@ -182,9 +183,9 @@ const GestionClub = (props) => {
 
 	const handleClosePostModal = () => {
 		setModalPostVisible(false)
-		setTitleNewPost("")
-		setDescriptionNewPost("")
-		setImageNewPost(null)
+		setTitlePost("")
+		setDescriptionPost("")
+		setImagePost(null)
 	}
 
 	const updateClub = () => {
@@ -214,9 +215,48 @@ const GestionClub = (props) => {
 		}).then(function (response) {
 			setModalUpdateVisible(false)
 			setImageUpdateClub(null)
-			setNameUpdateClub("")
-			setDescriptionUpdateClub("")
+			getClub()
 		})
+	}
+
+	const storePost = () => {
+		if (imagePost) {
+			let form = new FormData()
+
+			form.append("title", titlePost)
+			form.append("description", descriptionPost)
+			form.append(
+				"picture",
+				JSON.stringify({
+					uri:
+						Platform.OS === "ios"
+							? imagePost.uri.replace("file://", "")
+							: imagePost.uri,
+					name: imagePost.fileName,
+					type: imagePost.type,
+				})
+			)
+			form.append("enable_notifications", enableNotificationPost)
+			form.append("club_id", club.id)
+			Api.post("/clubs/posts", form, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Accept: "application/json",
+					Authorization: `Bearer ${props.token}`,
+				},
+			})
+				.then((response) => {
+					setModalPostVisible(false)
+					setTitlePost("")
+					setDatePost("")
+					setDescriptionPost("")
+					setImagePost(null)
+					setEnableNotificationPost(false)
+				})
+				.catch((error) => {
+					throw error
+				})
+		}
 	}
 
 	return (
@@ -285,27 +325,27 @@ const GestionClub = (props) => {
 				<View style={styles.modal}>
 					<View style={styles.panel}>
 						<TextInput
-							placeholder="Titre"
-							value={titleNewPost}
-							onTextChange={setTitleNewPost}
-							style={styles.input}
+							style={modalStyle.input}
+							placeholder="Title"
+							value={titlePost}
+							onChangeText={setTitlePost}
 						/>
 						<TextInput
-							placeholder="Description"
-							value={descriptionNewPost}
-							onTextChange={setDescriptionNewPost}
 							style={styles.input}
+							placeholder="Description"
+							value={descriptionPost}
+							onChangeText={setDescriptionPost}
 							multiline={true}
 							numberOfLines={3}
 							maxLength={200}
 						/>
 						<DateTimePicker
 							testID="dateTimePicker"
-							value={dateNewPost}
+							value={datePost}
 							mode={"date"}
 							is24Hour={true}
 							display="default"
-							onChange={setDateNewPost}
+							onChange={setDatePost}
 						/>
 						<TouchableOpacity
 							style={modalStyle.imagePicker}
@@ -334,14 +374,14 @@ const GestionClub = (props) => {
 									textDecorationLine: "none",
 								}}
 								onPress={(isChecked) => {
-									setEnableNotificationNewPost(isChecked)
+									setEnableNotificationPost(isChecked)
 								}}
 							/>
 						</View>
 						<TouchableOpacity
 							style={styles.modalButton}
 							onPress={() => {
-								setModalPostVisible(false)
+								storePost()
 							}}
 						>
 							<Text style={styles.btModalText}>Valider</Text>
