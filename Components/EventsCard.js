@@ -45,6 +45,7 @@ const EventsCard = (props) => {
             <View style={styles.infoContainer}>
                 <Text style={styles.infoTitle}>{props.name}</Text>
                 <Text style={styles.infoDate}>{props.date}</Text>
+                <Text style={styles.infoAuthor}>{props.author}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -94,6 +95,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: "5%",
         bottom: "5%"
+    },
+    infoAuthor: {
+        position: 'absolute',
+        right: "5%",
+        top: "5%"
     },
     adminButton: {
         position: 'absolute',
