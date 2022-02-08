@@ -20,6 +20,7 @@ import * as ImagePicker from "expo-image-picker";
 import Api from "../Api";
 import modalStyle from "./Modal.style";
 import OfficeGoodies from "../Components/OfficeGoodies";
+import EndFlatList from "../Components/EndFlatList";
 
 const Goodies = (props) => {
   const [storeModalVisible, setStoreModalVisible] = useState(false);
@@ -287,7 +288,7 @@ const Goodies = (props) => {
           transparent={true}
           visible={deleteModalVisible}
           onRequestClose={() => {
-            setModalVisible(!deleteModalVisible);
+            setDeleteModalVisible(!deleteModalVisible);
           }}
         >
           <View style={styles.modal}>
@@ -319,7 +320,7 @@ const Goodies = (props) => {
             />
           ) : null
         }
-        style={{ paddingBottom: Dimensions.get("window").height / 12 }}
+        ListFooterComponent={() => <EndFlatList />}
       ></FlatList>
 
       <Navbar color="#da291c" user={props.user} />
