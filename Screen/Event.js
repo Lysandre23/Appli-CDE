@@ -173,6 +173,7 @@ const Events = (props, navigation) => {
 						name={item.name}
 						date={item.date}
 						src={item.image}
+						author={item.author}
 						description={item.description}
 						keyExtractor={(item) => item.key}
 					/>

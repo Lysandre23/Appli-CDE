@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     },
     adminButton: {
         position: 'absolute',
-        top: 10,
+        top: "20%",
         right: 10,
         zIndex: 2
     },
