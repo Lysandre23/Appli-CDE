@@ -1,224 +1,287 @@
-import * as React from "react"
+import * as React from "react";
 import {
-	View,
-	Text,
-	StyleSheet,
-	ScrollView,
-	Image,
-	TouchableOpacity,
-	FlatList,
-	Dimensions,
-} from "react-native"
-import Header from "../Components/Header"
-import Navbar from "../Components/Navbar"
-import Icon from "react-native-vector-icons/FontAwesome"
-import EventsCard from "../Components/EventsCard"
-import { useNavigation, useRoute } from "@react-navigation/core"
-import { useState, useEffect } from "react"
-import ListModal from "../Components/ListModal"
-import Api from "../Api"
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
+import Header from "../Components/Header";
+import Navbar from "../Components/Navbar";
+import Icon from "react-native-vector-icons/FontAwesome";
+import EventsCard from "../Components/EventsCard";
+import { useNavigation, useRoute } from "@react-navigation/core";
+import { useState, useEffect } from "react";
+import ListModal from "../Components/ListModal";
+import Api from "../Api";
 
 const Club = (props) => {
-	const navigation = useNavigation()
-	const route = useRoute()
-	const [modalMemberVisible, setModalMemberVisible] = useState(false)
-	const [club, setClub] = useState({
-		id: null,
-		name: "",
-		description: "",
-	})
+  const navigation = useNavigation();
+  const route = useRoute();
+  const [modalMemberVisible, setModalMemberVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-	const [members, setMembers] = useState([])
-	const [posts, setPosts] = useState([])
+  const [pendingDelete, setPendingDelete] = useState(null);
+  const [pendingEdit, setPendingEdit] = useState(null);
 
-	useEffect(() => {
-		if (route.params.id !== club.id) {
-			getClub()
-			getMembers()
-			getPosts()
-		}
-	})
+  const [club, setClub] = useState({
+    id: null,
+    name: "",
+    description: "",
+  });
 
-	const getClub = () => {
-		Api.get("/clubs/" + route.params.id, {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${props.token}`,
-			},
-		}).then(function (response) {
-			setClub(response.data.data)
-		})
-	}
+  const [members, setMembers] = useState([]);
+  const [posts, setPosts] = useState([]);
 
-	const getMembers = () => {
-		Api.get("/clubs/members/" + route.params.id).then(function (response) {
-			setMembers(response.data.data)
-		})
-	}
+  useEffect(() => {
+    if (route.params.id !== club.id) {
+      getClub();
+      getMembers();
+      getPosts();
+    }
+  });
 
-	const getPosts = () => {
-		Api.get("/clubs/posts/" + route.params.id).then(function (response) {
-			setPosts(response.data.data)
-		})
-	}
+  const getClub = () => {
+    Api.get("/clubs/" + route.params.id, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${props.token}`,
+      },
+    }).then(function (response) {
+      setClub(response.data.data);
+    });
+  };
 
-	const handleClickFollow = () => {
-		Api.post(
-			"/subscribings",
-			{
-				club_id: club.id,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${props.token}`,
-				},
-			}
-		).then(function (response) {
-			getClub()
-		})
-	}
+  const getMembers = () => {
+    Api.get("/clubs/members/" + route.params.id).then(function (response) {
+      setMembers(response.data.data);
+    });
+  };
 
-	const serializeUsers = (users) => {
-		let array = []
-		users.forEach((item) => {
-			array.push({
-				value: item.id,
-				label: item.first_name + " " + item.last_name,
-			})
-		})
-		return array
-	}
+  const getPosts = () => {
+    Api.get("/clubs/posts/" + route.params.id).then(function (response) {
+      setPosts(response.data.data);
+    });
+  };
 
-	return (
-		<View style={styles.main}>
-			<ListModal
-				title="Membres du club"
-				visible={modalMemberVisible}
-				list={serializeUsers(members)}
-				selectable={false}
-				onClose={() => setModalMemberVisible(false)}
-			/>
+  const handleClickFollow = () => {
+    Api.post(
+      "/subscribings",
+      {
+        club_id: club.id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${props.token}`,
+        },
+      }
+    ).then(function (response) {
+      getClub();
+    });
+  };
 
-			<Header
-				color="#da291c"
-				title={club.name.toUpperCase()}
-				user={props.user}
-			/>
-			<View style={styles.head}>
-				<Image style={styles.img} source={club.picture} />
-				<View style={styles.headButton}>
-					{props.user.email ? (
-						<TouchableOpacity
-							style={styles.bt}
-							onPress={handleClickFollow}
-						>
-							<Text style={styles.btText}>
-								{club.is_followed ? "Ne plus suivre" : "Suivre"}
-							</Text>
-						</TouchableOpacity>
-					) : null}
-					<TouchableOpacity
-						style={styles.bt}
-						onPress={() => {
-							setModalMemberVisible(true)
-						}}
-					>
-						<Text style={styles.btText}>Membres</Text>
-					</TouchableOpacity>
-					{props.user.email ? (
-						<TouchableOpacity
-							style={styles.bt}
-							onPress={() => {
-								navigation.navigate("Message", {
-									preClub: "c-" + club.id,
-								})
-							}}
-						>
-							<Icon name="envelope-o" size={20} color="#fff" />
-						</TouchableOpacity>
-					) : null}
-				</View>
-			</View>
-			<View style={styles.presText}>
-				<Text>{club.description}</Text>
-			</View>
-			<View style={styles.line}></View>
-			<ScrollView style={styles.list}>
-				{posts.map((post) => (
-					<EventsCard
-						key={post.id}
-						user={props.user}
-						description={post.description}
-						title={post.title}
-						date={post.start_date}
-						image={post.picture}
-						editable={true}
-					/>
-				))}
-			</ScrollView>
+  const serializeUsers = (users) => {
+    let array = [];
+    users.forEach((item) => {
+      array.push({
+        value: item.id,
+        label: item.first_name + " " + item.last_name,
+      });
+    });
+    return array;
+  };
 
-			<Navbar color="#da291c" user={props.user} />
-		</View>
-	)
-}
+  const handleDelete = (id) => {
+    setPendingDelete(id);
+    setDeleteModalVisible(true);
+  };
+
+  const cancelDelete = () => {
+    setDeleteModalVisible(false);
+    setPendingDelete(null);
+  };
+
+  const confirmDelete = () => {
+    Api.delete("/clubs/posts/" + pendingDelete, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${props.token}`,
+      },
+    }).then(function (response) {
+      setPendingDelete(null);
+      setDeleteModalVisible(false);
+      getPosts();
+    });
+  };
+
+  return (
+    <View style={styles.main}>
+      <ListModal
+        title="Membres du club"
+        visible={modalMemberVisible}
+        list={serializeUsers(members)}
+        selectable={false}
+        onClose={() => setModalMemberVisible(false)}
+      />
+
+      {props.user.is_admin ? (
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={deleteModalVisible}
+          onRequestClose={() => {
+            setDeleteModalVisible(!deleteModalVisible);
+          }}
+        >
+          <View style={styles.modal}>
+            <View style={styles.addPanel}>
+              <TouchableOpacity style={styles.bt} onPress={confirmDelete}>
+                <Text style={styles.textBT}>Valider</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.bt} onPress={cancelDelete}>
+                <Text style={styles.textBT}>Annuler</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      ) : null}
+
+      <Header
+        color="#da291c"
+        title={club.name.toUpperCase()}
+        user={props.user}
+      />
+      <View style={styles.head}>
+        <Image style={styles.img} source={club.picture} />
+        <View style={styles.headButton}>
+          {props.user.email ? (
+            <TouchableOpacity style={styles.bt} onPress={handleClickFollow}>
+              <Text style={styles.btText}>
+                {club.is_followed ? "Ne plus suivre" : "Suivre"}
+              </Text>
+            </TouchableOpacity>
+          ) : null}
+          <TouchableOpacity
+            style={styles.bt}
+            onPress={() => {
+              setModalMemberVisible(true);
+            }}
+          >
+            <Text style={styles.btText}>Membres</Text>
+          </TouchableOpacity>
+          {props.user.email ? (
+            <TouchableOpacity
+              style={styles.bt}
+              onPress={() => {
+                navigation.navigate("Message", {
+                  preClub: "c-" + club.id,
+                });
+              }}
+            >
+              <Icon name="envelope-o" size={20} color="#fff" />
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      </View>
+      <View style={styles.presText}>
+        <Text>{club.description}</Text>
+      </View>
+      <View style={styles.line}></View>
+      <ScrollView style={styles.list}>
+        {posts.map((post) => (
+          <EventsCard
+            key={post.id}
+            id={post.id}
+            user={props.user}
+            description={post.description}
+            title={post.title}
+            date={post.start_date}
+            image={post.picture}
+            editable={true}
+            onDelete={handleDelete}
+          />
+        ))}
+      </ScrollView>
+
+      <Navbar color="#da291c" user={props.user} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-	main: {
-		flex: 1,
-		backgroundColor: "rgb(250,250,250)",
-	},
-	head: {
-		display: "flex",
-		flexDirection: "row",
-		justifyContent: "space-evenly",
-		alignItems: "center",
-		marginTop: 20,
-	},
-	img: {
-		width: 80,
-		height: 80,
-		borderRadius: 8,
-	},
-	headButton: {
-		display: "flex",
-		flexDirection: "row",
-		justifyContent: "space-around",
-	},
-	bt: {
-		borderRadius: 7,
-		padding: 10,
-		fontSize: 20,
-		marginRight: 5,
-		backgroundColor: "#da291c",
-	},
-	btText: {
-		color: "white",
-		fontWeight: "500",
-	},
-	presText: {
-		width: "100%",
-		textAlign: "justify",
-		marginTop: 15,
-		width: "90%",
-		marginLeft: "5%",
-	},
-	line: {
-		width: "90%",
-		height: 2,
-		borderWidth: 1,
-		borderColor: "#da291c",
-		borderRadius: 2,
-		marginLeft: "5%",
-		marginTop: 20,
-	},
-	modal: {
-		flex: 1,
-		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "rgba(0,0,0,0.15)",
-	},
-})
+  main: {
+    flex: 1,
+    backgroundColor: "rgb(250,250,250)",
+  },
+  head: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  img: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+  },
+  headButton: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  bt: {
+    borderRadius: 7,
+    padding: 10,
+    fontSize: 20,
+    marginRight: 5,
+    backgroundColor: "#da291c",
+  },
+  btText: {
+    color: "white",
+    fontWeight: "500",
+  },
+  presText: {
+    width: "100%",
+    textAlign: "justify",
+    marginTop: 15,
+    width: "90%",
+    marginLeft: "5%",
+  },
+  line: {
+    width: "90%",
+    height: 2,
+    borderWidth: 1,
+    borderColor: "#da291c",
+    borderRadius: 2,
+    marginLeft: "5%",
+    marginTop: 20,
+  },
+  modal: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.15)",
+  },
+  modal: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.15)",
+  },
+  addPanel: {
+    backgroundColor: "white",
+    width: "70%",
+    padding: 50,
+    borderRadius: 20,
+    display: "flex",
+    flexDirection: "column",
+  },
+});
 
-export default Club
+export default Club;

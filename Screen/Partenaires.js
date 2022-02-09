@@ -16,10 +16,12 @@ import PartenaireCard from "../Components/PartenaireCard";
 import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
 import Api from "../Api";
+import EndFlatList from "../Components/EndFlatList";
 
 const Partenaires = (props, navigation) => {
-  const [admin, setAdmin] = useState(true);
   const [partners, setPartners] = useState([]);
+  const [isFetchingPartners, setIsFetchingPartners] = useState(false);
+
   const [storeModalVisible, setStoreModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [nameNewPart, setNameNewPart] = useState("");
@@ -41,8 +43,10 @@ const Partenaires = (props, navigation) => {
   }, []);
 
   const getPartners = () => {
+    setIsFetchingPartners(true);
     Api.get("/partners").then(function (response) {
       setPartners(response.data.data);
+      setIsFetchingPartners(false);
     });
   };
 
@@ -257,7 +261,10 @@ const Partenaires = (props, navigation) => {
       )}
       <FlatList
         data={partners}
+        onRefresh={() => getPartners()}
+        refreshing={isFetchingPartners}
         numColumns={3}
+        ListFooterComponent={() => <EndFlatList />}
         renderItem={({ item }) => (
           <View
             style={{
