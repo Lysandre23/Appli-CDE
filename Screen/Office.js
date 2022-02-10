@@ -122,7 +122,7 @@ const Office = (props) => {
 	return (
 		<View style={styles.main}>
 			<ListModal
-				title="Membres du office"
+				title="Membres du bureau"
 				visible={modalMemberVisible}
 				list={serializeUsers(members)}
 				selectable={false}
