@@ -12,6 +12,7 @@ import Api from "../Api"
 import { useState } from "react"
 import Icon from "react-native-vector-icons/FontAwesome"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { Button } from "react-native-paper"
 
 const Login = ({ onTokenUpdate }) => {
 	const navigation = useNavigation()
@@ -159,80 +160,89 @@ const Login = ({ onTokenUpdate }) => {
 			<View style={styles.form}>
 				<View>
 					<Text>{formError}</Text>
-					<TextInput
-						style={[
-							styles.inputTop,
-							styles.input,
-							emailError && styles.inputError,
-						]}
-						onChangeText={setEmail}
-						value={email}
-						placeholder="E-mail"
-						autoComplete="email"
-						autoCapitalize="none"
-						keyboardType="email-address"
-					/>
-					{title == "Enregistrement" ? (
+					<View style={[styles.inputContainer]}>
+						<TouchableOpacity
+							style={styles.confirmButton}
+							onPress={handleSubmit}
+						>
+							<Icon color="white" name="arrow-right" size={30} />
+						</TouchableOpacity>
+
 						<TextInput
 							style={[
+								styles.inputTop,
 								styles.input,
-								firstNameError && styles.inputError,
+								emailError && styles.inputError,
 							]}
-							onChangeText={setFirstName}
-							value={firstName}
-							placeholder="Prénom"
-							autoComplete="name-given"
+							onChangeText={setEmail}
+							value={email}
+							placeholder="E-mail"
+							autoComplete="email"
+							autoCapitalize="none"
+							keyboardType="email-address"
 						/>
-					) : null}
-					{title == "Enregistrement" ? (
-						<TextInput
-							style={[
-								styles.input,
-								lastNameError && styles.inputError,
-							]}
-							onChangeText={setLastName}
-							value={lastName}
-							placeholder="Nom"
-							autoComplete="name-family"
-						/>
-					) : null}
-					{title == "Enregistrement" || title === "Connexion" ? (
-						<TextInput
-							style={[
-								styles.input,
-								title == "Connexion"
-									? styles.inputBottom
-									: null,
-								passwordError && styles.inputError,
-							]}
-							onChangeText={setPassword}
-							value={password}
-							placeholder="Mot de passe"
-							secureTextEntry={true}
-							autoComplete="password"
-						/>
-					) : null}
-					{title == "Enregistrement" ? (
-						<TextInput
-							style={[
-								styles.input,
-								styles.inputBottom,
-								password_confirmError && styles.inputError,
-							]}
-							onChangeText={setPasswordConfirm}
-							value={password_confirm}
-							placeholder="Mot de passe (confirmation)"
-							secureTextEntry={true}
-						/>
-					) : null}
-					{title == "Vérification" ? (
-						<TextInput
-							style={styles.input}
-							onChangeText={setVerificationCode}
-							value={verificationCode}
-							placeholder="Code de vérification"
-						/>
-					) : null}
+						{title == "Enregistrement" ? (
+							<TextInput
+								style={[
+									styles.input,
+									firstNameError && styles.inputError,
+								]}
+								onChangeText={setFirstName}
+								value={firstName}
+								placeholder="Prénom"
+								autoComplete="name-given"
+							/>
+						) : null}
+						{title == "Enregistrement" ? (
+							<TextInput
+								style={[
+									styles.input,
+									lastNameError && styles.inputError,
+								]}
+								onChangeText={setLastName}
+								value={lastName}
+								placeholder="Nom"
+								autoComplete="name-family"
+							/>
+						) : null}
+						{title == "Enregistrement" || title === "Connexion" ? (
+							<TextInput
+								style={[
+									styles.input,
+									title == "Connexion"
+										? styles.inputBottom
+										: null,
+									passwordError && styles.inputError,
+								]}
+								onChangeText={setPassword}
+								value={password}
+								placeholder="Mot de passe"
+								secureTextEntry={true}
+								autoComplete="password"
+							/>
+						) : null}
+						{title == "Enregistrement" ? (
+							<TextInput
+								style={[
+									styles.input,
+									styles.inputBottom,
+									password_confirmError && styles.inputError,
+								]}
+								onChangeText={setPasswordConfirm}
+								value={password_confirm}
+								placeholder="Mot de passe (confirmation)"
+								secureTextEntry={true}
+							/>
+						) : null}
+						{title == "Vérification" ? (
+							<TextInput
+								style={styles.input}
+								onChangeText={setVerificationCode}
+								value={verificationCode}
+								placeholder="Code de vérification"
+							/>
+						) : null}
+					</View>
 					<View
 						style={{
 							marginTop: 90,
@@ -266,9 +276,7 @@ const Login = ({ onTokenUpdate }) => {
 									Mot de passe oublié
 								</Text>
 							</TouchableOpacity>
-						) : (
-							<View></View>
-						)}
+						) : null}
 					</View>
 					{title == "Vérification" ? (
 						<TouchableOpacity
@@ -283,24 +291,7 @@ const Login = ({ onTokenUpdate }) => {
 								Renvoyer code de vérification
 							</Text>
 						</TouchableOpacity>
-					) : (
-						<View></View>
-					)}
-					<TouchableOpacity
-						style={styles.confirmButton}
-						onPress={handleSubmit}
-					>
-						<Icon
-							color="white"
-							name="arrow-right"
-							size={30}
-							style={{
-								backgroundColor: "#da291c",
-								padding: 15,
-								borderRadius: 100,
-							}}
-						/>
-					</TouchableOpacity>
+					) : null}
 				</View>
 			</View>
 			{title === "Connexion" || title === "Enregistrement" ? (
@@ -347,6 +338,28 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "rgb(250,250,250)",
 	},
+	inputContainer: {
+		position: "relative",
+	},
+	confirmButton: {
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		zIndex: 10,
+		position: "absolute",
+		top: "50%",
+		right: 0,
+		transform: [{ translateX: 25 }, { translateY: -25 }],
+		borderRadius: 25,
+		overflow: "hidden",
+		height: 50,
+		minHeight: 50,
+		width: 50,
+		maxWidth: 50,
+		backgroundColor: "#da291c",
+	},
+
 	bt: {
 		position: "absolute",
 		top: "20%",
@@ -372,14 +385,7 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		justifyContent: "space-around",
 	},
-	confirmButton: {
-		position: "absolute",
-		top: "50%",
-		left: "100%",
-		transform: [{ translateX: -30 }, { translateY: -30 }],
-		borderRadius: 100,
-		overflow: "hidden",
-	},
+
 	inputTop: {
 		borderTopRightRadius: 100,
 	},
