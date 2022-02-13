@@ -67,8 +67,23 @@ const Login = ({ onTokenUpdate }) => {
 		})
 	}
 
+	const validateEmail = (email) => {
+		return String(email)
+			.toLowerCase()
+			.match(
+				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+			)
+	}
+
 	const login = () => {
+		setEmailError(false)
+		setPassword(false)
 		if (email !== "" && password !== "") {
+			if (!validateEmail(email)) {
+				setEmailError(true)
+				setFormError("L'adresse email doit être valide")
+				return
+			}
 			Api.post("/login", {
 				email: email,
 				password: password,
@@ -81,8 +96,6 @@ const Login = ({ onTokenUpdate }) => {
 					navigation.navigate("Events")
 				})
 				.catch((error) => {
-					//console.log(error.response);
-					console.log("erreur : " + error.message)
 					setPassword("")
 					setFormError(error.response.data.data.error)
 					throw error
@@ -250,23 +263,12 @@ const Login = ({ onTokenUpdate }) => {
 							marginLeft: 5,
 						}}
 					>
-						{title == "Connexion" && wrongMessage ? (
-							<Text
-								style={{
-									color: "#da291c",
-									fontSize: 10,
-									marginBottom: 5,
-								}}
-							>
-								E-mail ou mot de passe incorrect
-							</Text>
-						) : null}
 						{title == "Connexion" ? (
 							<TouchableOpacity
 								onPress={() =>
 									setTitle("Réinitialisation mot de passe")
 								}
-								style={{ marginTop: !wrongMessage ? 10 : 0 }}
+								style={{ marginTop: 20 }}
 							>
 								<Text
 									style={{
