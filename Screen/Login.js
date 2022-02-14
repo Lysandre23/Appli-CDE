@@ -14,7 +14,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ onTokenUpdate }) => {
-<<<<<<< HEAD
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,18 +24,6 @@ const Login = ({ onTokenUpdate }) => {
   const [action, setAction] = useState("S'enregistrer");
   const [title, setTitle] = useState("Connexion"); // "Connexion", "Enregistrement", "Vérification", "Réinitialisation mot de passe"
   const [wrongMessage, setWrongMessage] = useState(false);
-=======
-	const navigation = useNavigation()
-	const [email, setEmail] = useState("")
-	const [password, setPassword] = useState("")
-	const [password_confirm, setPasswordConfirm] = useState("")
-	const [firstName, setFirstName] = useState("")
-	const [lastName, setLastName] = useState("")
-	const [verificationCode, setVerificationCode] = useState("")
-	const [action, setAction] = useState("S'enregistrer")
-	const [title, setTitle] = useState("Connexion") // "Connexion", "Enregistrement", "Vérification", "Réinitialisation mot de passe"
-	const [wrongMessage, setWrongMessage] = useState(false);
->>>>>>> e7f485b3f3f60e61bce83d4896c4f07a852d8c26
 
   const [formError, setFormError] = useState("");
   const [emailError, setEmailError] = useState(false);
