@@ -16,6 +16,7 @@ import { useNavigation, useRoute } from "@react-navigation/core"
 import { useState, useEffect } from "react"
 import ListModal from "../Components/ListModal"
 import Api from "../Api"
+import modalStyle from "../Screen/Modal.style"
 
 const Office = (props) => {
 	const navigation = useNavigation()
@@ -138,19 +139,19 @@ const Office = (props) => {
 						setDeleteModalVisible(!deleteModalVisible)
 					}}
 				>
-					<View style={styles.modal}>
-						<View style={styles.addPanel}>
+					<View style={modalStyle.modal}>
+						<View style={modalStyle.addPanel}>
 							<TouchableOpacity
-								style={styles.bt}
+								style={modalStyle.bt}
 								onPress={confirmDelete}
 							>
-								<Text style={styles.textBT}>Valider</Text>
+								<Text style={modalStyle.textBT}>Valider</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								style={styles.bt}
+								style={modalStyle.bt}
 								onPress={cancelDelete}
 							>
-								<Text style={styles.textBT}>Annuler</Text>
+								<Text style={modalStyle.textBT}>Annuler</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
@@ -272,21 +273,6 @@ const styles = StyleSheet.create({
 		borderRadius: 2,
 		marginLeft: "5%",
 		marginTop: 20,
-	},
-	modal: {
-		flex: 1,
-		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "rgba(0,0,0,0.15)",
-	},
-	addPanel: {
-		backgroundColor: "white",
-		width: "70%",
-		padding: 50,
-		borderRadius: 20,
-		display: "flex",
-		flexDirection: "column",
 	},
 })
 
