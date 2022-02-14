@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   Text,
+  Image
 } from "react-native";
 import { List } from "react-native-paper";
 import Header from "../Components/Header";
@@ -54,6 +55,7 @@ const Clubs = (props) => {
                 navigation.navigate("Office", { id: item.id });
               }}
             >
+              <Image style={{width: 25, height: 25, backgroundColor: "black", borderRadius: 3, marginRight: 15}}/>
               <Text style={{ fontSize: 15, textAlign: "center" }}>
                 {item.name}
               </Text>
@@ -105,6 +107,10 @@ const styles = StyleSheet.create({
     shadowRadius: 15,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    display: 'flex',
+    flexDirection: "row",
+    justifyContent: 'left',
+    alignItems: 'center',
   },
   officeClubs: {
     width: "90%",
