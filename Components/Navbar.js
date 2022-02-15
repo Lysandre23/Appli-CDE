@@ -75,6 +75,7 @@ const Navbar = (props) => {
                 name="futbol-o"
                 title="Clubs"
                 color="#2ECC71"
+                onPress={setVisibleMiniIconBar}
               />
               <MiniNavbarIcon
                 goto="Goodies"
@@ -82,6 +83,7 @@ const Navbar = (props) => {
                 name="shopping-bag"
                 title="Goodies"
                 color="#F39C12"
+                onPress={setVisibleMiniIconBar}
               />
             </View>
             <View
@@ -96,6 +98,7 @@ const Navbar = (props) => {
                 type="logo"
                 title="PSN"
                 color="#2ECC71"
+                onPress={setVisibleMiniIconBar}
               />
               <MiniNavbarIcon
                 goto="Partenaires"
@@ -103,6 +106,7 @@ const Navbar = (props) => {
                 name="handshake-o"
                 title="Partenaires"
                 color="#E74C3C"
+                onPress={setVisibleMiniIconBar}
               />
             </View>
           </View>

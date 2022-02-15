@@ -15,6 +15,7 @@ const MiniNavbarIcon = (props) => {
     const type = props.type;
     return (
         <TouchableOpacity style={styles.main} onPress={() => {
+            props.onPress(false);
             switchScreen(props.goto, navigation);
         }}>
             {type=="icon"?<Icon color={props.color} size={iconSize} name={props.name}/>:<Image style={styles.img} source={require("../assets/psnLogo.png")}/>}

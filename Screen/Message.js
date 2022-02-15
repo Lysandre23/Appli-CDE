@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     padding: 5,
     backgroundColor: "white",
     borderRadius: 10,
+    zIndex: 3
   },
   sendButton: {
     marginTop: 15,

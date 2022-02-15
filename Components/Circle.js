@@ -20,7 +20,7 @@ const randomXPosition = (s) => {
 }
 
 const randomYPosition = (s) => {
-    return Math.random()*windowHeight;
+    return (Math.random()*80*0.01+0.1)*windowHeight;
 }
 
 var size = 0
