@@ -31,6 +31,7 @@ const Abonnement = (props) => {
 	return (
 		<View style={styles.main}>
 			<Header color="#da291c" title="MES ABONNEMENTS" user={props.user} />
+			<Circle />
 			<FlatList
 				data={posts}
 				onRefresh={() => getPosts()}

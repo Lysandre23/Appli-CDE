@@ -198,7 +198,6 @@ const Goodies = (props) => {
     <View style={styles.main}>
       <Header color="#da291c" title="GOODIES" user={props.user} />
       <Circle />
-      <Circle />
       {props.user.is_admin || props.user.office_responsible.length > 0 ? (
         <TouchableOpacity
           style={styles.addButton}

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { View, StyleSheet, Dimensions } from "react-native"
 import { useState } from "react"
 
@@ -23,14 +23,21 @@ const randomYPosition = (s) => {
     return Math.random()*windowHeight;
 }
 
-const size = randomSize()
-const xPos = randomXPosition(size)
-const yPos = randomYPosition(size)
+var size = 0
+var xPos = 0
+var yPos = 2
 
 const Circle = (props) => {
+
+    useEffect(() => {
+        size = randomSize();
+        xPos = randomXPosition(size)
+        yPos = randomYPosition(size)
+    }, []);
+
     return (
         <View style={[styles.main, {width: size, height: size, top: yPos, left: xPos, backgroundColor: "black"}]}>
-            
+
         </View>
     )
 }
