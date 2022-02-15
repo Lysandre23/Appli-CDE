@@ -16,7 +16,7 @@ const randomSize = () => {
 }
 
 const randomXPosition = (s) => {
-    return -s/2+windowWidth/2+randomSign()*windowWidth*(0.4+Math.random()/10)
+    return -s/2+windowWidth/2+randomSign()*windowWidth*(0.45+Math.random()/10)
 }
 
 const randomYPosition = (s) => {
@@ -45,7 +45,6 @@ const Circle = (props) => {
 const styles = StyleSheet.create({
     main: {
         position: 'absolute',
-        backgroundColor: "white",
         borderRadius: "50%",
         zIndex: 0
 
