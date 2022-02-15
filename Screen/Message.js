@@ -15,6 +15,7 @@ import Navbar from "../Components/Navbar";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Api from "../Api";
 import { useRoute } from "@react-navigation/core";
+import Circle from "../Components/Circle"
 
 const Message = (props) => {
   const route = useRoute();
@@ -94,6 +95,7 @@ const Message = (props) => {
   return (
     <View style={styles.main}>
       <Header color="#da291c" title="MESSAGE" user={props.user} />
+      <Circle />
       <Picker
         selectedValue={selectedClub}
         style={styles.picker}
@@ -151,6 +153,7 @@ const Message = (props) => {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
+    overflow: 'hidden'
   },
   picker: {
     width: "80%",

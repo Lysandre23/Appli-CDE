@@ -6,6 +6,7 @@ import { useState, useEffect } from "react"
 import EventsCard from "../Components/EventsCard"
 import Api from "../Api"
 import EndFlatList from "../Components/EndFlatList"
+import Circle from "../Components/Circle"
 
 const Abonnement = (props) => {
 	const [posts, setPosts] = useState([])
@@ -55,6 +56,7 @@ const Abonnement = (props) => {
 const styles = StyleSheet.create({
 	main: {
 		flex: 1,
+		overflow: 'hidden'
 	},
 	AbonnementList: {},
 })

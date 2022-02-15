@@ -17,6 +17,7 @@ import { useState, useEffect } from "react"
 import ListModal from "../Components/ListModal"
 import Api from "../Api"
 import modalStyle from "../Screen/Modal.style"
+import Circle from "../Components/Circle"
 
 const Office = (props) => {
 	const navigation = useNavigation()
@@ -122,6 +123,7 @@ const Office = (props) => {
 
 	return (
 		<View style={styles.main}>
+			<Circle />
 			<ListModal
 				title="Membres du bureau"
 				visible={modalMemberVisible}
@@ -229,6 +231,7 @@ const styles = StyleSheet.create({
 	main: {
 		flex: 1,
 		backgroundColor: "rgb(250,250,250)",
+		overflow: 'hidden'
 	},
 	head: {
 		display: "flex",

@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 20,
     paddingRight: 20,
+    zIndex: 50
   },
   navbar: {
     width: "100%",

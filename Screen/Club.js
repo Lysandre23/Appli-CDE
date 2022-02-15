@@ -17,6 +17,7 @@ import { useState, useEffect } from "react"
 import ListModal from "../Components/ListModal"
 import Api from "../Api"
 import modalStyle from "../Screen/Modal.style"
+import Circle from "../Components/Circle"
 
 const Club = (props) => {
 	const navigation = useNavigation()
@@ -120,6 +121,7 @@ const Club = (props) => {
 
 	return (
 		<View style={styles.main}>
+			<Circle />
 			<ListModal
 				title="Membres du club"
 				visible={modalMemberVisible}
@@ -215,7 +217,6 @@ const Club = (props) => {
 					/>
 				))}
 			</ScrollView>
-
 			<Navbar color="#da291c" user={props.user} />
 		</View>
 	)
@@ -225,6 +226,7 @@ const styles = StyleSheet.create({
 	main: {
 		flex: 1,
 		backgroundColor: "rgb(250,250,250)",
+		overflow: 'hidden'
 	},
 	head: {
 		display: "flex",

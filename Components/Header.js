@@ -2,6 +2,7 @@ import React, { useReducer } from "react"
 import { useNavigation } from "@react-navigation/core"
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native"
 import Icon from "react-native-vector-icons/FontAwesome"
+import Circle from "./Circle"
 
 const Header = (props) => {
 	const navigation = useNavigation()
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "flex-end",
+		zIndex: 50
 	},
 
 	container: {

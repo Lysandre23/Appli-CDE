@@ -5,6 +5,7 @@ import Navbar from "../Components/Navbar";
 import AdminButton from "../Components/AdminButton";
 import modalStyle from "./Modal.style";
 import { useState } from "react";
+import Circle from "../Components/Circle"
 
 const Profil = (props) => {
     const [modalPasswordVisible, setModalPasswordVisible] = useState(false);
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
 	main: {
 		flex: 1,
 		backgroundColor: "#F8F8F8",
+		overflow: 'hidden'
 	},
 })
 

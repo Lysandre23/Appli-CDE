@@ -2,6 +2,7 @@ import * as React from "react"
 import { View, Text, StyleSheet, ScrollView } from "react-native"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
+import Circle from "../Components/Circle"
 
 const PSN = (props, navigation) => {
 	return (
@@ -16,6 +17,7 @@ const PSN = (props, navigation) => {
 const styles = StyleSheet.create({
 	main: {
 		flex: 1,
+		overflow: 'hidden'
 	},
 	PSNList: {},
 })

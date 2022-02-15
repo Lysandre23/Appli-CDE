@@ -17,6 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
 import Api from "../Api";
 import EndFlatList from "../Components/EndFlatList";
+import Circle from "../Components/Circle"
 
 const Partenaires = (props, navigation) => {
   const [partners, setPartners] = useState([]);
@@ -182,13 +183,14 @@ const Partenaires = (props, navigation) => {
   return (
     <View style={styles.main}>
       <Header color="#da291c" title="PARTENAIRES" user={props.user} />
+      <Circle />
       {props.user.is_admin ? (
         <Modal
           animationType="fade"
           transparent={true}
           visible={storeModalVisible}
           onRequestClose={() => {
-            setModalVisible(!modalVisible);
+            setStoreModalVisible(!modalVisible);
           }}
         >
           <View style={styles.modal}>
@@ -296,6 +298,7 @@ const Partenaires = (props, navigation) => {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
+    overflow: 'hidden'
   },
   modal: {
     flex: 1,

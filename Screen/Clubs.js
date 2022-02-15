@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import Api from "../Api";
 import { useNavigation } from "@react-navigation/core";
 import EndFlatList from "../Components/EndFlatList";
+import Circle from "../Components/Circle"
 
 const Clubs = (props) => {
   const [offices, setOffices] = useState([]);
@@ -40,7 +41,7 @@ const Clubs = (props) => {
   return (
     <View style={styles.main}>
       <Header color="#da291c" title="CLUBS" user={props.user} />
-
+      <Circle />
       <FlatList
         data={offices}
         onRefresh={() => getOffices()}
@@ -92,6 +93,7 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     backgroundColor: "#F8F8F8",
+    overflow: 'hidden'
   },
   officeTitle: {
     width: "90%",
