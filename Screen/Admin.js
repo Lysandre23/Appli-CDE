@@ -159,7 +159,7 @@ const Admin = (props) => {
 					showMessage({
 						message:
 							"Une erreur s'est produite. Veuillez réessayer.",
-						type: "error",
+						type: "danger",
 					})
 					throw error
 				})
@@ -206,7 +206,7 @@ const Admin = (props) => {
 					showMessage({
 						message:
 							"Une erreur s'est produite. Veuillez réessayer.",
-						type: "error",
+						type: "danger",
 					})
 					throw error
 				})
@@ -237,7 +237,7 @@ const Admin = (props) => {
 				console.log(error)
 				showMessage({
 					message: "Une erreur s'est produite. Veuillez réessayer.",
-					type: "error",
+					type: "danger",
 				})
 				throw error
 			})

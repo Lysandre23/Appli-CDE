@@ -21,6 +21,7 @@ import modalStyle from "./Modal.style.js"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import * as ImagePicker from "expo-image-picker"
 import DateTimePicker from "@react-native-community/datetimepicker"
+import { showMessage, hideMessage } from "react-native-flash-message"
 
 const GestionClub = (props) => {
 	const route = useRoute()
@@ -117,7 +118,7 @@ const GestionClub = (props) => {
 
 	const handleToggleResponsible = (userId) => {
 		Api.post(
-			"/clubs/responsibles/",
+			"/clubs/responsibles",
 			{
 				user_id: userId,
 				club_id: club.id,
@@ -131,15 +132,24 @@ const GestionClub = (props) => {
 			.then(function (response) {
 				getMembers()
 				getResponsibles()
+				showMessage({
+					message: response.data.message,
+					type: "success",
+				})
 			})
-			.catch((error) => {
+			.catch(function (error) {
+				console.log(error)
+				showMessage({
+					message: "Une erreur s'est produite. Veuillez réessayer.",
+					type: "danger",
+				})
 				throw error
 			})
 	}
 
 	const handleToggleMember = (userId) => {
 		Api.post(
-			"/clubs/members/",
+			"/clubs/members",
 			{
 				user_id: userId,
 				club_id: club.id,
@@ -153,8 +163,17 @@ const GestionClub = (props) => {
 			.then(function (response) {
 				getMembers()
 				getResponsibles()
+				showMessage({
+					message: response.data.message,
+					type: "success",
+				})
 			})
-			.catch((error) => {
+			.catch(function (error) {
+				console.log(error)
+				showMessage({
+					message: "Une erreur s'est produite. Veuillez réessayer.",
+					type: "danger",
+				})
 				throw error
 			})
 	}
@@ -220,11 +239,24 @@ const GestionClub = (props) => {
 				"Content-Type": "multipart/form-data",
 				Authorization: `Bearer ${props.token}`,
 			},
-		}).then(function (response) {
-			setModalUpdateVisible(false)
-			setImageUpdateClub(null)
-			getClub()
 		})
+			.then(function (response) {
+				setModalUpdateVisible(false)
+				setImageUpdateClub(null)
+				getClub()
+				showMessage({
+					message: response.data.message,
+					type: "success",
+				})
+			})
+			.catch(function (error) {
+				console.log(error)
+				showMessage({
+					message: "Une erreur s'est produite. Veuillez réessayer.",
+					type: "danger",
+				})
+				throw error
+			})
 	}
 
 	const storePost = () => {
@@ -260,8 +292,18 @@ const GestionClub = (props) => {
 					setDescriptionPost("")
 					setImagePost(null)
 					setEnableNotificationPost(false)
+					showMessage({
+						message: response.data.message,
+						type: "success",
+					})
 				})
-				.catch((error) => {
+				.catch(function (error) {
+					console.log(error)
+					showMessage({
+						message:
+							"Une erreur s'est produite. Veuillez réessayer.",
+						type: "danger",
+					})
 					throw error
 				})
 		}
