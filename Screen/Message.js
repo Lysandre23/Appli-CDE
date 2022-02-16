@@ -4,18 +4,16 @@ import {
 	View,
 	Text,
 	StyleSheet,
+	Picker,
 	TextInput,
 	TouchableOpacity,
-	Keyboard,
-	ScrollView,
 } from "react-native"
-import { Picker } from "@react-native-picker/picker"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import Api from "../Api"
 import { useRoute } from "@react-navigation/core"
-import { showMessage, hideMessage } from "react-native-flash-message"
+import Circle from "../Components/Circle"
 
 const Message = (props) => {
 	const route = useRoute()
@@ -101,6 +99,7 @@ const Message = (props) => {
 	return (
 		<View style={styles.main}>
 			<Header color="#da291c" title="MESSAGE" user={props.user} />
+			<Circle />
 			<Picker
 				selectedValue={selectedClub}
 				style={styles.picker}
@@ -167,6 +166,7 @@ const Message = (props) => {
 const styles = StyleSheet.create({
 	main: {
 		flex: 1,
+		overflow: "hidden",
 	},
 	picker: {
 		width: "80%",
@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
 		padding: 5,
 		backgroundColor: "white",
 		borderRadius: 10,
+		zIndex: 3,
 	},
 	sendButton: {
 		marginTop: 15,

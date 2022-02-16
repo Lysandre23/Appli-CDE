@@ -9,6 +9,7 @@ import {
 } from "react-native"
 import { useState } from "react"
 import Icon from "react-native-vector-icons/FontAwesome"
+import EventModal from "./eventModal"
 
 const EventsCard = (props) => {
 	const [modalDescriptionVisible, setModalDescriptionVisible] =
@@ -25,25 +26,7 @@ const EventsCard = (props) => {
 				setModalDescriptionVisible(true)
 			}}
 		>
-			<Modal
-				animationType="fade"
-				transparent={true}
-				visible={modalDescriptionVisible}
-				onRequestClose={() => {
-					setModalDescriptionVisible(!modalDescriptionVisible)
-				}}
-			>
-				<View style={styles.modal}>
-					<TouchableOpacity
-						style={styles.panel}
-						onPress={() => {
-							setModalDescriptionVisible(false)
-						}}
-					>
-						<Text>{props.description}</Text>
-					</TouchableOpacity>
-				</View>
-			</Modal>
+			<EventModal visible={modalDescriptionVisible} setVisible={setModalDescriptionVisible} title={props.title} date={props.date} image={props.image} text={props.description}/>
 			{props.editable && props.user.is_admin ? (
 				<TouchableOpacity
 					style={styles.adminButton}
@@ -146,3 +129,25 @@ const styles = StyleSheet.create({
 })
 
 export default EventsCard
+
+/* Ancien modal
+<Modal
+				animationType="fade"
+				transparent={true}
+				visible={modalDescriptionVisible}
+				onRequestClose={() => {
+					setModalDescriptionVisible(!modalDescriptionVisible)
+				}}
+			>
+				<View style={styles.modal}>
+					<TouchableOpacity
+						style={styles.panel}
+						onPress={() => {
+							setModalDescriptionVisible(false)
+						}}
+					>
+						<Text>{props.description}</Text>
+					</TouchableOpacity>
+				</View>
+			</Modal>
+*/

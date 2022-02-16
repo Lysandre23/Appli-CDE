@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   Text,
+  Image
 } from "react-native";
 import { List } from "react-native-paper";
 import Header from "../Components/Header";
@@ -14,6 +15,7 @@ import { useState, useEffect } from "react";
 import Api from "../Api";
 import { useNavigation } from "@react-navigation/core";
 import EndFlatList from "../Components/EndFlatList";
+import Circle from "../Components/Circle"
 
 const Clubs = (props) => {
   const [offices, setOffices] = useState([]);
@@ -39,7 +41,7 @@ const Clubs = (props) => {
   return (
     <View style={styles.main}>
       <Header color="#da291c" title="CLUBS" user={props.user} />
-
+      <Circle />
       <FlatList
         data={offices}
         onRefresh={() => getOffices()}
@@ -54,6 +56,7 @@ const Clubs = (props) => {
                 navigation.navigate("Office", { id: item.id });
               }}
             >
+              <Image style={{width: 25, height: 25, backgroundColor: "black", borderRadius: 3, marginRight: 15}}/>
               <Text style={{ fontSize: 15, textAlign: "center" }}>
                 {item.name}
               </Text>
@@ -90,6 +93,7 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     backgroundColor: "#F8F8F8",
+    overflow: 'hidden'
   },
   officeTitle: {
     width: "90%",
@@ -105,6 +109,10 @@ const styles = StyleSheet.create({
     shadowRadius: 15,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    display: 'flex',
+    flexDirection: "row",
+    justifyContent: 'left',
+    alignItems: 'center',
   },
   officeClubs: {
     width: "90%",

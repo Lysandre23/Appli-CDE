@@ -6,6 +6,7 @@ import Navbar from "../Components/Navbar"
 import { useState, useEffect } from "react"
 import Api from "../Api"
 import EndFlatList from "../Components/EndFlatList"
+import Circle from "../Components/Circle"
 
 const Events = (props) => {
 	const [posts, setPosts] = useState([])
@@ -26,6 +27,8 @@ const Events = (props) => {
 	return (
 		<View style={styles.main}>
 			<Header color="#da291c" title="EVENTS" user={props.user} />
+			<Circle />
+			<Circle />
 			<FlatList
 				data={posts}
 				onRefresh={() => getPosts()}
@@ -52,6 +55,7 @@ const styles = StyleSheet.create({
 	main: {
 		flex: 1,
 		backgroundColor: "rgb(250,250,250)",
+		overflow: 'hidden'
 	},
 	addButton: {
 		zIndex: 2,

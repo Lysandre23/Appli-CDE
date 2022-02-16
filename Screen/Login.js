@@ -12,7 +12,6 @@ import Api from "../Api"
 import { useState } from "react"
 import Icon from "react-native-vector-icons/FontAwesome"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { Button } from "react-native-paper"
 
 const Login = ({ onTokenUpdate }) => {
 	const navigation = useNavigation()
@@ -339,6 +338,7 @@ const styles = StyleSheet.create({
 	main: {
 		flex: 1,
 		backgroundColor: "rgb(250,250,250)",
+		overflow: 'hidden'
 	},
 	inputContainer: {
 		position: "relative",

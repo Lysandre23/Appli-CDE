@@ -11,7 +11,6 @@ import {
 	TouchableOpacity,
 	Picker,
 	Platform,
-	Dimensions,
 } from "react-native"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
@@ -21,7 +20,7 @@ import Api from "../Api"
 import modalStyle from "./Modal.style"
 import OfficeGoodies from "../Components/OfficeGoodies"
 import EndFlatList from "../Components/EndFlatList"
-import { showMessage, hideMessage } from "react-native-flash-message"
+import Circle from "../Components/Circle"
 
 const Goodies = (props) => {
 	const [storeModalVisible, setStoreModalVisible] = useState(false)
@@ -234,6 +233,7 @@ const Goodies = (props) => {
 	return (
 		<View style={styles.main}>
 			<Header color="#da291c" title="GOODIES" user={props.user} />
+			<Circle />
 			{props.user.is_admin || props.user.office_responsible.length > 0 ? (
 				<TouchableOpacity
 					style={styles.addButton}
@@ -377,6 +377,7 @@ const Goodies = (props) => {
 const styles = StyleSheet.create({
 	main: {
 		flex: 1,
+		overflow: "hidden",
 	},
 	addButton: {
 		zIndex: 2,
