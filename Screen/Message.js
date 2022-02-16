@@ -4,10 +4,10 @@ import {
 	View,
 	Text,
 	StyleSheet,
-	Picker,
 	TextInput,
 	TouchableOpacity,
 } from "react-native"
+import { Picker } from "@react-native-picker/picker"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
 import BouncyCheckbox from "react-native-bouncy-checkbox"

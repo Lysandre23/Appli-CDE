@@ -9,9 +9,9 @@ import {
 	FlatList,
 	Modal,
 	TouchableOpacity,
-	Picker,
 	Platform,
 } from "react-native"
+import { Picker } from "@react-native-picker/picker"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
 import { useState, useEffect } from "react"
