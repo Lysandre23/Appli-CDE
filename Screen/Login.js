@@ -77,7 +77,7 @@ const Login = ({ onTokenUpdate }) => {
 
 	const login = () => {
 		setEmailError(false)
-		setPassword(false)
+		setPasswordError(false)
 		if (email !== "" && password !== "") {
 			if (!validateEmail(email)) {
 				setEmailError(true)

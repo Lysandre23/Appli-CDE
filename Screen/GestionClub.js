@@ -127,10 +127,14 @@ const GestionClub = (props) => {
 					Authorization: `Bearer ${props.token}`,
 				},
 			}
-		).then(function (response) {
-			getMembers()
-			getResponsibles()
-		})
+		)
+			.then(function (response) {
+				getMembers()
+				getResponsibles()
+			})
+			.catch((error) => {
+				throw error
+			})
 	}
 
 	const handleToggleMember = (userId) => {
@@ -145,10 +149,14 @@ const GestionClub = (props) => {
 					Authorization: `Bearer ${props.token}`,
 				},
 			}
-		).then(function (response) {
-			getMembers()
-			getResponsibles()
-		})
+		)
+			.then(function (response) {
+				getMembers()
+				getResponsibles()
+			})
+			.catch((error) => {
+				throw error
+			})
 	}
 
 	const pickImageClub = async () => {
@@ -462,7 +470,7 @@ const GestionClub = (props) => {
 				}}
 			>
 				<Image
-					source={club.picture}
+					source={{ uri: club.picture }}
 					style={{
 						width: 100,
 						height: 100,

@@ -21,7 +21,7 @@ export function SideBar(props) {
 	}
 
 	const handlePressProfile = () => {
-		navigation.navigate("Profil");
+		navigation.navigate("Profil")
 	}
 
 	return (
@@ -43,7 +43,8 @@ export function SideBar(props) {
 						txt="Page administrateur"
 					/>
 				) : null}
-				{props.user.club_responsible.length > 0 ? (
+				{props.user.club_responsible.length > 0 ||
+				props.user.office_responsible > 0 ? (
 					<SideBarButton
 						onPress={handlePressGestionClub}
 						txt="Gestion de club"

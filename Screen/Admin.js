@@ -21,7 +21,7 @@ import modalStyle from "./Modal.style.js"
 import { useEffect } from "react"
 import Api from "../Api"
 import ListModal from "../Components/ListModal"
-import axios from "axios"
+import { showMessage, hideMessage } from "react-native-flash-message"
 
 const Admin = (props) => {
 	const navigation = useNavigation()
@@ -94,11 +94,6 @@ const Admin = (props) => {
 		setImageNewOffice(null)
 	}
 
-	const handleCloseAddAdminModal = () => {
-		setModalAddAdminVisible(false)
-		setSelectedNewAdmin(0)
-	}
-
 	const pickImageClub = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -147,13 +142,27 @@ const Admin = (props) => {
 					"Content-Type": "multipart/form-data",
 					Authorization: `Bearer ${props.token}`,
 				},
-			}).then(function (response) {
-				setModalClubVisible(false)
-				setImageNewClub(null)
-				setNameNewClub("")
-				setDescriptionNewClub("")
-				getOffices()
 			})
+				.then(function (response) {
+					showMessage({
+						message: response.data.message,
+						type: "success",
+					})
+					setModalClubVisible(false)
+					setImageNewClub(null)
+					setNameNewClub("")
+					setDescriptionNewClub("")
+					getOffices()
+				})
+				.catch(function (error) {
+					console.log(error)
+					showMessage({
+						message:
+							"Une erreur s'est produite. Veuillez réessayer.",
+						type: "error",
+					})
+					throw error
+				})
 		}
 	}
 
@@ -182,6 +191,10 @@ const Admin = (props) => {
 				},
 			})
 				.then(function (response) {
+					showMessage({
+						message: response.data.message,
+						type: "success",
+					})
 					getOffices()
 					setModalOfficeVisible(false)
 					setImageNewOffice(null)
@@ -189,8 +202,12 @@ const Admin = (props) => {
 					setDescriptionNewOffice("")
 				})
 				.catch(function (error) {
-					console.log(error.response)
 					console.log(error)
+					showMessage({
+						message:
+							"Une erreur s'est produite. Veuillez réessayer.",
+						type: "error",
+					})
 					throw error
 				})
 		}
@@ -210,10 +227,18 @@ const Admin = (props) => {
 		)
 			.then(function (response) {
 				setModalAddAdminVisible(false)
-				setSelectedNewAdmin(0)
 				getAdmins()
+				showMessage({
+					message: response.data.message,
+					type: "success",
+				})
 			})
 			.catch(function (error) {
+				console.log(error)
+				showMessage({
+					message: "Une erreur s'est produite. Veuillez réessayer.",
+					type: "error",
+				})
 				throw error
 			})
 	}
@@ -253,9 +278,22 @@ const Admin = (props) => {
 			headers: {
 				Authorization: `Bearer ${props.token}`,
 			},
-		}).then(function (response) {
-			getAdmins()
 		})
+			.then(function (response) {
+				getAdmins()
+				showMessage({
+					message: response.data.message,
+					type: "success",
+				})
+			})
+			.catch(function (error) {
+				console.log(error)
+				showMessage({
+					message: "Une erreur s'est produite. Veuillez réessayer.",
+					type: "danger",
+				})
+				throw error
+			})
 	}
 
 	const goToClub = (id) => {

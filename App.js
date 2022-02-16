@@ -3,6 +3,7 @@ import * as React from "react"
 import { useState, useEffect } from "react"
 import { View, Text } from "react-native"
 import { NavigationContainer } from "@react-navigation/native"
+import { DrawerActions } from "@react-navigation/native"
 import { createDrawerNavigator, DrawerContent } from "@react-navigation/drawer"
 import Login from "./Screen/Login"
 import Goodies from "./Screen/Goodies"
@@ -25,10 +26,11 @@ import Api from "./Api"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Profil from "./Screen/Profil"
 import Office from "./Screen/Office"
+import FlashMessage from "react-native-flash-message"
 
 const Drawer = createDrawerNavigator()
 
-function App() {
+function App({ navigation }) {
 	const [token, setToken] = useState(null)
 	const [isLogged, setIsLogged] = useState(false)
 	const [pendingUserInfo, setPendingUserInfo] = useState(true)
@@ -71,6 +73,7 @@ function App() {
 				club_responsible: [],
 			})
 			setToken(null)
+			DrawerActions.closeDrawer()
 		}
 	}
 
@@ -106,8 +109,9 @@ function App() {
 
 	return (
 		<NavigationContainer>
+			<FlashMessage position="top" />
 			<Drawer.Navigator
-				initialRouteName="Login"
+				initialRouteName="Events"
 				drawerContent={(props) =>
 					user.email ? (
 						<SideBar user={user} onDisconnect={handleDisconnect} />
