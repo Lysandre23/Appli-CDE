@@ -138,7 +138,6 @@ const GestionClub = (props) => {
 				})
 			})
 			.catch(function (error) {
-				console.log(error)
 				showMessage({
 					message: "Une erreur s'est produite. Veuillez réessayer.",
 					type: "danger",
@@ -169,7 +168,6 @@ const GestionClub = (props) => {
 				})
 			})
 			.catch(function (error) {
-				console.log(error)
 				showMessage({
 					message: "Une erreur s'est produite. Veuillez réessayer.",
 					type: "danger",
@@ -250,7 +248,6 @@ const GestionClub = (props) => {
 				})
 			})
 			.catch(function (error) {
-				console.log(error)
 				showMessage({
 					message: "Une erreur s'est produite. Veuillez réessayer.",
 					type: "danger",
@@ -298,7 +295,6 @@ const GestionClub = (props) => {
 					})
 				})
 				.catch(function (error) {
-					console.log(error)
 					showMessage({
 						message:
 							"Une erreur s'est produite. Veuillez réessayer.",

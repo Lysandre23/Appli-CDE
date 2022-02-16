@@ -15,6 +15,7 @@ import Navbar from "../Components/Navbar"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import Api from "../Api"
 import { useRoute } from "@react-navigation/core"
+import { showMessage, hideMessage } from "react-native-flash-message"
 
 const Message = (props) => {
 	const route = useRoute()
@@ -80,13 +81,19 @@ const Message = (props) => {
 			},
 		})
 			.then(function (response) {
-				console.log(response)
 				setMessage("")
 				setAnonymous(false)
 				setSelectedClub(0)
+				showMessage({
+					message: response.data.message,
+					type: "success",
+				})
 			})
 			.catch(function (error) {
-				console.log(error.response)
+				showMessage({
+					message: "Une erreur s'est produite. Veuillez réessayer.",
+					type: "danger",
+				})
 				throw error
 			})
 	}

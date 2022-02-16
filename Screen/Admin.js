@@ -155,7 +155,6 @@ const Admin = (props) => {
 					getOffices()
 				})
 				.catch(function (error) {
-					console.log(error)
 					showMessage({
 						message:
 							"Une erreur s'est produite. Veuillez réessayer.",
@@ -202,7 +201,6 @@ const Admin = (props) => {
 					setDescriptionNewOffice("")
 				})
 				.catch(function (error) {
-					console.log(error)
 					showMessage({
 						message:
 							"Une erreur s'est produite. Veuillez réessayer.",
@@ -234,7 +232,6 @@ const Admin = (props) => {
 				})
 			})
 			.catch(function (error) {
-				console.log(error)
 				showMessage({
 					message: "Une erreur s'est produite. Veuillez réessayer.",
 					type: "danger",
@@ -287,7 +284,6 @@ const Admin = (props) => {
 				})
 			})
 			.catch(function (error) {
-				console.log(error)
 				showMessage({
 					message: "Une erreur s'est produite. Veuillez réessayer.",
 					type: "danger",

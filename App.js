@@ -39,9 +39,10 @@ function App({ navigation }) {
 		first_name: null,
 		last_name: null,
 		is_admin: false,
-		//subscriptions: null,
 		office_responsible: [],
 		club_responsible: [],
+		office_member: [],
+		club_member: [],
 	})
 
 	useEffect(() => {
@@ -68,9 +69,10 @@ function App({ navigation }) {
 				first_name: null,
 				last_name: null,
 				is_admin: false,
-				//subscriptions: null,
 				office_responsible: [],
 				club_responsible: [],
+				office_member: [],
+				club_member: [],
 			})
 			setToken(null)
 			DrawerActions.closeDrawer()
@@ -94,6 +96,8 @@ function App({ navigation }) {
 					//subscriptions: response.data.data.subscriptions,
 					office_responsible: response.data.data.office_responsible,
 					club_responsible: response.data.data.club_responsible,
+					office_member: response.data.data.office_member,
+					club_member: response.data.data.club_member,
 				}
 				setUser(user)
 				setIsLogged(true)
@@ -177,7 +181,7 @@ function App({ navigation }) {
 					{(props) => <RoleOneUser user={user} />}
 				</Drawer.Screen>
 				<Drawer.Screen name="ListGestionClub">
-					{(props) => <ListGestionClub user={user} />}
+					{(props) => <ListGestionClub user={user} token={token} />}
 				</Drawer.Screen>
 				<Drawer.Screen name="Profil">
 					{(props) => <Profil user={user} token={token} />}
