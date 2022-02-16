@@ -39,6 +39,7 @@ const GestionClub = (props) => {
 	const [datePost, setDatePost] = useState("")
 	const [enableNotificationPost, setEnableNotificationPost] = useState(false)
 
+	const [modalMessagesVisible, setModalMessagesVisible] = useState(false)
 	const [modalAddMemberVisible, setModalAddMemberVisible] = useState(false)
 	const [modalRemoveMemberVisible, setModalRemoveMemberVisible] =
 		useState(false)
@@ -52,6 +53,7 @@ const GestionClub = (props) => {
 		name: "",
 		description: "",
 	})
+	const [messages, setMessages] = useState([])
 
 	const [users, setUsers] = useState([])
 	const [members, setMembers] = useState([])
@@ -63,6 +65,7 @@ const GestionClub = (props) => {
 			getClub()
 			getMembers()
 			getResponsibles()
+			getMessages()
 		}
 	}, [club])
 
@@ -102,6 +105,16 @@ const GestionClub = (props) => {
 			},
 		}).then(function (response) {
 			setResponsibles(response.data.data)
+		})
+	}
+
+	const getMessages = () => {
+		Api.get("/clubs/messages/" + route.params.id, {
+			headers: {
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then((response) => {
+			setMessages(response.data.data)
 		})
 	}
 
@@ -445,6 +458,14 @@ const GestionClub = (props) => {
 			</Modal>
 
 			<ListModal
+				title="Messages"
+				visible={modalMessagesVisible}
+				type="messages"
+				list={messages}
+				selectable={false}
+				onClose={() => setModalMessagesVisible(!modalMessagesVisible)}
+			/>
+			<ListModal
 				title="Ajouter un membre"
 				visible={modalAddMemberVisible}
 				list={serializeUsers(
@@ -538,6 +559,10 @@ const GestionClub = (props) => {
 				</View>
 			</View>
 			<RedLine />
+			<AdminButton
+				text="Messages"
+				onPress={() => setModalMessagesVisible(true)}
+			/>
 			<AdminButton
 				text="Modifier le club"
 				onPress={() => setModalUpdateVisible(true)}

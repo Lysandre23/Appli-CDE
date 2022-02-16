@@ -39,6 +39,7 @@ const GestionOffice = (props) => {
 	const [datePost, setDatePost] = useState("")
 	const [enableNotificationPost, setEnableNotificationPost] = useState(false)
 
+	const [modalMessagesVisible, setModalMessagesVisible] = useState(false)
 	const [modalAddMemberVisible, setModalAddMemberVisible] = useState(false)
 	const [modalRemoveMemberVisible, setModalRemoveMemberVisible] =
 		useState(false)
@@ -53,6 +54,8 @@ const GestionOffice = (props) => {
 		description: "",
 	})
 
+	const [messages, setMessages] = useState([])
+
 	const [users, setUsers] = useState([])
 	const [members, setMembers] = useState([])
 	const [responsibles, setResponsibles] = useState([])
@@ -63,6 +66,7 @@ const GestionOffice = (props) => {
 			getOffice()
 			getMembers()
 			getResponsibles()
+			getMessages()
 		}
 	}, [office])
 
@@ -102,6 +106,16 @@ const GestionOffice = (props) => {
 			},
 		}).then(function (response) {
 			setResponsibles(response.data.data)
+		})
+	}
+
+	const getMessages = () => {
+		Api.get("/offices/messages/" + route.params.id, {
+			headers: {
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then((response) => {
+			setMessages(response.data.data)
 		})
 	}
 
@@ -445,6 +459,14 @@ const GestionOffice = (props) => {
 			</Modal>
 
 			<ListModal
+				title="Messages"
+				visible={modalMessagesVisible}
+				type="messages"
+				list={messages}
+				selectable={false}
+				onClose={() => setModalMessagesVisible(!modalMessagesVisible)}
+			/>
+			<ListModal
 				title="Ajouter un membre"
 				visible={modalAddMemberVisible}
 				list={serializeUsers(
@@ -538,6 +560,10 @@ const GestionOffice = (props) => {
 				</View>
 			</View>
 			<RedLine />
+			<AdminButton
+				text="Messages"
+				onPress={() => setModalMessagesVisible(true)}
+			/>
 			<AdminButton
 				text="Modifier le bureau"
 				onPress={() => setModalUpdateVisible(true)}
