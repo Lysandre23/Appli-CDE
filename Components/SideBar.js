@@ -2,8 +2,6 @@ import React from "react"
 import { View, Text, StyleSheet, Image } from "react-native"
 import { SideBarButton } from "./SideBarButton"
 import { useNavigation } from "@react-navigation/native"
-import RoleSquare from "./RoleSquare"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export function SideBar(props) {
 	const navigation = useNavigation()
@@ -17,11 +15,26 @@ export function SideBar(props) {
 	}
 
 	const handlePressGestionClub = () => {
-		navigation.navigate("ListGestionClub")
+		if (
+			props.user.club_member.length + props.user.office_member.length >
+			1
+		) {
+			navigation.navigate("ListGestionClub")
+		} else {
+			if (props.user.club_member.length > 0) {
+				navigation.navigate("GestionClub", {
+					id: props.user.club_member[0],
+				})
+			} else {
+				navigation.navigate("GestionOffice", {
+					id: props.user.office_member[0],
+				})
+			}
+		}
 	}
 
 	const handlePressProfile = () => {
-		navigation.navigate("Profil");
+		navigation.navigate("Profil")
 	}
 
 	return (
@@ -43,7 +56,8 @@ export function SideBar(props) {
 						txt="Page administrateur"
 					/>
 				) : null}
-				{props.user.club_responsible.length > 0 ? (
+				{props.user.club_member.length > 0 ||
+				props.user.office_member.length > 0 ? (
 					<SideBarButton
 						onPress={handlePressGestionClub}
 						txt="Gestion de club"

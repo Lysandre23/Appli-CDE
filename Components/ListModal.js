@@ -8,6 +8,7 @@ import {
 	ScrollView,
 } from "react-native"
 import ListModalItem from "./ListModalItem"
+import ListModalMessage from "./ListModalMessage"
 import Icon from "react-native-vector-icons/FontAwesome"
 import BigButton from "./BigButton"
 
@@ -34,7 +35,7 @@ class ListModal extends Component {
 	}
 
 	render() {
-		const { visible, list, selectable, title } = this.props
+		const { visible, list, selectable, title, type } = this.props
 		const { selectedValue } = this.state
 		return (
 			<Modal
@@ -54,15 +55,23 @@ class ListModal extends Component {
 					) : null}
 					<Text style={styles.modalHeader}>{title}</Text>
 					<ScrollView style={styles.list}>
-						{list.map((item) => (
-							<ListModalItem
-								key={item.value}
-								selectedValue={selectedValue}
-								label={item.label}
-								value={item.value}
-								onPress={this.handlePress}
-							/>
-						))}
+						{list.map((item) =>
+							type === "messages" ? (
+								<ListModalMessage
+									key={item.id}
+									author={item.user}
+									message={item.content}
+								/>
+							) : (
+								<ListModalItem
+									key={item.value}
+									selectedValue={selectedValue}
+									label={item.label}
+									value={item.value}
+									onPress={this.handlePress}
+								/>
+							)
+						)}
 					</ScrollView>
 					{selectable ? (
 						<View style={styles.btnList}>

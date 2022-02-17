@@ -21,6 +21,7 @@ import modalStyle from "./Modal.style.js"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import * as ImagePicker from "expo-image-picker"
 import DateTimePicker from "@react-native-community/datetimepicker"
+import { showMessage, hideMessage } from "react-native-flash-message"
 
 const GestionClub = (props) => {
 	const route = useRoute()
@@ -38,6 +39,7 @@ const GestionClub = (props) => {
 	const [datePost, setDatePost] = useState("")
 	const [enableNotificationPost, setEnableNotificationPost] = useState(false)
 
+	const [modalMessagesVisible, setModalMessagesVisible] = useState(false)
 	const [modalAddMemberVisible, setModalAddMemberVisible] = useState(false)
 	const [modalRemoveMemberVisible, setModalRemoveMemberVisible] =
 		useState(false)
@@ -51,6 +53,7 @@ const GestionClub = (props) => {
 		name: "",
 		description: "",
 	})
+	const [messages, setMessages] = useState([])
 
 	const [users, setUsers] = useState([])
 	const [members, setMembers] = useState([])
@@ -62,6 +65,7 @@ const GestionClub = (props) => {
 			getClub()
 			getMembers()
 			getResponsibles()
+			getMessages()
 		}
 	}, [club])
 
@@ -104,6 +108,16 @@ const GestionClub = (props) => {
 		})
 	}
 
+	const getMessages = () => {
+		Api.get("/clubs/messages/" + route.params.id, {
+			headers: {
+				Authorization: `Bearer ${props.token}`,
+			},
+		}).then((response) => {
+			setMessages(response.data.data)
+		})
+	}
+
 	const serializeUsers = (users) => {
 		let array = []
 		users.forEach((item) => {
@@ -117,7 +131,7 @@ const GestionClub = (props) => {
 
 	const handleToggleResponsible = (userId) => {
 		Api.post(
-			"/clubs/responsibles/",
+			"/clubs/responsibles",
 			{
 				user_id: userId,
 				club_id: club.id,
@@ -127,15 +141,27 @@ const GestionClub = (props) => {
 					Authorization: `Bearer ${props.token}`,
 				},
 			}
-		).then(function (response) {
-			getMembers()
-			getResponsibles()
-		})
+		)
+			.then(function (response) {
+				getMembers()
+				getResponsibles()
+				showMessage({
+					message: response.data.message,
+					type: "success",
+				})
+			})
+			.catch(function (error) {
+				showMessage({
+					message: "Une erreur s'est produite. Veuillez réessayer.",
+					type: "danger",
+				})
+				throw error
+			})
 	}
 
 	const handleToggleMember = (userId) => {
 		Api.post(
-			"/clubs/members/",
+			"/clubs/members",
 			{
 				user_id: userId,
 				club_id: club.id,
@@ -145,10 +171,22 @@ const GestionClub = (props) => {
 					Authorization: `Bearer ${props.token}`,
 				},
 			}
-		).then(function (response) {
-			getMembers()
-			getResponsibles()
-		})
+		)
+			.then(function (response) {
+				getMembers()
+				getResponsibles()
+				showMessage({
+					message: response.data.message,
+					type: "success",
+				})
+			})
+			.catch(function (error) {
+				showMessage({
+					message: "Une erreur s'est produite. Veuillez réessayer.",
+					type: "danger",
+				})
+				throw error
+			})
 	}
 
 	const pickImageClub = async () => {
@@ -212,11 +250,23 @@ const GestionClub = (props) => {
 				"Content-Type": "multipart/form-data",
 				Authorization: `Bearer ${props.token}`,
 			},
-		}).then(function (response) {
-			setModalUpdateVisible(false)
-			setImageUpdateClub(null)
-			getClub()
 		})
+			.then(function (response) {
+				setModalUpdateVisible(false)
+				setImageUpdateClub(null)
+				getClub()
+				showMessage({
+					message: response.data.message,
+					type: "success",
+				})
+			})
+			.catch(function (error) {
+				showMessage({
+					message: "Une erreur s'est produite. Veuillez réessayer.",
+					type: "danger",
+				})
+				throw error
+			})
 	}
 
 	const storePost = () => {
@@ -252,8 +302,17 @@ const GestionClub = (props) => {
 					setDescriptionPost("")
 					setImagePost(null)
 					setEnableNotificationPost(false)
+					showMessage({
+						message: response.data.message,
+						type: "success",
+					})
 				})
-				.catch((error) => {
+				.catch(function (error) {
+					showMessage({
+						message:
+							"Une erreur s'est produite. Veuillez réessayer.",
+						type: "danger",
+					})
 					throw error
 				})
 		}
@@ -401,6 +460,14 @@ const GestionClub = (props) => {
 			</Modal>
 
 			<ListModal
+				title="Messages"
+				visible={modalMessagesVisible}
+				type="messages"
+				list={messages}
+				selectable={false}
+				onClose={() => setModalMessagesVisible(!modalMessagesVisible)}
+			/>
+			<ListModal
 				title="Ajouter un membre"
 				visible={modalAddMemberVisible}
 				list={serializeUsers(
@@ -464,7 +531,7 @@ const GestionClub = (props) => {
 				}}
 			>
 				<Image
-					source={club.picture}
+					source={{ uri: club.picture }}
 					style={{
 						width: 100,
 						height: 100,
@@ -494,6 +561,10 @@ const GestionClub = (props) => {
 				</View>
 			</View>
 			<RedLine />
+			<AdminButton
+				text="Messages"
+				onPress={() => setModalMessagesVisible(true)}
+			/>
 			<AdminButton
 				text="Modifier le club"
 				onPress={() => setModalUpdateVisible(true)}
