@@ -271,6 +271,7 @@ const GestionClub = (props) => {
 			>
 				<View style={modalStyle.modal}>
 					<View style={modalStyle.addPanel}>
+						<Text style={modalStyle.title}>Modifier le club</Text>
 						<TextInput
 							style={modalStyle.input}
 							placeholder="Nom"
@@ -293,23 +294,23 @@ const GestionClub = (props) => {
 							style={modalStyle.imagePicker}
 							onPress={pickImageClub}
 						>
-							<Text style={{ textAlign: "center" }}>
+							<Text style={modalStyle.textImagePicker}>
 								Modifier l'image
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={modalStyle.bt}
+							style={modalStyle.confirmButton}
 							onPress={updateClub}
 						>
-							<Text style={modalStyle.textBT}>Valider</Text>
+							<Text style={modalStyle.confirmText}>Valider</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={modalStyle.bt}
+							style={modalStyle.cancelButton}
 							onPress={() => {
 								handleCloseClubModal()
 							}}
 						>
-							<Text style={modalStyle.textBT}>Annuler</Text>
+							<Text style={modalStyle.cancelText}>Annuler</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -322,8 +323,9 @@ const GestionClub = (props) => {
 					setModalPostVisible(!modalPostVisible)
 				}}
 			>
-				<View style={styles.modal}>
-					<View style={styles.panel}>
+				<View style={modalStyle.modal}>
+					<View style={modalStyle.addPanel}>
+						<Text style={modalStyle.title}>Création d'un club</Text>
 						<TextInput
 							style={modalStyle.input}
 							placeholder="Title"
@@ -331,7 +333,7 @@ const GestionClub = (props) => {
 							onChangeText={setTitlePost}
 						/>
 						<TextInput
-							style={styles.input}
+							style={modalStyle.input}
 							placeholder="Description"
 							value={descriptionPost}
 							onChangeText={setDescriptionPost}
@@ -351,7 +353,7 @@ const GestionClub = (props) => {
 							style={modalStyle.imagePicker}
 							onPress={pickImagePost}
 						>
-							<Text style={{ textAlign: "center" }}>
+							<Text style={modalStyle.textImagePicker}>
 								Choisir une image
 							</Text>
 						</TouchableOpacity>
@@ -379,20 +381,20 @@ const GestionClub = (props) => {
 							/>
 						</View>
 						<TouchableOpacity
-							style={styles.modalButton}
+							style={modalStyle.confirmButton}
 							onPress={() => {
 								storePost()
 							}}
 						>
-							<Text style={styles.btModalText}>Valider</Text>
+							<Text style={modalStyle.confirmText}>Valider</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={styles.modalButton}
+							style={modalStyle.cancelButton}
 							onPress={() => {
 								handleClosePostModal(false)
 							}}
 						>
-							<Text style={styles.btModalText}>Annuler</Text>
+							<Text style={modalStyle.cancelText}>Annuler</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

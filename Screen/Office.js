@@ -143,17 +143,18 @@ const Office = (props) => {
 				>
 					<View style={modalStyle.modal}>
 						<View style={modalStyle.addPanel}>
+							<Text style={modalStyle.title}>Supprimer ce post</Text>
 							<TouchableOpacity
-								style={modalStyle.bt}
+								style={modalStyle.confirmButton}
 								onPress={confirmDelete}
 							>
-								<Text style={modalStyle.textBT}>Valider</Text>
+								<Text style={modalStyle.confirmText}>Valider</Text>
 							</TouchableOpacity>
 							<TouchableOpacity
-								style={modalStyle.bt}
+								style={modalStyle.cancelButton}
 								onPress={cancelDelete}
 							>
-								<Text style={modalStyle.textBT}>Annuler</Text>
+								<Text style={modalStyle.cancelText}>Annuler</Text>
 							</TouchableOpacity>
 						</View>
 					</View>

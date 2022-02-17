@@ -284,6 +284,7 @@ const Admin = (props) => {
 			>
 				<View style={modalStyle.modal}>
 					<View style={modalStyle.addPanel}>
+						<Text style={modalStyle.title}>Création d'un club</Text>
 						<TextInput
 							style={modalStyle.input}
 							placeholder="Nom"
@@ -300,7 +301,7 @@ const Admin = (props) => {
 							style={modalStyle.imagePicker}
 							onPress={pickImageClub}
 						>
-							<Text style={{ textAlign: "center" }}>
+							<Text style={modalStyle.textImagePicker}>
 								Choisir une image
 							</Text>
 						</TouchableOpacity>
@@ -326,18 +327,18 @@ const Admin = (props) => {
 							))}
 						</Picker>
 						<TouchableOpacity
-							style={modalStyle.bt}
+							style={modalStyle.confirmButton}
 							onPress={storeClub}
 						>
-							<Text style={modalStyle.textBT}>Valider</Text>
+							<Text style={modalStyle.confirmText}>Valider</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={modalStyle.bt}
+							style={modalStyle.cancelButton}
 							onPress={() => {
 								handleCloseClubModal()
 							}}
 						>
-							<Text style={modalStyle.textBT}>Annuler</Text>
+							<Text style={modalStyle.cancelText}>Annuler</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -352,6 +353,7 @@ const Admin = (props) => {
 			>
 				<View style={modalStyle.modal}>
 					<View style={modalStyle.addPanel}>
+						<Text style={modalStyle.title}>Création d'un bureau</Text>
 						<TextInput
 							style={modalStyle.input}
 							placeholder="Nom"
@@ -368,23 +370,23 @@ const Admin = (props) => {
 							style={modalStyle.imagePicker}
 							onPress={pickImageOffice}
 						>
-							<Text style={{ textAlign: "center" }}>
+							<Text style={modalStyle.textImagePicker}>
 								Choisir une image
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={modalStyle.bt}
+							style={modalStyle.confirmButton}
 							onPress={storeOffice}
 						>
-							<Text style={modalStyle.textBT}>Valider</Text>
+							<Text style={modalStyle.confirmText}>Valider</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={modalStyle.bt}
+							style={modalStyle.cancelButton}
 							onPress={() => {
 								handleCloseOfficeModal()
 							}}
 						>
-							<Text style={modalStyle.textBT}>Annuler</Text>
+							<Text style={modalStyle.cancelText}>Annuler</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

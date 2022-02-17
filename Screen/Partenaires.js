@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import Api from "../Api";
 import EndFlatList from "../Components/EndFlatList";
 import Circle from "../Components/Circle"
+import modalStyle from "./Modal.style";
 
 const Partenaires = (props, navigation) => {
   const [partners, setPartners] = useState([]);
@@ -193,34 +194,35 @@ const Partenaires = (props, navigation) => {
             setStoreModalVisible(!modalVisible);
           }}
         >
-          <View style={styles.modal}>
-            <View style={styles.addPanel}>
+          <View style={modalStyle.modal}>
+            <View style={modalStyle.addPanel}>
+              <Text style={modalStyle.title}>Ajouter un partenaire</Text>
               <TextInput
-                style={styles.input}
+                style={modalStyle.input}
                 placeholder="Nom"
                 value={nameNewPart}
                 onChangeText={setNameNewPart}
               />
               <TextInput
-                style={styles.input}
+                style={modalStyle.input}
                 placeholder="Lien vers le site"
                 value={urlNewPart}
                 onChangeText={setUrlNewPart}
               />
 
-              <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
-                <Text style={{ textAlign: "center" }}>
+              <TouchableOpacity style={modalStyle.imagePicker} onPress={pickImage}>
+                <Text style={modalStyle.textImagePicker}>
                   {pendingEdit ? "Modifier l'image" : "Choisir une image"}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.bt} onPress={handleSubmitStore}>
-                <Text style={styles.textBT}>Valider</Text>
+              <TouchableOpacity style={modalStyle.confirmButton} onPress={handleSubmitStore}>
+                <Text style={modalStyle.confirmText}>Valider</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.bt}
+                style={modalStyle.cancelButton}
                 onPress={handleCloseStoreModal}
               >
-                <Text style={styles.textBT}>Annuler</Text>
+                <Text style={modalStyle.cancelText}>Annuler</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -232,16 +234,17 @@ const Partenaires = (props, navigation) => {
           transparent={true}
           visible={deleteModalVisible}
           onRequestClose={() => {
-            setModalVisible(!deleteModalVisible);
+            setStoreModalVisible(!deleteModalVisible);
           }}
         >
-          <View style={styles.modal}>
-            <View style={styles.addPanel}>
-              <TouchableOpacity style={styles.bt} onPress={confirmDelete}>
-                <Text style={styles.textBT}>Valider</Text>
+          <View style={modalStyle.modal}>
+            <View style={modalStyle.addPanel}>
+              <Text style={modalStyle.title}>Supprimer ce partenaire</Text>
+              <TouchableOpacity style={modalStyle.confirmButton} onPress={confirmDelete}>
+                <Text style={modalStyle.confirmText}>Valider</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.bt} onPress={cancelDelete}>
-                <Text style={styles.textBT}>Annuler</Text>
+              <TouchableOpacity style={modalStyle.cancelButton} onPress={cancelDelete}>
+                <Text style={modalStyle.cancelText}>Annuler</Text>
               </TouchableOpacity>
             </View>
           </View>

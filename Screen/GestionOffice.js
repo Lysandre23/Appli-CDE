@@ -271,6 +271,7 @@ const GestionOffice = (props) => {
       >
         <View style={modalStyle.modal}>
           <View style={modalStyle.addPanel}>
+            <Text style={modalStyle.title}>Modifier le bureau</Text>
             <TextInput
               style={modalStyle.input}
               placeholder="Nom"
@@ -293,18 +294,18 @@ const GestionOffice = (props) => {
               style={modalStyle.imagePicker}
               onPress={pickImageOffice}
             >
-              <Text style={{ textAlign: "center" }}>Modifier l'image</Text>
+              <Text style={modalStyle.textImagePicker}>Modifier l'image</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={modalStyle.bt} onPress={updateOffice}>
-              <Text style={modalStyle.textBT}>Valider</Text>
+            <TouchableOpacity style={modalStyle.confirmButton} onPress={updateOffice}>
+              <Text style={modalStyle.confirmText}>Valider</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={modalStyle.bt}
+              style={modalStyle.cancelButton}
               onPress={() => {
                 handleCloseOfficeModal();
               }}
             >
-              <Text style={modalStyle.textBT}>Annuler</Text>
+              <Text style={modalStyle.cancelText}>Annuler</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -317,8 +318,9 @@ const GestionOffice = (props) => {
           setModalPostVisible(!modalPostVisible);
         }}
       >
-        <View style={styles.modal}>
-          <View style={styles.panel}>
+        <View style={modalStyle.modal}>
+          <View style={modalStyle.addPanel}>
+            <Text style={modalStyle.title}>Nouveau post</Text>
             <TextInput
               style={modalStyle.input}
               placeholder="Title"
@@ -326,7 +328,7 @@ const GestionOffice = (props) => {
               onChangeText={setTitlePost}
             />
             <TextInput
-              style={styles.input}
+              style={modalStyle.input}
               placeholder="Description"
               value={descriptionPost}
               onChangeText={setDescriptionPost}
@@ -346,7 +348,7 @@ const GestionOffice = (props) => {
               style={modalStyle.imagePicker}
               onPress={pickImagePost}
             >
-              <Text style={{ textAlign: "center" }}>Choisir une image</Text>
+              <Text style={modalStyle.textImagePicker}>Choisir une image</Text>
             </TouchableOpacity>
             <View
               style={{
@@ -372,20 +374,20 @@ const GestionOffice = (props) => {
               />
             </View>
             <TouchableOpacity
-              style={styles.modalButton}
+              style={modalStyle.confirmButton}
               onPress={() => {
                 storePost();
               }}
             >
-              <Text style={styles.btModalText}>Valider</Text>
+              <Text style={modalStyle.confirmText}>Valider</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.modalButton}
+              style={modalStyle.cancelButton}
               onPress={() => {
                 handleClosePostModal(false);
               }}
             >
-              <Text style={styles.btModalText}>Annuler</Text>
+              <Text style={modalStyle.cancelText}>Annuler</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -437,7 +439,7 @@ const GestionOffice = (props) => {
         onConfirm={handleToggleResponsible}
       />
 
-      <Header title="GESTION DE CLUB" color="#da291c" user={props.user} />
+      <Header title="GESTION DE BUREAU" color="#da291c" user={props.user} />
       <View
         style={{
           display: "flex",
@@ -509,54 +511,6 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     backgroundColor: "rgb(250,250,250)",
-  },
-  bt: {
-    marginTop: 15,
-    borderColor: "#da291c",
-    borderWidth: 2,
-    padding: 10,
-    borderRadius: 10,
-    width: "80%",
-    marginLeft: "10%",
-    backgroundColor: "white",
-  },
-  btText: {
-    fontSize: 20,
-    textAlign: "center",
-  },
-  modalButton: {
-    marginTop: 10,
-    backgroundColor: "#da291c",
-    padding: 9,
-    borderRadius: 100,
-  },
-  modal: {
-    flex: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.15)",
-  },
-  panel: {
-    backgroundColor: "white",
-    width: "70%",
-    padding: 50,
-    borderRadius: 20,
-    display: "flex",
-    flexDirection: "column",
-  },
-  btModalText: {
-    color: "white",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  input: {
-    width: "100%",
-    borderColor: "rgb(200,200,200)",
-    borderWidth: 1,
-    borderRadius: 7,
-    padding: 5,
-    marginBottom: 5,
   },
 });
 

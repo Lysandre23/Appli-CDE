@@ -223,6 +223,7 @@ const Goodies = (props) => {
         >
           <View style={modalStyle.modal}>
             <View style={modalStyle.addPanel}>
+              <Text style={modalStyle.title}>Création d'un goodie</Text>
               <TextInput
                 style={modalStyle.input}
                 placeholder="Nom"
@@ -239,7 +240,7 @@ const Goodies = (props) => {
                 style={modalStyle.imagePicker}
                 onPress={pickImage}
               >
-                <Text style={{ textAlign: "center" }}>
+                <Text style={modalStyle.textImagePicker}>
                   {pendingEdit ? "Modifier l'image" : "Choisir une image"}
                 </Text>
               </TouchableOpacity>
@@ -267,18 +268,18 @@ const Goodies = (props) => {
                 </Picker>
               ) : null}
               <TouchableOpacity
-                style={modalStyle.bt}
+                style={modalStyle.confirmButton}
                 onPress={handleSubmitStore}
               >
-                <Text style={modalStyle.textBT}>Valider</Text>
+                <Text style={modalStyle.confirmText}>Valider</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={modalStyle.bt}
+                style={modalStyle.cancelButton}
                 onPress={() => {
                   handleCloseStoreModal();
                 }}
               >
-                <Text style={modalStyle.textBT}>Annuler</Text>
+                <Text style={modalStyle.cancelText}>Annuler</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -293,13 +294,14 @@ const Goodies = (props) => {
             setDeleteModalVisible(!deleteModalVisible);
           }}
         >
-          <View style={styles.modal}>
-            <View style={styles.addPanel}>
-              <TouchableOpacity style={styles.bt} onPress={confirmDelete}>
-                <Text style={styles.textBT}>Valider</Text>
+          <View style={modalStyle.modal}>
+            <View style={modalStyle.addPanel}>
+              <Text style={modalStyle.title}>Supprimer ce goodie</Text>
+              <TouchableOpacity style={modalStyle.confirmButton} onPress={confirmDelete}>
+                <Text style={modalStyle.confirmText}>Valider</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.bt} onPress={cancelDelete}>
-                <Text style={styles.textBT}>Annuler</Text>
+              <TouchableOpacity style={modalStyle.cancelButton} onPress={cancelDelete}>
+                <Text style={modalStyle.cancelText}>Annuler</Text>
               </TouchableOpacity>
             </View>
           </View>

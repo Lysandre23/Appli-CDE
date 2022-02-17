@@ -59,6 +59,7 @@ const Profil = (props) => {
       >
         <View style={modalStyle.modal}>
           <View style={modalStyle.addPanel}>
+            <Text style={modalStyle.title}>Changer le mot de passe</Text>
             <TextInput
               style={modalStyle.input}
               placeholder="Ancien mot de passe"
@@ -77,14 +78,14 @@ const Profil = (props) => {
               value={confirmedPassword}
               onChangeText={setConfirmedPassword}
             />
-            <TouchableOpacity style={modalStyle.bt} onPress={changePassword}>
-              <Text style={modalStyle.textBT}>Valider</Text>
+            <TouchableOpacity style={modalStyle.confirmButton} onPress={changePassword}>
+              <Text style={modalStyle.confirmText}>Valider</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={modalStyle.bt}
+              style={modalStyle.cancelButton}
               onPress={resetModalNewPassword}
             >
-              <Text style={modalStyle.textBT}>Annuler</Text>
+              <Text style={modalStyle.cancelText}>Annuler</Text>
             </TouchableOpacity>
           </View>
         </View>

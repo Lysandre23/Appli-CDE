@@ -11,38 +11,71 @@ const modalStyle = StyleSheet.create({
 	addPanel: {
 		backgroundColor: "white",
 		width: "70%",
-		padding: 50,
-		borderRadius: 20,
+		padding: 5,
+		borderRadius: 10,
 		display: "flex",
 		flexDirection: "column",
 	},
 	input: {
-		width: "100%",
-		borderColor: "rgb(200,200,200)",
+		borderColor: "rgb(220,220,220)",
 		borderWidth: 1,
-		borderRadius: 7,
+		borderRadius: 5,
 		padding: 5,
-		marginBottom: 5,
+		marginTop: 5,
+		marginLeft: 35,
+		marginRight: 35
 	},
-	bt: {
-		marginTop: 10,
-		backgroundColor: "#da291c",
-		padding: 9,
-		borderRadius: 100,
+	confirmButton: {
+		backgroundColor: "#2ecc71",
+		borderRadius: 5,
+		marginTop: 15,
+		padding: 6,
+		marginLeft: 20,
+		marginRight: 20
 	},
-	textBT: {
+	cancelButton: {
+		backgroundColor: "white",
+		borderColor: "#da291c",
+		borderWidth: 1,
+		borderRadius: 5,
+		marginTop: 5,
+		padding: 6,
+		marginLeft: 20,
+		marginRight: 20,
+		marginBottom: 10
+	},
+	confirmText: {
 		color: "white",
-		fontSize: 16,
-		textAlign: "center",
+		textAlign: 'center'
+	},
+	cancelText: {
+		color: "#da291c",
+		textAlign: 'center',
 	},
 	imagePicker: {
-		borderColor: "rgb(150,150,150)",
-		borderWidth: 1,
+		backgroundColor: "#74b9ff",
 		padding: 5,
 		borderRadius: 4,
 		marginTop: 10,
 		marginBottom: 10,
+		marginLeft: 40,
+		marginRight: 40
 	},
+	textImagePicker: {
+		color: "white",
+		textAlign: 'center'
+	},
+	title: {
+		marginBottom: 15,
+		marginTop: 15,
+		fontSize: 25,
+		fontWeight: 'bold',
+		textAlign: 'center'
+	},
+	picker: {
+		marginLeft: 40,
+		marginRight: 40,
+	}
 });
 
 export default modalStyle;
