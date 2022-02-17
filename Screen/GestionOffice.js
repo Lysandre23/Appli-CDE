@@ -331,6 +331,7 @@ const GestionOffice = (props) => {
 			>
 				<View style={modalStyle.modal}>
 					<View style={modalStyle.addPanel}>
+						<Text style={modalStyle.title}>Modifier le bureau</Text>
 						<TextInput
 							style={modalStyle.input}
 							placeholder="Nom"
@@ -353,23 +354,23 @@ const GestionOffice = (props) => {
 							style={modalStyle.imagePicker}
 							onPress={pickImageOffice}
 						>
-							<Text style={{ textAlign: "center" }}>
+							<Text style={modalStyle.textImagePicker}>
 								Modifier l'image
 							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={modalStyle.bt}
+							style={modalStyle.confirmButton}
 							onPress={updateOffice}
 						>
-							<Text style={modalStyle.textBT}>Valider</Text>
+							<Text style={modalStyle.confirmText}>Valider</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={modalStyle.bt}
+							style={modalStyle.cancelButton}
 							onPress={() => {
 								handleCloseOfficeModal()
 							}}
 						>
-							<Text style={modalStyle.textBT}>Annuler</Text>
+							<Text style={modalStyle.cancelText}>Annuler</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -382,8 +383,9 @@ const GestionOffice = (props) => {
 					setModalPostVisible(!modalPostVisible)
 				}}
 			>
-				<View style={styles.modal}>
-					<View style={styles.panel}>
+				<View style={modalStyle.modal}>
+					<View style={modalStyle.addPanel}>
+						<Text style={modalStyle.title}>Nouveau post</Text>
 						<TextInput
 							style={modalStyle.input}
 							placeholder="Title"
@@ -391,7 +393,7 @@ const GestionOffice = (props) => {
 							onChangeText={setTitlePost}
 						/>
 						<TextInput
-							style={styles.input}
+							style={modalStyle.input}
 							placeholder="Description"
 							value={descriptionPost}
 							onChangeText={setDescriptionPost}
@@ -411,7 +413,7 @@ const GestionOffice = (props) => {
 							style={modalStyle.imagePicker}
 							onPress={pickImagePost}
 						>
-							<Text style={{ textAlign: "center" }}>
+							<Text style={modalStyle.textImagePicker}>
 								Choisir une image
 							</Text>
 						</TouchableOpacity>
@@ -439,20 +441,20 @@ const GestionOffice = (props) => {
 							/>
 						</View>
 						<TouchableOpacity
-							style={styles.modalButton}
+							style={modalStyle.confirmButton}
 							onPress={() => {
 								storePost()
 							}}
 						>
-							<Text style={styles.btModalText}>Valider</Text>
+							<Text style={modalStyle.confirmText}>Valider</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={styles.modalButton}
+							style={modalStyle.cancelButton}
 							onPress={() => {
 								handleClosePostModal(false)
 							}}
 						>
-							<Text style={styles.btModalText}>Annuler</Text>
+							<Text style={modalStyle.cancelText}>Annuler</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
