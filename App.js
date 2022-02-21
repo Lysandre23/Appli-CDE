@@ -113,7 +113,7 @@ function App({ navigation }) {
     <NavigationContainer>
       <FlashMessage position="top" />
       <Drawer.Navigator
-        initialRouteName="Test"
+        initialRouteName="Events"
         drawerContent={(props) =>
           user.email ? (
             <SideBar user={user} onDisconnect={handleDisconnect} />

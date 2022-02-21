@@ -14,11 +14,12 @@ import Navbar from "../Components/Navbar";
 import PartenaireCard from "../Components/PartenaireCard";
 import * as ImagePicker from "expo-image-picker";
 import { useState, useEffect } from "react";
-import Api from "../Api";
+import Api, { baseUrlAPI } from "../Api";
 import EndFlatList from "../Components/EndFlatList";
 import Circle from "../Components/Circle";
 import modalStyle from "./Modal.style";
-import axios from "axios";
+import * as FileSystem from "expo-file-system";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const Partenaires = (props, navigation) => {
   const [partners, setPartners] = useState([]);
@@ -28,6 +29,7 @@ const Partenaires = (props, navigation) => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [nameNewPart, setNameNewPart] = useState("");
   const [imageNewPart, setImageNewPart] = useState(null);
+  const [image64NewPart, setImage64NewPart] = useState(null);
   const [urlNewPart, setUrlNewPart] = useState("");
   const [pendingDelete, setPendingDelete] = useState(null);
   const [pendingEdit, setPendingEdit] = useState(null);
@@ -69,15 +71,25 @@ const Partenaires = (props, navigation) => {
   };
 
   const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [4, 4],
       quality: 1,
     });
 
     if (!result.cancelled) {
-      setImageNewPart(result);
+      if (Platform.OS === "web") {
+        setImageNewPart(result);
+        setImage64NewPart(result.uri);
+      } else {
+        const base64 = await FileSystem.readAsStringAsync(result.uri, {
+          encoding: "base64",
+        });
+        setImageNewPart(result.uri);
+        setImage64NewPart(base64);
+      }
     }
   };
 
@@ -107,39 +119,64 @@ const Partenaires = (props, navigation) => {
     }
   };
 
-  const storePartner = () => {
+  const getMimeType = (ext) => {
+    // mime type mapping for few of the sample file types
+    switch (ext) {
+      case "pdf":
+        return "application/pdf";
+      case "jpg":
+        return "image/jpeg";
+      case "jpeg":
+        return "image/jpeg";
+      case "png":
+        return "image/png";
+    }
+  };
+
+  const storePartner = async () => {
     if (imageNewPart) {
       let form = new FormData();
 
-      form.append(
-        "picture",
-        JSON.stringify({
-          uri:
-            Platform.OS === "ios"
-              ? imageNewPart.uri.replace("file://", "")
-              : imageNewPart.uri,
-          name: imageNewPart.fileName,
-          type: imageNewPart.type,
-        })
-      );
+      let filename =
+        Platform.OS === "web"
+          ? imageNewPart.fileName
+          : imageNewPart.split("/").pop();
+      const extArr = /\.(\w+)$/.exec(filename);
+      const type =
+        Platform.OS === "web" ? imageNewPart.type : getMimeType(extArr[1]);
+
+      const pictureInput = JSON.stringify({
+        uri: image64NewPart,
+        name: filename,
+        type: type,
+      });
+
+      form.append("picture", pictureInput);
       form.append("name", nameNewPart);
       form.append("link", urlNewPart);
-      Api.post("/partners", form, {
+
+      const response = await fetch(baseUrlAPI + "/partners", {
+        method: "POST",
+        body: form,
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${props.token}`,
         },
-      })
-        .then(function (response) {
-          getPartners();
-          setStoreModalVisible(false);
-          setImageNewPart(null);
-          setNameNewPart("");
-          setUrlNewPart("");
-        })
-        .catch((error) => {
-          throw error;
+      });
+
+      const responseJson = await response.json();
+      if (responseJson.success) {
+        getPartners();
+        setStoreModalVisible(false);
+        setImageNewPart(null);
+        setImage64NewPart(null);
+        setNameNewPart("");
+        setUrlNewPart("");
+        showMessage({
+          message: responseJson.message,
+          type: "success",
         });
+      }
     }
   };
 

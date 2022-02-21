@@ -86,8 +86,6 @@ class Test extends Component {
         type: type,
       });
 
-      console.log(pictureInput);
-
       form.append("picture", pictureInput);
       form.append("name", name);
       form.append("link", url);
