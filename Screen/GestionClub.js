@@ -21,6 +21,7 @@ import modalStyle from "./Modal.style.js"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import * as ImagePicker from "expo-image-picker"
 import DateTimePicker from "@react-native-community/datetimepicker"
+import * as FileSystem from "expo-file-system"
 import { showMessage, hideMessage } from "react-native-flash-message"
 
 const GestionClub = (props) => {
@@ -30,12 +31,14 @@ const GestionClub = (props) => {
 	const [nameUpdateClub, setNameUpdateClub] = useState("")
 	const [descriptionUpdateClub, setDescriptionUpdateClub] = useState("")
 	const [imageUpdateClub, setImageUpdateClub] = useState(null)
+	const [image64UpdateClub, setImage64UpdateClub] = useState(null)
 	const [roomUpdateClub, setRoomUpdateClub] = useState("")
 
 	const [modalPostVisible, setModalPostVisible] = useState(false)
 	const [titlePost, setTitlePost] = useState("")
 	const [descriptionPost, setDescriptionPost] = useState("")
 	const [imagePost, setImagePost] = useState(null)
+	const [image64Post, setImage64Post] = useState(null)
 	const [datePost, setDatePost] = useState("")
 	const [enableNotificationPost, setEnableNotificationPost] = useState(false)
 
@@ -198,7 +201,16 @@ const GestionClub = (props) => {
 		})
 
 		if (!result.cancelled) {
-			setImageUpdateClub(result)
+			if (Platform.OS === "web") {
+				setImageUpdateClub(result)
+				setImage64UpdateClub(result.uri)
+			} else {
+				const base64 = await FileSystem.readAsStringAsync(result.uri, {
+					encoding: "base64",
+				})
+				setImageUpdateClub(result.uri)
+				setImage64UpdateClub(base64)
+			}
 		}
 	}
 
@@ -211,7 +223,16 @@ const GestionClub = (props) => {
 		})
 
 		if (!result.cancelled) {
-			setImagePost(result)
+			if (Platform.OS === "web") {
+				setImagePost(result)
+				setImage64Post(result.uri)
+			} else {
+				const base64 = await FileSystem.readAsStringAsync(result.uri, {
+					encoding: "base64",
+				})
+				setImagePost(result.uri)
+				setImage64Post(base64)
+			}
 		}
 	}
 
@@ -226,95 +247,113 @@ const GestionClub = (props) => {
 		setImagePost(null)
 	}
 
-	const updateClub = () => {
+	const updateClub = async () => {
 		let form = new FormData()
 		if (imageUpdateClub) {
-			form.append(
-				"picture",
-				JSON.stringify({
-					uri:
-						Platform.OS === "ios"
-							? imageUpdateClub.uri.replace("file://", "")
-							: imageUpdateClub.uri,
-					name: imageUpdateClub.fileName,
-					type: imageUpdateClub.type,
-				})
-			)
+			let filename =
+				Platform.OS === "web"
+					? imageUpdateClub.fileName
+					: imageUpdateClub.split("/").pop()
+			const extArr = /\.(\w+)$/.exec(filename)
+			const type =
+				Platform.OS === "web"
+					? imageUpdateClub.type
+					: getMimeType(extArr[1])
+
+			const pictureInput = JSON.stringify({
+				uri: image64UpdateClub,
+				name: filename,
+				type: type,
+			})
+
+			form.append("picture", pictureInput)
 		}
 		form.append("name", nameUpdateClub)
 		form.append("description", descriptionUpdateClub)
 		form.append("room", roomUpdateClub)
 
-		Api.post("/clubs/" + club.id + "?_method=PUT", form, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-				Authorization: `Bearer ${props.token}`,
-			},
-		})
-			.then(function (response) {
-				setModalUpdateVisible(false)
-				setImageUpdateClub(null)
-				getClub()
+		const response = await fetch(
+			baseUrlAPI + "/clubs/" + pendingEdit.id + "?_method=PUT",
+			{
+				method: "POST",
+				body: form,
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${props.token}`,
+				},
+			}
+		)
+
+		const responseJson = await response.json()
+		if (responseJson.success) {
+			setModalUpdateVisible(false)
+			setImageUpdateClub(null)
+			setImage64UpdateClub(null)
+			getClub()
+			showMessage({
+				message: responseJson.message,
+				type: "success",
+			})
+		} else {
+			showMessage({
+				message: "Une erreur s'est produite. Veuillez réessayer.",
+				type: "danger",
+			})
+		}
+	}
+
+	const storePost = async () => {
+		if (imagePost) {
+			let form = new FormData()
+
+			let filename =
+				Platform.OS === "web"
+					? imagePost.fileName
+					: imagePost.split("/").pop()
+			const extArr = /\.(\w+)$/.exec(filename)
+			const type =
+				Platform.OS === "web" ? imagePost.type : getMimeType(extArr[1])
+
+			const pictureInput = JSON.stringify({
+				uri: image64Post,
+				name: filename,
+				type: type,
+			})
+
+			form.append("picture", pictureInput)
+			form.append("title", titlePost)
+			form.append("description", descriptionPost)
+			form.append("enable_notifications", enableNotificationPost)
+			form.append("club_id", club.id)
+
+			const response = await fetch(baseUrlAPI + "/clubs/posts", {
+				method: "POST",
+				body: form,
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${props.token}`,
+				},
+			})
+
+			const responseJson = await response.json()
+			if (responseJson.success) {
+				setModalPostVisible(false)
+				setTitlePost("")
+				setDatePost("")
+				setDescriptionPost("")
+				setImagePost(null)
+				setImage64Post(null)
+				setEnableNotificationPost(false)
 				showMessage({
-					message: response.data.message,
+					message: responseJson.message,
 					type: "success",
 				})
-			})
-			.catch(function (error) {
+			} else {
 				showMessage({
 					message: "Une erreur s'est produite. Veuillez réessayer.",
 					type: "danger",
 				})
-				throw error
-			})
-	}
-
-	const storePost = () => {
-		if (imagePost) {
-			let form = new FormData()
-
-			form.append("title", titlePost)
-			form.append("description", descriptionPost)
-			form.append(
-				"picture",
-				JSON.stringify({
-					uri:
-						Platform.OS === "ios"
-							? imagePost.uri.replace("file://", "")
-							: imagePost.uri,
-					name: imagePost.fileName,
-					type: imagePost.type,
-				})
-			)
-			form.append("enable_notifications", enableNotificationPost)
-			form.append("club_id", club.id)
-			Api.post("/clubs/posts", form, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-					Accept: "application/json",
-					Authorization: `Bearer ${props.token}`,
-				},
-			})
-				.then((response) => {
-					setModalPostVisible(false)
-					setTitlePost("")
-					setDatePost("")
-					setDescriptionPost("")
-					setImagePost(null)
-					setEnableNotificationPost(false)
-					showMessage({
-						message: response.data.message,
-						type: "success",
-					})
-				})
-				.catch(function (error) {
-					showMessage({
-						message:
-							"Une erreur s'est produite. Veuillez réessayer.",
-						type: "danger",
-					})
-					throw error
-				})
+			}
 		}
 	}
 

@@ -21,6 +21,7 @@ import modalStyle from "./Modal.style.js"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import * as ImagePicker from "expo-image-picker"
 import DateTimePicker from "@react-native-community/datetimepicker"
+import * as FileSystem from "expo-file-system"
 import { showMessage, hideMessage } from "react-native-flash-message"
 
 const GestionOffice = (props) => {
@@ -30,12 +31,14 @@ const GestionOffice = (props) => {
 	const [nameUpdateOffice, setNameUpdateOffice] = useState("")
 	const [descriptionUpdateOffice, setDescriptionUpdateOffice] = useState("")
 	const [imageUpdateOffice, setImageUpdateOffice] = useState(null)
+	const [image64UpdateOffice, setImage64UpdateOffice] = useState(null)
 	const [roomUpdateOffice, setRoomUpdateOffice] = useState("")
 
 	const [modalPostVisible, setModalPostVisible] = useState(false)
 	const [titlePost, setTitlePost] = useState("")
 	const [descriptionPost, setDescriptionPost] = useState("")
 	const [imagePost, setImagePost] = useState(null)
+	const [image64Post, setImage64Post] = useState(null)
 	const [datePost, setDatePost] = useState("")
 	const [enableNotificationPost, setEnableNotificationPost] = useState(false)
 
@@ -199,7 +202,16 @@ const GestionOffice = (props) => {
 		})
 
 		if (!result.cancelled) {
-			setImageUpdateOffice(result)
+			if (Platform.OS === "web") {
+				setImageUpdateOffice(result)
+				setImage64UpdateOffice(result.uri)
+			} else {
+				const base64 = await FileSystem.readAsStringAsync(result.uri, {
+					encoding: "base64",
+				})
+				setImageUpdateOffice(result.uri)
+				setImage64UpdateOffice(base64)
+			}
 		}
 	}
 
@@ -212,7 +224,16 @@ const GestionOffice = (props) => {
 		})
 
 		if (!result.cancelled) {
-			setImagePost(result)
+			if (Platform.OS === "web") {
+				setImagePost(result)
+				setImage64Post(result.uri)
+			} else {
+				const base64 = await FileSystem.readAsStringAsync(result.uri, {
+					encoding: "base64",
+				})
+				setImagePost(result.uri)
+				setImage64Post(base64)
+			}
 		}
 	}
 
@@ -227,95 +248,113 @@ const GestionOffice = (props) => {
 		setImagePost(null)
 	}
 
-	const updateOffice = () => {
+	const updateOffice = async () => {
 		let form = new FormData()
 		if (imageUpdateOffice) {
-			form.append(
-				"picture",
-				JSON.stringify({
-					uri:
-						Platform.OS === "ios"
-							? imageUpdateOffice.uri.replace("file://", "")
-							: imageUpdateOffice.uri,
-					name: imageUpdateOffice.fileName,
-					type: imageUpdateOffice.type,
-				})
-			)
+			let filename =
+				Platform.OS === "web"
+					? imageUpdateOffice.fileName
+					: imageUpdateOffice.split("/").pop()
+			const extArr = /\.(\w+)$/.exec(filename)
+			const type =
+				Platform.OS === "web"
+					? imageUpdateOffice.type
+					: getMimeType(extArr[1])
+
+			const pictureInput = JSON.stringify({
+				uri: image64UpdateOffice,
+				name: filename,
+				type: type,
+			})
+
+			form.append("picture", pictureInput)
 		}
 		form.append("name", nameUpdateOffice)
 		form.append("description", descriptionUpdateOffice)
 		form.append("room", roomUpdateOffice)
 
-		Api.post("/offices/" + office.id + "?_method=PUT", form, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-				Authorization: `Bearer ${props.token}`,
-			},
-		})
-			.then(function (response) {
-				setModalUpdateVisible(false)
-				setImageUpdateOffice(null)
-				getOffice()
+		const response = await fetch(
+			baseUrlAPI + "/offices/" + pendingEdit.id + "?_method=PUT",
+			{
+				method: "POST",
+				body: form,
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${props.token}`,
+				},
+			}
+		)
+
+		const responseJson = await response.json()
+		if (responseJson.success) {
+			setModalUpdateVisible(false)
+			setImageUpdateOffice(null)
+			setImage64UpdateOffice(null)
+			getOffice()
+			showMessage({
+				message: responseJson.message,
+				type: "success",
+			})
+		} else {
+			showMessage({
+				message: "Une erreur s'est produite. Veuillez réessayer.",
+				type: "danger",
+			})
+		}
+	}
+
+	const storePost = async () => {
+		if (imagePost) {
+			let form = new FormData()
+
+			let filename =
+				Platform.OS === "web"
+					? imagePost.fileName
+					: imagePost.split("/").pop()
+			const extArr = /\.(\w+)$/.exec(filename)
+			const type =
+				Platform.OS === "web" ? imagePost.type : getMimeType(extArr[1])
+
+			const pictureInput = JSON.stringify({
+				uri: image64Post,
+				name: filename,
+				type: type,
+			})
+
+			form.append("picture", pictureInput)
+			form.append("title", titlePost)
+			form.append("description", descriptionPost)
+			form.append("enable_notifications", enableNotificationPost)
+			form.append("office_id", office.id)
+
+			const response = await fetch(baseUrlAPI + "/offices/posts", {
+				method: "POST",
+				body: form,
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${props.token}`,
+				},
+			})
+
+			const responseJson = await response.json()
+			if (responseJson.success) {
+				setModalPostVisible(false)
+				setTitlePost("")
+				setDatePost("")
+				setDescriptionPost("")
+				setImagePost(null)
+				setImage64Post(null)
+				setEnableNotificationPost(false)
 				showMessage({
-					message: response.data.message,
+					message: responseJson.message,
 					type: "success",
 				})
-			})
-			.catch(function (error) {
+			} else {
 				showMessage({
 					message: "Une erreur s'est produite. Veuillez réessayer.",
 					type: "danger",
 				})
-				throw error
-			})
-	}
-
-	const storePost = () => {
-		if (imagePost) {
-			let form = new FormData()
-
-			form.append("title", titlePost)
-			form.append("description", descriptionPost)
-			form.append(
-				"picture",
-				JSON.stringify({
-					uri:
-						Platform.OS === "ios"
-							? imagePost.uri.replace("file://", "")
-							: imagePost.uri,
-					name: imagePost.fileName,
-					type: imagePost.type,
-				})
-			)
-			form.append("enable_notifications", enableNotificationPost)
-			form.append("office_id", office.id)
-			Api.post("/offices/posts", form, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-					Accept: "application/json",
-					Authorization: `Bearer ${props.token}`,
-				},
-			})
-				.then((response) => {
-					setModalPostVisible(false)
-					setTitlePost("")
-					setDatePost("")
-					setDescriptionPost("")
-					setImagePost(null)
-					setEnableNotificationPost(false)
-					showMessage({
-						message: response.data.message,
-						type: "success",
-					})
-				})
-				.catch(function (error) {
-					showMessage({
-						message:
-							"Une erreur s'est produite. Veuillez réessayer.",
-						type: "danger",
-					})
-					throw error
-				})
+			}
 		}
 	}
 
