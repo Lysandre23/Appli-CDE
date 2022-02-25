@@ -45,7 +45,7 @@ const Circle = (props) => {
 const styles = StyleSheet.create({
     main: {
         position: 'absolute',
-        borderRadius: "50%",
+        borderRadius: 200,
         zIndex: 0
 
     }

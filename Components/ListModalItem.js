@@ -1,6 +1,5 @@
 import React, { Component } from "react"
-import { View, Text, StyleSheet } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler"
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 
 class ListModalItem extends Component {
 	handleClose = () => {
@@ -24,7 +23,7 @@ class ListModalItem extends Component {
 					<Text
 						style={[
 							styles.text,
-							selectedValue === value && styles.selectedText,
+							(selectedValue === value ? styles.selectedText : styles.notSelectedText),
 						]}
 					>
 						{label}
@@ -54,6 +53,9 @@ const styles = StyleSheet.create({
 	selectedText: {
 		color: "white",
 	},
+	notSelectedText: {
+		color: "black"
+	}
 })
 
 export default ListModalItem

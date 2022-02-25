@@ -5,11 +5,10 @@ import {
 	StyleSheet,
 	Image,
 	TouchableOpacity,
-	Modal,
 } from "react-native"
 import { useState } from "react"
 import Icon from "react-native-vector-icons/FontAwesome"
-import EventModal from "./eventModal"
+import EventModal from "./EventModal"
 
 const EventsCard = (props) => {
 	const [modalDescriptionVisible, setModalDescriptionVisible] =

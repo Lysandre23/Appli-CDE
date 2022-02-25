@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
 		borderTopRightRadius: 10,
 		display: "flex",
 		flexDirection: "row",
-		justifyContent: "left",
+		justifyContent: "flex-start",
 		alignItems: "center",
 	},
 	officeClubs: {
