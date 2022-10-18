@@ -1,0 +1,21 @@
+{
+    "build": {
+        "development": {
+          "developmentClient": true,
+          "distribution": "internal"
+        },
+        "preview": {
+          "distribution": "internal"
+        },
+        "production": {}
+    },
+    "submit": {
+        "production": {
+            "ios": {
+                "appleId": "cde.polytech.nancy.apple@gmail.com",
+                "ascAppId": "6443661545",
+                "appleTeamId": "C8YX3YR477"
+            }
+        }
+    }
+}
