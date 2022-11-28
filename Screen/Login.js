@@ -15,6 +15,7 @@ import { useState } from "react"
 import Icon from "react-native-vector-icons/FontAwesome"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import FlashMessage, { showMessage } from "react-native-flash-message"
+import title from "react-native-paper/src/components/Typography/Title";
 
 const Login = ({ onTokenUpdate }) => {
 	const navigation = useNavigation()
@@ -200,7 +201,7 @@ const Login = ({ onTokenUpdate }) => {
 			<View style={styles.form}>
 				<View>
 					<Text>{formError}</Text>
-					<View style={[styles.inputContainer]}>
+					<ScrollView style={[styles.inputContainer]}>
 						<TouchableOpacity
 							style={styles.confirmButton}
 							onPress={handleSubmit}
@@ -221,7 +222,8 @@ const Login = ({ onTokenUpdate }) => {
 							autoCapitalize="none"
 							keyboardType="email-address"
 						/>
-						{title == "Enregistrement" ? (
+						{title === "Enregistrement" ? (
+							<View>
 							<TextInput
 								style={[
 									styles.input,
@@ -232,8 +234,6 @@ const Login = ({ onTokenUpdate }) => {
 								placeholder="Prénom"
 								autoComplete="name-given"
 							/>
-						) : null}
-						{title == "Enregistrement" ? (
 							<TextInput
 								style={[
 									styles.input,
@@ -244,12 +244,13 @@ const Login = ({ onTokenUpdate }) => {
 								placeholder="Nom"
 								autoComplete="name-family"
 							/>
+							</View>
 						) : null}
-						{title == "Enregistrement" || title === "Connexion" ? (
+						{title === "Enregistrement" || title === "Connexion" ? (
 							<TextInput
 								style={[
 									styles.input,
-									title == "Connexion"
+									title === "Connexion"
 										? styles.inputBottom
 										: null,
 									passwordError && styles.inputError,
@@ -261,7 +262,7 @@ const Login = ({ onTokenUpdate }) => {
 								autoComplete="password"
 							/>
 						) : null}
-						{title == "Enregistrement" ? (
+						{title === "Enregistrement" ? (
 							<TextInput
 								style={[
 									styles.input,
@@ -274,7 +275,7 @@ const Login = ({ onTokenUpdate }) => {
 								secureTextEntry={true}
 							/>
 						) : null}
-						{title == "Vérification" ? (
+						{title === "Vérification" ? (
 							<TextInput
 								style={styles.input}
 								onChangeText={setVerificationCode}
@@ -282,7 +283,7 @@ const Login = ({ onTokenUpdate }) => {
 								placeholder="Code de vérification"
 							/>
 						) : null}
-					</View>
+					</ScrollView>
 					<View
 						style={{
 							marginTop: 90,
@@ -290,7 +291,7 @@ const Login = ({ onTokenUpdate }) => {
 							marginLeft: 5,
 						}}
 					>
-						{title == "Connexion" ? (
+						{title === "Connexion" ? (
 							<TouchableOpacity
 								onPress={() =>
 									setTitle("Réinitialisation mot de passe")
@@ -307,7 +308,7 @@ const Login = ({ onTokenUpdate }) => {
 							</TouchableOpacity>
 						) : null}
 					</View>
-					{title == "Vérification" ? (
+					{title === "Vérification" ? (
 						<TouchableOpacity
 							style={styles.forgetPassword}
 							onPress={resendConfirmationMail}
@@ -327,7 +328,7 @@ const Login = ({ onTokenUpdate }) => {
 				<TouchableOpacity
 					style={styles.registerButton}
 					onPress={() => {
-						if (title == "Connexion") {
+						if (title === "Connexion") {
 							setTitle("Enregistrement")
 							setAction("Se connecter")
 						} else {
@@ -370,6 +371,8 @@ const styles = StyleSheet.create({
 	},
 	inputContainer: {
 		position: "relative",
+		height: 200,
+		width: "90%",
 	},
 	confirmButton: {
 		display: "flex",
@@ -382,11 +385,12 @@ const styles = StyleSheet.create({
 		right: 0,
 		transform: [{ translateX: 25 }, { translateY: -25 }],
 		borderRadius: 25,
-		overflow: "hidden",
+		overflow: "visible",
 		height: 50,
 		minHeight: 50,
 		width: 50,
 		maxWidth: 50,
+		marginRight: 25,
 		backgroundColor: "#da291c",
 	},
 
@@ -409,7 +413,7 @@ const styles = StyleSheet.create({
 	},
 	form: {
 		position: "absolute",
-		width: "85%",
+		width: "100%",
 		left: "5%",
 		height: "100%",
 		display: "flex",
@@ -447,6 +451,7 @@ const styles = StyleSheet.create({
 	},
 	registerButton: {
 		backgroundColor: "white",
+		position: "relative",
 		shadowColor: "#000",
 		shadowOffset: {
 			width: 0,
