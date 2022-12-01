@@ -6,7 +6,7 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 	Image,
-	ScrollView
+	ScrollView, BackHandler
 } from "react-native"
 import KeyboardAvoidingView from "react-native/Libraries/Components/Keyboard/KeyboardAvoidingView"
 import { useNavigation } from "@react-navigation/native"
@@ -38,6 +38,24 @@ const Login = ({ onTokenUpdate }) => {
 	const [password_confirmError, setPassword_confirmError] = useState(false)
 	const [firstNameError, setFirstNameError] = useState(false)
 	const [lastNameError, setLastNameError] = useState(false)
+
+	BackHandler.addEventListener("hardwareBackPress", ()=>{
+		switch(title) {
+			case "Connexion":
+				navigation.navigate("Events")
+				break
+			case "Enregistrement":
+				setTitle("Connexion")
+				break
+			case "Réinitialisation mot de passe":
+				setTitle("Connexion")
+				break
+			default:
+				navigation.navigate("Events")
+				break
+		}
+		return true
+	})
 
 	const handleBack = () => {
 		if (title === "Réinitialisation mot de passe") {
