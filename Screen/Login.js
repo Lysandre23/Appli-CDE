@@ -83,12 +83,14 @@ const Login = ({ onTokenUpdate }) => {
 		Api.post("/user/resend-confirmation-email/", form)
 	}
 
-	const resetPasswordMail = () => {
+	const resetPasswordMail = async() => {
 		let form = new FormData()
 		form.append("email", email)
-		Api.post("/password/email", form).then(function (response) {
+		await Api.post("/password/email", form)
+			.then((response) => {
 			setTitle("Connexion")
-		})
+			})
+			.catch((res) =>  console.log("Failed reseting password", res))
 	}
 
 	const validateEmail = (email) => {
@@ -99,7 +101,7 @@ const Login = ({ onTokenUpdate }) => {
 			)
 	}
 
-	const login = () => {
+	const login = async() => {
 		setEmailError(false)
 		setPasswordError(false)
 		if (email !== "" && password !== "") {
@@ -108,7 +110,7 @@ const Login = ({ onTokenUpdate }) => {
 				setFormError("L'adresse email doit être valide")
 				return
 			}
-			Api.post("/login", {
+			await Api.post("/login", {
 				email: email,
 				password: password,
 			})
@@ -128,6 +130,7 @@ const Login = ({ onTokenUpdate }) => {
 						message: "Erreur",
 						type: "error"
 					})
+					console.log("Failed logging in", error)
 					setPassword("")
 					setFormError(error.response.data.data.error)
 					throw error
@@ -161,7 +164,7 @@ const Login = ({ onTokenUpdate }) => {
 		})
 	}
 
-	const register = () => {
+	const register = async () => {
 		let form = new FormData()
 		form.append("email", email)
 		form.append("password", password)
@@ -169,7 +172,7 @@ const Login = ({ onTokenUpdate }) => {
 		form.append("first_name", firstName)
 		form.append("last_name", lastName)
 
-		Api.post("/register", {
+		await Api.post("/register", {
 			email: email,
 			password: password,
 			confirm_password: password_confirm,
@@ -192,6 +195,7 @@ const Login = ({ onTokenUpdate }) => {
 					message: "Erreur",
 					type: "error",
 				});
+				console.log("Failed registering", error)
 				throw error
 			})
 	}

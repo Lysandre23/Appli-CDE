@@ -30,7 +30,7 @@ export const pickImageUtils = async (editing = false, maxSize = 10) => {
 	}
 	const fileInfo = await getFileInfo(result.uri)
 
-	if (!typeof fileInfo.size === "number" || fileInfo.size <= 0) {
+	if (!(typeof fileInfo.size === "number" || fileInfo.size <= 0)) {
 		alert("Impossible de sélectionner ce fichier.")
 		return {
 			status: false,

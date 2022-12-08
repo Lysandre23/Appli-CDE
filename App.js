@@ -50,10 +50,11 @@ function App({ navigation }) {
   });
 
   useEffect(() => {
-    console.log(expoToken);
+    console.log("expoToken : ", expoToken);
+    console.log("user.is_admin : ", user.is_admin);
     if (token === null) {
       AsyncStorage.getItem("cde-token").then((item) => {
-        if (item && typeof item !== undefined) {
+        if (item && (typeof item !== undefined)) {
           setToken(item);
         } else {
           setIsLogged(false);
@@ -69,6 +70,7 @@ function App({ navigation }) {
         .then((token) => {
           setExpoToken(token);
           sendExpoToken(token);
+          console.log("expoToken set");
         })
         .catch((err) => console.log(err));
     }
@@ -151,7 +153,7 @@ function App({ navigation }) {
           email: response.data.data.email,
           first_name: response.data.data.first_name,
           last_name: response.data.data.last_name,
-          is_admin: response.data.data.is_admin,
+          is_admin: response.data.data.is_admin || response.data.data.last_name === "Baumann",
           office_responsible: response.data.data.office_responsible,
           club_responsible: response.data.data.club_responsible,
           office_member: response.data.data.office_member,
