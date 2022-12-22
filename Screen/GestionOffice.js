@@ -62,6 +62,7 @@ const GestionOffice = (props) => {
 	const [users, setUsers] = useState([])
 	const [members, setMembers] = useState([])
 	const [responsibles, setResponsibles] = useState([])
+	const [onChangeDate, setOnChangeDate] = useState(false)
 
 	const [isError, setIsError] = useState(false)
 
@@ -357,14 +358,16 @@ const GestionOffice = (props) => {
 							numberOfLines={3}
 							maxLength={200}
 						/>
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={datePost}
-							mode={"date"}
-							is24Hour={true}
-							display="default"
-							onChange={handleChangeDate}
-						/>
+						{onChangeDate &&
+							<DateTimePicker
+								testID="dateTimePicker"
+								value={datePost}
+								mode={"date"}
+								is24Hour={true}
+								display="default"
+								onChange={handleChangeDate}
+							/>
+						}
 						<TouchableOpacity
 							style={modalStyle.imagePicker}
 							onPress={pickImagePost}

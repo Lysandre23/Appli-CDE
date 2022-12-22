@@ -431,7 +431,7 @@ const GestionClub = (props) => {
         onConfirm={handleToggleMember}
       />
       <ListModal
-        title="Ajouter un responsible"
+        title="Ajouter un responsable"
         visible={modalAddResponsibleVisible}
         list={serializeUsers(
           members.filter(

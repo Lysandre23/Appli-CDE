@@ -96,7 +96,7 @@ class ListModal extends Component {
 const styles = StyleSheet.create({
 	modal: {
 		flex: 1,
-		backgroundColor: "rgba(0,0,0,0.3)",
+		backgroundColor: "#000000dd",
 		padding: 10,
 	},
 	modalHeader: {

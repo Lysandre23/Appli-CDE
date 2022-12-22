@@ -22,6 +22,10 @@ import ListModal from "../Components/ListModal"
 import { showMessage, hideMessage } from "react-native-flash-message"
 import { pickImageUtils, getPictureInput, filesPost } from "../helpers/helpers"
 import GlobalButton from "../Components/GlobalButton"
+import ListModalMessage from "../Components/ListModalMessage";
+import ListModalItem from "../Components/ListModalItem";
+import BigButton from "../Components/BigButton";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Admin = (props) => {
 	const navigation = useNavigation()
@@ -106,6 +110,7 @@ const Admin = (props) => {
 			setImageNewClub(result.image)
 			setImage64NewClub(result.imageBase64)
 		}
+		console.log("resulttt", result)
 	}
 
 	const pickImageOffice = async () => {
@@ -207,6 +212,7 @@ const Admin = (props) => {
 			array.push({
 				value: "o-" + item.id,
 				label: item.name,
+				id: item.id,
 			})
 		})
 		offices.forEach((item) => {
@@ -214,6 +220,7 @@ const Admin = (props) => {
 				array.push({
 					value: "c-" + club.id,
 					label: club.name,
+					id: club.id,
 				})
 			})
 		})
@@ -258,145 +265,187 @@ const Admin = (props) => {
 	return (
 		<View style={styles.main}>
 			<Header title="ADMIN" color="#da291c" user={props.user} />
-			<Modal
-				animationType="fade"
-				transparent={true}
-				visible={modalClubVisible}
-				onRequestClose={() => {
-					setModalClubVisible(!modalClubVisible)
-				}}
-			>
-				<View style={modalStyle.modal}>
-					<View style={modalStyle.addPanel}>
-						<Text style={modalStyle.title}>Création d'un club</Text>
-						<TextInput
-							style={modalStyle.input}
-							placeholder="Nom"
-							value={nameNewClub}
-							onChangeText={setNameNewClub}
-						/>
-						<TextInput
-							style={modalStyle.input}
-							placeholder="Description"
-							value={descriptionNewClub}
-							onChangeText={setDescriptionNewClub}
-						/>
-						<TouchableOpacity
-							style={modalStyle.imagePicker}
-							onPress={pickImageClub}
-						>
-							<Text style={modalStyle.textImagePicker}>
-								Choisir une image
-							</Text>
-						</TouchableOpacity>
-						<Picker
-							selectedValue={selectedOfficeNewClub}
-							style={modalStyle.picker}
-							onValueChange={(itemValue, itemIndex) =>
-								setSelectedOfficeNewClub(itemValue)
-							}
-						>
-							<Picker.Item
-								key={0}
-								label="Choisir un bureau"
-								value={0}
-								enabled={false}
+			{/*
+				<Modal
+					animationType="fade"
+					transparent={true}
+					visible={modalClubVisible}
+					onRequestClose={() => {
+						setModalClubVisible(!modalClubVisible)
+					}}
+				>
+					<View style={modalStyle.modal}>
+						<View style={modalStyle.addPanel}>
+							<Text style={modalStyle.title}>Création d'un club</Text>
+							<TextInput
+								style={modalStyle.input}
+								placeholder="Nom"
+								value={nameNewClub}
+								onChangeText={setNameNewClub}
 							/>
-							{offices.map((item) => (
+							<TextInput
+								style={modalStyle.input}
+								placeholder="Description"
+								value={descriptionNewClub}
+								onChangeText={setDescriptionNewClub}
+							/>
+							<TouchableOpacity
+								style={modalStyle.imagePicker}
+								onPress={pickImageClub}
+							>
+								<Text style={modalStyle.textImagePicker}>
+									Choisir une image
+								</Text>
+							</TouchableOpacity>
+							<Picker
+								selectedValue={selectedOfficeNewClub}
+								style={modalStyle.picker}
+								onValueChange={(itemValue, itemIndex) =>
+									setSelectedOfficeNewClub(itemValue)
+								}
+							>
 								<Picker.Item
-									key={item.id}
-									label={item.name}
-									value={item.id}
+									key={0}
+									label="Choisir un bureau"
+									value={0}
+									enabled={false}
 								/>
-							))}
-						</Picker>
-						{isError ? <Text style={modalStyle.errorText}>Erreur détectée</Text> : null}
-						<View style={{marginLeft: 20, marginRight: 20, marginTop: 15}}>
-							<GlobalButton onPress={storeClub} padding={6} borderRadius={5} text="Valider" color="#2ecc71"/>
-						</View>
-						<View style={{marginLeft: 20, marginRight: 20, marginTop: 5, marginBottom: 15}}>
-							<GlobalButton onPress={handleCloseClubModal} padding={6} borderRadius={5} textColor="#da291c" borderColor="#da291c" text="Annuler" color="#ffffff"/>
+								{offices.map((item) => (
+									<Picker.Item
+										key={item.id}
+										label={item.name}
+										value={item.id}
+									/>
+								))}
+							</Picker>
+							{isError ? <Text style={modalStyle.errorText}>Erreur détectée</Text> : null}
+							<View style={{marginLeft: 20, marginRight: 20, marginTop: 15}}>
+								<GlobalButton onPress={storeClub} padding={6} borderRadius={5} text="Valider"
+											  color="#2ecc71"/>
+							</View>
+							<View style={{marginLeft: 20, marginRight: 20, marginTop: 5, marginBottom: 15}}>
+								<GlobalButton onPress={handleCloseClubModal} padding={6} borderRadius={5}
+											  textColor="#da291c" borderColor="#da291c" text="Annuler" color="#ffffff"/>
+							</View>
 						</View>
 					</View>
-				</View>
-			</Modal>
-			<Modal
+				</Modal>
+				<Modal
 				animationType="fade"
 				transparent={true}
 				visible={modalOfficeVisible}
 				onRequestClose={() => {
-					setModalOfficeVisible(!modalOfficeVisible)
-				}}
-			>
+				setModalOfficeVisible(!modalOfficeVisible)
+			}}
+				>
 				<View style={modalStyle.modal}>
-					<View style={modalStyle.addPanel}>
-						<Text style={modalStyle.title}>
-							Création d'un bureau
-						</Text>
-						<TextInput
-							style={modalStyle.input}
-							placeholder="Nom"
-							value={nameNewOffice}
-							onChangeText={setNameNewOffice}
-						/>
-						<TextInput
-							style={modalStyle.input}
-							placeholder="Description"
-							value={descriptionNewOffice}
-							onChangeText={setDescriptionNewOffice}
-						/>
-						<TouchableOpacity
-							style={modalStyle.imagePicker}
-							onPress={pickImageOffice}
-						>
-							<Text style={modalStyle.textImagePicker}>
-								Choisir une image
-							</Text>
-						</TouchableOpacity>
-						{isError ? <Text style={modalStyle.errorText}>Erreur détectée</Text> : null}
-						<View style={{marginLeft: 20, marginRight: 20, marginTop: 15}}>
-							<GlobalButton onPress={storeOffice} padding={6} borderRadius={5} text="Valider" color="#2ecc71"/>
-						</View>
-						<View style={{marginLeft: 20, marginRight: 20, marginTop: 5, marginBottom: 15}}>
-							<GlobalButton onPress={handleCloseOfficeModal} padding={6} borderRadius={5} textColor="#da291c" borderColor="#da291c" text="Annuler" color="#ffffff"/>
-						</View>
-					</View>
+				<View style={modalStyle.addPanel}>
+				<Text style={modalStyle.title}>
+				Création d'un bureau
+				</Text>
+				<TextInput
+				style={modalStyle.input}
+				placeholder="Nom"
+				value={nameNewOffice}
+				onChangeText={setNameNewOffice}
+				/>
+				<TextInput
+				style={modalStyle.input}
+				placeholder="Description"
+				value={descriptionNewOffice}
+				onChangeText={setDescriptionNewOffice}
+				/>
+				<TouchableOpacity
+				style={modalStyle.imagePicker}
+				onPress={pickImageOffice}
+				>
+				<Text style={modalStyle.textImagePicker}>
+				Choisir une image
+				</Text>
+				</TouchableOpacity>
+			{isError ? <Text style={modalStyle.errorText}>Erreur détectée</Text> : null}
+				<View style={{marginLeft: 20, marginRight: 20, marginTop: 15}}>
+				<GlobalButton onPress={storeOffice} padding={6} borderRadius={5} text="Valider" color="#2ecc71"/>
 				</View>
-			</Modal>
-			<ListModal
+				<View style={{marginLeft: 20, marginRight: 20, marginTop: 5, marginBottom: 15}}>
+				<GlobalButton onPress={handleCloseOfficeModal} padding={6} borderRadius={5} textColor="#da291c" borderColor="#da291c" text="Annuler" color="#ffffff"/>
+				</View>
+				</View>
+				</View>
+				</Modal>
+				<ListModal
 				title="Ajouter un admin"
 				visible={modalAddAdminVisible}
 				list={serializeAdmins(
-					users.filter(
-						(item) => !admins.find((admin) => admin.id === item.id)
-					)
+				users.filter(
+				(item) => !admins.some((admin) => admin.id === item.id)
+				)
 				)}
 				selectable={true}
 				onClose={() => setModalAddAdminVisible(!modalAddAdminVisible)}
 				onConfirm={storeAdmin}
-			/>
+				/>
 
-			<ListModal
+				<ListModal
 				title="Retirer un admin"
 				visible={modalDeleteAdminVisible}
 				list={serializeAdmins(admins)}
 				selectable={true}
 				onClose={() =>
-					setModalDeleteAdminVisible(!modalDeleteAdminVisible)
-				}
+				setModalDeleteAdminVisible(!modalDeleteAdminVisible)
+			}
 				onConfirm={deleteAdmin}
-			/>
+				/>
 
-			<ListModal
+				<ListModal
 				title="Aller à la gestion"
 				visible={modalListClubVisible}
 				list={serializeOffices(offices)}
 				selectable={true}
 				onClose={() => setModalListClubVisible(!modalListClubVisible)}
 				onConfirm={goToClub}
-			/>
+				/>
+			*/}
 
 			<ScrollView>
+				<View>
+					<TouchableOpacity style={styles.adminButton} onPress={() => {
+						setModalOfficeVisible(true)}}>
+						<Text style={{fontSize: 25}}>Aller à la gestion</Text>
+					</TouchableOpacity>
+					<Modal
+						animationType="fade"
+						visible={modalOfficeVisible}
+						transparent={true}
+						onRequestClose={() => setModalOfficeVisible(false)}>
+						<View style={styles.modal}>
+							<View style={{display: 'flex', flexDirection: 'row'}}>
+								<Text style={styles.modalHeader}>Création bureau</Text>
+								<TouchableOpacity
+									style={styles.closeBtn}
+									onPress={() => setModalOfficeVisible(false)}
+								>
+									<Icon name="close" size={50} color="#fff" />
+								</TouchableOpacity>
+							</View>
+							<ScrollView>
+								{serializeOffices(offices).map((item, key) =>
+									<View style={{width: '90%'}}>
+										<TouchableOpacity
+											style={{width: '100%', marginLeft: '5%'}}
+											onPress={() => {setModalOfficeVisible(false); goToClub(item.value)}}>
+											<View style={styles.listModalItem}>
+												<Text style={{fontSize: 25}}>
+													{item.label}
+												</Text>
+											</View>
+										</TouchableOpacity>
+									</View>
+								)}
+							</ScrollView>
+						</View>
+					</Modal>
+				</View>
 				<AdminButton
 					onPress={() => {
 						setModalOfficeVisible(true)
@@ -441,8 +490,50 @@ const styles = StyleSheet.create({
 	},
 	modal: {
 		flex: 1,
-		backgroundColor: "rgba(0,0,0,0.2)",
+		backgroundColor: "rgba(0,0,0,0.8)",
 	},
+	modalHeader: {
+		fontSize: 25,
+		textAlign: "center",
+		fontWeight: "bold",
+		color: "white",
+		marginBottom: 40,
+		marginTop: 32,
+		marginLeft: "25%"
+	},
+	listModalItem: {
+		width: "100%",
+		backgroundColor: "white",
+		display: "flex",
+		alignItems: "center",
+		padding: 10,
+		borderRadius: 10,
+		marginBottom: 15,
+	},
+	closeBtn: {
+		position: "absolute",
+		right: 10,
+		top: 25,
+		color: "white",
+	},
+	adminButton: {
+		width: "90%",
+		backgroundColor: "white",
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+		marginLeft: "5%",
+		marginTop: 15,
+		padding: 10,
+		borderRadius: 10,
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 1,
+		},
+		shadowOpacity: 0.05,
+		shadowRadius: 10,
+	}
 })
 
 export default Admin
