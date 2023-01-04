@@ -14,7 +14,7 @@ const isLessThanTheMB = (fileSize, smallerThanSizeMB) => {
 	return isOk
 }
 
-export const pickImageUtils = async (editing = false, maxSize = 10) => {
+export const pickImageUtils = async (editing = true, maxSize = 10) => {
 	let result = await ImagePicker.launchImageLibraryAsync({
 		mediaTypes: ImagePicker.MediaTypeOptions.Images,
 		allowsEditing: editing,
@@ -23,9 +23,10 @@ export const pickImageUtils = async (editing = false, maxSize = 10) => {
 	})
 
 	if (result.cancelled) {
-		alert("Impossible de sélectionner ce fichier.")
+		alert("Sélection annulée.")
 		return {
 			status: false,
+			reason: "cancelled",
 		}
 	}
 	const fileInfo = await getFileInfo(result.uri)
@@ -34,6 +35,7 @@ export const pickImageUtils = async (editing = false, maxSize = 10) => {
 		alert("Impossible de sélectionner ce fichier.")
 		return {
 			status: false,
+			reason: "incorrect format"
 		}
 	}
 
@@ -41,8 +43,10 @@ export const pickImageUtils = async (editing = false, maxSize = 10) => {
 		alert("Cette image est trop volumineuse (supérieur à 10Mb).")
 		return {
 			status: false,
+			reason: "too large file"
 		}
 	}
+	console.log("rrrrrrrrrrrr", result)
 
 	if (Platform.OS === "web") {
 		return {
@@ -54,12 +58,14 @@ export const pickImageUtils = async (editing = false, maxSize = 10) => {
 		const base64 = await FileSystem.readAsStringAsync(result.uri, {
 			encoding: "base64",
 		})
+
 		return {
 			status: true,
 			image: result.uri,
 			imageBase64: base64,
 		}
 	}
+
 }
 
 export const getPictureInput = (image, imageBase64) => {
