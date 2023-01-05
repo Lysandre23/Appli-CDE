@@ -133,3 +133,8 @@ export const filesPost = async (url, token, form, callback) => {
 			})
 		})
 }
+
+export const myToDateString = (date) => {
+	let dateArray = date.toString().split(" ");
+	return dateArray[2] + " " + dateArray[1] + " " + dateArray[3];
+}

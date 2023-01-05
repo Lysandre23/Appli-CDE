@@ -72,7 +72,7 @@ function App({ navigation }) {
           sendExpoToken(token);
           console.log("expoToken set");
         })
-        .catch((err) => console.log(err));
+        .catch((err) =>console.error(err));
     }
   });
 
@@ -119,8 +119,8 @@ function App({ navigation }) {
         },
       }
     )
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err.response));
+      .then((response)=>{})
+      .catch((err) => console.error(err));
   };
 
   const handleDisconnect = (value) => {

@@ -248,7 +248,6 @@ const styles = StyleSheet.create({
 		fontWeight: "500",
 	},
 	presText: {
-		width: "100%",
 		textAlign: "justify",
 		marginTop: 15,
 		width: "90%",

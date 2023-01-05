@@ -21,36 +21,36 @@ import modalStyle from "./Modal.style.js";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { showMessage, hideMessage } from "react-native-flash-message";
-import { pickImageUtils, getPictureInput, filesPost } from "../helpers/helpers";
+import { pickImageUtils, getPictureInput, filesPost, myToDateString } from "../helpers/helpers";
 import GlobalButton from "../Components/GlobalButton";
 
 const GestionClub = (props) => {
     const route = useRoute();
-    const [isError, setIsError] = useState(false)
 
+    const [isError, setIsError] = useState(false)
     const [modalUpdateVisible, setModalUpdateVisible] = useState(false);
     const [nameUpdateClub, setNameUpdateClub] = useState("");
     const [descriptionUpdateClub, setDescriptionUpdateClub] = useState("");
     const [imageUpdateClub, setImageUpdateClub] = useState(null);
     const [image64UpdateClub, setImage64UpdateClub] = useState(null);
-    const [roomUpdateClub, setRoomUpdateClub] = useState("");
 
+    const [roomUpdateClub, setRoomUpdateClub] = useState("");
     const [modalPostVisible, setModalPostVisible] = useState(false);
     const [titlePost, setTitlePost] = useState("");
     const [descriptionPost, setDescriptionPost] = useState("");
-    const [imagePost, setImagePost] = useState(null);
+    const [imagePost, setImagePost] = useState(undefined);
     const [image64Post, setImage64Post] = useState(null);
     const [datePost, setDatePost] = useState(new Date());
+    const [dateSelected, setDateSelected] = useState(false);
+
     const [enableNotificationPost, setEnableNotificationPost] = useState(false);
 
+    const [timePickerVisible, setTimePickerVisible] = useState(false);
     const [modalMessagesVisible, setModalMessagesVisible] = useState(false);
     const [modalAddMemberVisible, setModalAddMemberVisible] = useState(false);
-    const [modalRemoveMemberVisible, setModalRemoveMemberVisible] =
-        useState(false);
-    const [modalAddResponsibleVisible, setModalAddResponsibleVisible] =
-        useState(false);
-    const [modalRemoveResponsibleVisible, setModalRemoveResponsibleVisible] =
-        useState(false);
+    const [modalRemoveMemberVisible, setModalRemoveMemberVisible] = useState(false);
+    const [modalAddResponsibleVisible, setModalAddResponsibleVisible] = useState(false);
+    const [modalRemoveResponsibleVisible, setModalRemoveResponsibleVisible] = useState(false);
 
     const [club, setClub] = useState({
         id: null,
@@ -245,31 +245,34 @@ const GestionClub = (props) => {
         );
     };
 
+    const closeNewPost = () => {
+        setModalPostVisible(false);
+        setTitlePost("");
+        setDatePost("");
+        setDateSelected(false);
+        setDescriptionPost("");
+        setImagePost(undefined);
+        setImage64Post(null);
+        setEnableNotificationPost(false);
+    }
+
     const storePost = async () => {
-        if (imagePost) {
-            let form = new FormData();
+        let form = new FormData();
 
-            form.append("picture", getPictureInput(imagePost, image64Post));
+        form.append("picture", imagePost ? getPictureInput(imagePost, image64Post) : null);
 
-            form.append("title", titlePost);
-            form.append("description", descriptionPost);
-            form.append("enable_notifications", enableNotificationPost);
-            form.append("club_id", club.id);
+        form.append("title", titlePost);
+        form.append("description", descriptionPost);
+        form.append("enable_notifications", enableNotificationPost);
+        form.append("club_id", club.id);
 
-            filesPost("/clubs/posts", props.token, form, () => {
-                setModalPostVisible(false);
-                setTitlePost("");
-                setDatePost("");
-                setDescriptionPost("");
-                setImagePost(null);
-                setImage64Post(null);
-                setEnableNotificationPost(false);
-            });
-        }
+        filesPost("/clubs/posts", props.token, form, closeNewPost);
     };
 
     const handleChangeDate = (event, value) => {
         setDatePost(value);
+        setDateSelected(true);
+        setTimePickerVisible(false);
     };
 
     return (
@@ -328,16 +331,14 @@ const GestionClub = (props) => {
                 animationType="fade"
                 transparent={true}
                 visible={modalPostVisible}
-                onRequestClose={() => {
-                    setModalPostVisible(!modalPostVisible);
-                }}
+                onRequestClose={closeNewPost}
             >
                 <View style={modalStyle.modal}>
                     <View style={modalStyle.addPanel}>
                         <Text style={modalStyle.title}>Nouveau post</Text>
                         <TextInput
                             style={modalStyle.input}
-                            placeholder="Title"
+                            placeholder="Titre"
                             value={titlePost}
                             onChangeText={setTitlePost}
                         />
@@ -350,6 +351,10 @@ const GestionClub = (props) => {
                             numberOfLines={3}
                             maxLength={200}
                         />
+                        <TouchableOpacity style={dateSelected ? styles.dateSelected : modalStyle.imagePicker} onPress={() => setTimePickerVisible(true)}>
+                            <Text style={dateSelected ? styles.textDateSelected : modalStyle.textImagePicker}>{dateSelected ? myToDateString(datePost) : "Sélectionner une date"}</Text>
+                        </TouchableOpacity>
+                        {timePickerVisible &&
                         <DateTimePicker
                             testID="dateTimePicker"
                             value={datePost}
@@ -357,13 +362,13 @@ const GestionClub = (props) => {
                             is24Hour={true}
                             display="default"
                             onChange={handleChangeDate}
-                        />
+                        />}
                         <TouchableOpacity
                             style={modalStyle.imagePicker}
                             onPress={pickImagePost}
                         >
                             <Text style={modalStyle.textImagePicker}>
-                                {imagePost == null ?
+                                {imagePost === undefined ?
                                     "Choisir une image" :
                                     "Image sélectionée"
                                 }
@@ -397,7 +402,7 @@ const GestionClub = (props) => {
                             <GlobalButton onPress={storePost} padding={6} borderRadius={5} text="Valider" color="#2ecc71"/>
                         </View>
                         <View style={{marginLeft: 20, marginRight: 20, marginTop: 5, marginBottom: 15}}>
-                            <GlobalButton onPress={handleClosePostModal} padding={6} borderRadius={5} textColor="#da291c" borderColor="#da291c" text="Annuler" color="#ffffff"/>
+                            <GlobalButton onPress={closeNewPost} padding={6} borderRadius={5} textColor="#da291c" borderColor="#da291c" text="Annuler" color="#ffffff"/>
                         </View>
                     </View>
                 </View>
@@ -409,7 +414,7 @@ const GestionClub = (props) => {
                 type="messages"
                 list={messages}
                 selectable={false}
-                onClose={() => setModalMessagesVisible(!modalMessagesVisible)}
+                onClose={() => setModalMessagesVisible(false)}
             />
             <ListModal
                 title="Ajouter un membre"
@@ -486,7 +491,7 @@ const GestionClub = (props) => {
                             (responsibles.length > 1 ? "s" : "")}
                     </Text>
                     <Text style={{ fontSize: 17 }}>
-                        {members.length + " membre" + (members.length > 1 && "s")}
+                        {members.length + " membre" + (members.length > 1 ? "s" : "")}
                     </Text>
                 </View>
             </View>
@@ -591,6 +596,21 @@ const styles = StyleSheet.create({
         padding: 5,
         marginBottom: 5,
     },
+    dateSelected: {
+        backgroundColor: "white",
+        padding: 5,
+        borderRadius: 4,
+        borderColor: "black",
+        borderWidth: 1,
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 40,
+        marginRight: 40
+    },
+    textDateSelected: {
+        color: "black",
+        textAlign: "center"
+    }
 });
 
 export default GestionClub;
