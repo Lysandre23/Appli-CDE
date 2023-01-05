@@ -11,7 +11,7 @@ import {
 import KeyboardAvoidingView from "react-native/Libraries/Components/Keyboard/KeyboardAvoidingView"
 import { useNavigation } from "@react-navigation/native"
 import Api from "../Api"
-import { useState } from "react"
+import {useRef, useState} from "react"
 import Icon from "react-native-vector-icons/FontAwesome"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import FlashMessage, { showMessage } from "react-native-flash-message"
@@ -20,6 +20,13 @@ import title from "react-native-paper/src/components/Typography/Title";
 import keyboardAvoidingView from "react-native/Libraries/Components/Keyboard/KeyboardAvoidingView";
 
 const Login = ({ onTokenUpdate }) => {
+
+	const emailInput = useRef()
+	const firstnameInput = useRef()
+	const lastnameInput = useRef()
+	const passwordInput = useRef()
+	const passwordConfirmInput = useRef()
+
 	const navigation = useNavigation()
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
@@ -237,6 +244,9 @@ const Login = ({ onTokenUpdate }) => {
 					autoComplete="email"
 					autoCapitalize="none"
 					keyboardType="email-address"
+				   	returnKeyType="next"
+				   	ref={emailInput}
+				   	onSubmitEditing={() => title === "Enregistrement" ? firstnameInput.current.focus() : passwordInput.current.focus()}
 				/>
 				{title === "Enregistrement" ? (
 					<View>
@@ -249,8 +259,12 @@ const Login = ({ onTokenUpdate }) => {
 						value={firstName}
 						placeholder="Prénom"
 						autoComplete="name-given"
+						ref={firstnameInput}
+						returnKeyType="next"
+						onSubmitEditing={() => lastnameInput.current.focus()}
 					/>
 					<TextInput
+						ref={lastnameInput}
 						style={[
 							styles.input,
 							lastNameError && styles.inputError,
@@ -259,6 +273,8 @@ const Login = ({ onTokenUpdate }) => {
 						value={lastName}
 						placeholder="Nom"
 						autoComplete="name-family"
+						returnKeyType="next"
+						onSubmitEditing={() => passwordInput.current.focus()}
 					/>
 					</View>
 				) : null}
@@ -276,6 +292,9 @@ const Login = ({ onTokenUpdate }) => {
 						placeholder="Mot de passe"
 						secureTextEntry={true}
 						autoComplete="password"
+						returnKeyType="next"
+						ref={passwordInput}
+						onSubmitEditing={() => title === "Enregistrement" && passwordConfirmInput.current.focus()}
 					/>
 				) : null}
 				{title === "Enregistrement" ? (
@@ -289,6 +308,8 @@ const Login = ({ onTokenUpdate }) => {
 						value={password_confirm}
 						placeholder="Mot de passe (confirmation)"
 						secureTextEntry={true}
+						returnKeyType="next"
+						ref={passwordConfirmInput}
 					/>
 				) : null}
 				{title === "Vérification" ? (

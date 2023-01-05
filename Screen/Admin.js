@@ -12,19 +12,19 @@ import {
 import { Picker } from "@react-native-picker/picker"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
-import AdminButton from "../Components/AdminButton"
+//import AdminButton from "../Components/AdminButton"
 import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 import modalStyle from "./Modal.style.js"
 import { useEffect } from "react"
 import Api from "../Api"
-import ListModal from "../Components/ListModal"
+//import ListModal from "../Components/ListModal"
 import { showMessage, hideMessage } from "react-native-flash-message"
 import { pickImageUtils, getPictureInput, filesPost } from "../helpers/helpers"
 import GlobalButton from "../Components/GlobalButton"
-import ListModalMessage from "../Components/ListModalMessage";
-import ListModalItem from "../Components/ListModalItem";
-import BigButton from "../Components/BigButton";
+//import ListModalMessage from "../Components/ListModalMessage";
+//import ListModalItem from "../Components/ListModalItem";
+//import BigButton from "../Components/BigButton";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const Admin = (props) => {

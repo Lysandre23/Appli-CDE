@@ -6,7 +6,7 @@ const modalStyle = StyleSheet.create({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: "rgba(0,0,0,0.15)",
+		backgroundColor: "#000c",
 	},
 	addPanel: {
 		backgroundColor: "white",

@@ -15,7 +15,7 @@ import RedLine from "../Components/RedLine";
 import { useState, useEffect } from "react";
 import { useRoute } from "@react-navigation/core";
 import Api from "../Api";
-import AdminButton from "../Components/AdminButton";
+//import AdminButton from "../Components/AdminButton";
 import ListModal from "../Components/ListModal";
 import modalStyle from "./Modal.style.js";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
@@ -282,7 +282,7 @@ const GestionClub = (props) => {
                 transparent={true}
                 visible={modalUpdateVisible}
                 onRequestClose={() => {
-                    setModalUpdateVisible(!modalUpdateVisible);
+                    setModalUpdateVisible(false);
                 }}
             >
                 <View style={modalStyle.modal}>
@@ -425,7 +425,7 @@ const GestionClub = (props) => {
                     )
                 )}
                 selectable={true}
-                onClose={() => setModalAddMemberVisible(!modalAddMemberVisible)}
+                onClose={() => setModalAddMemberVisible(false)}
                 onConfirm={handleToggleMember}
             />
             <ListModal
@@ -433,7 +433,7 @@ const GestionClub = (props) => {
                 visible={modalRemoveMemberVisible}
                 list={serializeUsers(members)}
                 selectable={true}
-                onClose={() => setModalRemoveMemberVisible(!modalRemoveMemberVisible)}
+                onClose={() => setModalRemoveMemberVisible(false)}
                 onConfirm={handleToggleMember}
             />
             <ListModal
@@ -442,7 +442,7 @@ const GestionClub = (props) => {
                 list={serializeUsers(members.filter((item) => !responsibles.find((responsible) => responsible.id === item.id)))}
                 selectable={true}
                 onClose={() =>
-                    setModalAddResponsibleVisible(!modalAddResponsibleVisible)
+                    setModalAddResponsibleVisible(false)
                 }
                 onConfirm={handleToggleResponsible}
             />

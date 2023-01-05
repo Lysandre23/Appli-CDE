@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
-import AdminButton from "../Components/AdminButton";
+//import AdminButton from "../Components/AdminButton";
 import modalStyle from "./Modal.style";
 import { useState } from "react";
 import Api from "../Api";
@@ -90,12 +90,12 @@ const Profil = (props) => {
           </View>
         </View>
       </Modal>
-      <TouchableOpacity
+      <TouchableOpacity style={styles.adminButton}
         onPress={() => {
           setModalPasswordVisible(true);
         }}
       >
-        <AdminButton text="Changer de mot de passe" onPress={() => {}} />
+        <Text style={{fontSize: 25}}>Changer de mot de passe</Text>
       </TouchableOpacity>
       <Navbar color="#da291c" user={props.user} />
     </View>
@@ -103,11 +103,30 @@ const Profil = (props) => {
 };
 
 const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    backgroundColor: "#F8F8F8",
-    overflow: "hidden",
-  },
+    main: {
+        flex: 1,
+        backgroundColor: "#F8F8F8",
+        overflow: "hidden",
+    },
+    adminButton: {
+        height: 55,
+        width: "90%",
+        backgroundColor: "white",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        marginLeft: "5%",
+        marginTop: 15,
+        padding: 10,
+        borderRadius: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+    },
 });
 
 export default Profil;

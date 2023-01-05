@@ -15,7 +15,7 @@ import RedLine from "../Components/RedLine"
 import { useState, useEffect } from "react"
 import { useRoute } from "@react-navigation/core"
 import Api from "../Api"
-import AdminButton from "../Components/AdminButton"
+//import AdminButton from "../Components/AdminButton"
 import ListModal from "../Components/ListModal"
 import modalStyle from "./Modal.style.js"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
@@ -44,12 +44,9 @@ const GestionOffice = (props) => {
 
 	const [modalMessagesVisible, setModalMessagesVisible] = useState(false)
 	const [modalAddMemberVisible, setModalAddMemberVisible] = useState(false)
-	const [modalRemoveMemberVisible, setModalRemoveMemberVisible] =
-		useState(false)
-	const [modalAddResponsibleVisible, setModalAddResponsibleVisible] =
-		useState(false)
-	const [modalRemoveResponsibleVisible, setModalRemoveResponsibleVisible] =
-		useState(false)
+	const [modalRemoveMemberVisible, setModalRemoveMemberVisible] = useState(false)
+	const [modalAddResponsibleVisible, setModalAddResponsibleVisible] = useState(false)
+	const [modalRemoveResponsibleVisible, setModalRemoveResponsibleVisible] = useState(false)
 
 	const [office, setOffice] = useState({
 		id: null,
@@ -284,7 +281,7 @@ const GestionOffice = (props) => {
 				transparent={true}
 				visible={modalUpdateVisible}
 				onRequestClose={() => {
-					setModalUpdateVisible(!modalUpdateVisible)
+					setModalUpdateVisible(false)
 				}}
 			>
 				<View style={modalStyle.modal}>
@@ -292,7 +289,7 @@ const GestionOffice = (props) => {
 						<Text style={modalStyle.title}>Modifier le bureau</Text>
 						<TextInput
 							style={modalStyle.input}
-							placeholder="Nom"
+							placeholder="Nom*"
 							value={nameUpdateOffice}
 							onChangeText={setNameUpdateOffice}
 						/>
@@ -314,7 +311,7 @@ const GestionOffice = (props) => {
 						>
 							<Text style={modalStyle.textImagePicker}>
 								{imageUpdateOffice == null
-									? "Choisir une image"
+									? "Choisir une image*"
 									: "Image sélectionée"}
 							</Text>
 						</TouchableOpacity>
@@ -323,7 +320,8 @@ const GestionOffice = (props) => {
 								Erreur détectée
 							</Text>
 						) : null}
-						<View style={{marginLeft: 20, marginRight: 20, marginTop: 15}}>
+						<Text style={{fontSize: 8, textAlign: "center"}}>Les champs marqués d'un astérisque sont obligatoires</Text>
+						<View style={{marginLeft: 20, marginRight: 20, marginTop: 5}}>
 							<GlobalButton onPress={updateOffice} padding={6} borderRadius={5} text="Valider" color="#2ecc71"/>
 						</View>
 						<View style={{marginLeft: 20, marginRight: 20, marginTop: 5, marginBottom: 15}}>
@@ -422,7 +420,7 @@ const GestionOffice = (props) => {
 				type="messages"
 				list={messages}
 				selectable={false}
-				onClose={() => setModalMessagesVisible(!modalMessagesVisible)}
+				onClose={() => setModalMessagesVisible(false)}
 			/>
 			<ListModal
 				title="Ajouter un membre"
@@ -434,7 +432,7 @@ const GestionOffice = (props) => {
 					)
 				)}
 				selectable={true}
-				onClose={() => setModalAddMemberVisible(!modalAddMemberVisible)}
+				onClose={() => setModalAddMemberVisible(false)}
 				onConfirm={handleToggleMember}
 			/>
 			<ListModal
@@ -443,12 +441,12 @@ const GestionOffice = (props) => {
 				list={serializeUsers(members)}
 				selectable={true}
 				onClose={() =>
-					setModalRemoveMemberVisible(!modalRemoveMemberVisible)
+					setModalRemoveMemberVisible(false)
 				}
 				onConfirm={handleToggleMember}
 			/>
 			<ListModal
-				title="Ajouter un responsible"
+				title="Ajouter un responsable"
 				visible={modalAddResponsibleVisible}
 				list={serializeUsers(
 					members.filter(
@@ -460,7 +458,7 @@ const GestionOffice = (props) => {
 				)}
 				selectable={true}
 				onClose={() =>
-					setModalAddResponsibleVisible(!modalAddResponsibleVisible)
+					setModalAddResponsibleVisible(false)
 				}
 				onConfirm={handleToggleResponsible}
 			/>
@@ -477,7 +475,7 @@ const GestionOffice = (props) => {
 				onConfirm={handleToggleResponsible}
 			/>
 
-			<Header title="GESTION DE CLUB" color="#da291c" user={props.user} />
+			<Header title="GESTION DE BUREAU" color="#da291c" user={props.user} />
 			<View
 				style={{
 					display: "flex",
@@ -518,34 +516,29 @@ const GestionOffice = (props) => {
 				</View>
 			</View>
 			<RedLine />
-			<AdminButton
-				text="Messages"
-				onPress={() => setModalMessagesVisible(true)}
-			/>
-			<AdminButton
-				text="Modifier le bureau"
-				onPress={() => setModalUpdateVisible(true)}
-			/>
-			<AdminButton
-				text="Ecrire un nouveau post"
-				onPress={() => setModalPostVisible(true)}
-			/>
-			<AdminButton
-				text="Ajouter un responsable"
-				onPress={() => setModalAddResponsibleVisible(true)}
-			/>
-			<AdminButton
-				text="Retirer un responsable"
-				onPress={() => setModalRemoveResponsibleVisible(true)}
-			/>
-			<AdminButton
-				text="Ajouter un membre"
-				onPress={() => setModalAddMemberVisible(true)}
-			/>
-			<AdminButton
-				text="Retirer un membre"
-				onPress={() => setModalRemoveMemberVisible(true)}
-			/>
+			<ScrollView style={{maxHeight: "55%"}}>
+				<TouchableOpacity style={styles.adminButton} onPress={() => setModalMessagesVisible(true)}>
+					<Text style={{fontSize: 25}}>Messages</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.adminButton} onPress={() => setModalUpdateVisible(true)}>
+					<Text style={{fontSize: 25}}>Modifier le bureau</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.adminButton} onPress={() => setModalPostVisible(true)}>
+					<Text style={{fontSize: 25}}>Ecrire un nouveau post</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.adminButton} onPress={() => setModalAddResponsibleVisible(true)}>
+					<Text style={{fontSize: 25}}>Ajouter un responsable</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.adminButton} onPress={() => setModalRemoveResponsibleVisible(true)}>
+					<Text style={{fontSize: 25}}>Retirer un responsable</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.adminButton} onPress={() => setModalAddMemberVisible(true)}>
+					<Text style={{fontSize: 25}}>Ajouter un membre</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.adminButton} onPress={() => setModalRemoveMemberVisible(true)}>
+					<Text style={{fontSize: 25}}>Retirer un membre</Text>
+				</TouchableOpacity>
+			</ScrollView>
 			<Navbar color="#da291c" user={props.user} />
 		</View>
 	)
@@ -555,6 +548,25 @@ const styles = StyleSheet.create({
 	main: {
 		flex: 1,
 		backgroundColor: "rgb(250,250,250)",
+	},
+	adminButton: {
+		height: 55,
+		width: "90%",
+		backgroundColor: "white",
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+		marginLeft: "5%",
+		marginTop: 15,
+		padding: 10,
+		borderRadius: 10,
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 1,
+		},
+		shadowOpacity: 0.05,
+		shadowRadius: 10,
 	},
 	bt: {
 		marginTop: 15,

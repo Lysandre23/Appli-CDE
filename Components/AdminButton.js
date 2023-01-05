@@ -3,11 +3,8 @@ import { StyleSheet, Text, View } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 
 const AdminButton = (props) => {
-	const handlePress = () => {
-		props.onPress()
-	}
 	return (
-		<TouchableOpacity onPress={handlePress}>
+		<TouchableOpacity onPress={props.onPress}>
 			<View style={styles.main}>
 				<Text style={{ fontSize: 25 }}>{props.text}</Text>
 			</View>

@@ -132,6 +132,7 @@ const Message = (props) => {
 				multiline={true}
 				numberOfLines={10}
 				maxLength={200}
+
 			/>
 			<View
 				style={{
