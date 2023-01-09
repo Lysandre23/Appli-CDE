@@ -1,8 +1,16 @@
+/*
+Racine de l'appli
+Les pages sont générées dans les éléments <Drawer.Screen>, la propriété name explicite la page correspondante.
+Les fichiers source des pages sont dans le dossier Screen.
+Les composants créés sont dans le dossier Components.
+Les fonctions utilitaires utilisées plusieurs fois sont dans le dossier helpers, fichier helpers.js.
+Les images sont dans le dossier assets.
+ */
+
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator, DrawerContent } from "@react-navigation/drawer";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { StatusBar } from "react-native";
 import 'react-native-gesture-handler';
 import Login from "./Screen/Login";
