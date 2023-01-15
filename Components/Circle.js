@@ -27,9 +27,9 @@ const randomYPosition = (s) => {
   return (Math.random() * 80 * 0.01 + 0.1) * windowHeight;
 };
 
-var size = 0;
-var xPos = 0;
-var yPos = 2;
+let size = 0;
+let xPos = 0;
+let yPos = 2;
 
 const Circle = (props) => {
   useEffect(() => {

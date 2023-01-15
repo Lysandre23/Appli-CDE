@@ -1,17 +1,15 @@
 import * as ImagePicker from "expo-image-picker"
-import { Platform } from "react-native"
+import {Platform} from "react-native"
 import * as FileSystem from "expo-file-system"
-import { baseUrlAPI } from "../Api"
-import { showMessage, hideMessage } from "react-native-flash-message"
+import {baseUrlAPI} from "../Api"
+import {showMessage} from "react-native-flash-message"
 
 const getFileInfo = async (fileURI) => {
-	const fileInfo = await FileSystem.getInfoAsync(fileURI)
-	return fileInfo
+	return await FileSystem.getInfoAsync(fileURI)
 }
 
 const isLessThanTheMB = (fileSize, smallerThanSizeMB) => {
-	const isOk = fileSize / 1024 / 1024 < smallerThanSizeMB
-	return isOk
+	return fileSize / 1024 / 1024 < smallerThanSizeMB
 }
 
 export const pickImageUtils = async (editing = true, maxSize = 10) => {
@@ -46,7 +44,6 @@ export const pickImageUtils = async (editing = true, maxSize = 10) => {
 			reason: "too large file"
 		}
 	}
-	console.log("rrrrrrrrrrrr", result)
 
 	if (Platform.OS === "web") {
 		return {

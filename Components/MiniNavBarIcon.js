@@ -32,7 +32,7 @@ const MiniNavbarIcon = (props) => {
           alignItems: "center",
         }}
       >
-        {type == "icon" ? (
+        {type === "icon" ? (
           <Icon color={props.color} size={iconSize} name={props.name} />
         ) : (
           <Image style={styles.img} source={require("../assets/psnLogo.png")} />

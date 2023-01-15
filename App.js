@@ -11,7 +11,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { StatusBar } from "react-native";
+import {Platform, StatusBar} from "react-native";
 import 'react-native-gesture-handler';
 import Login from "./Screen/Login";
 import Goodies from "./Screen/Goodies";
@@ -104,7 +104,7 @@ function App({ navigation }) {
     }
 
     if (Platform.OS === "android") {
-      Notifications.setNotificationChannelAsync("default", {
+      await Notifications.setNotificationChannelAsync("default", {
         name: "default",
         importance: Notifications.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],

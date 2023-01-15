@@ -134,7 +134,7 @@ const Admin = (props) => {
 			form.append("description", descriptionNewClub)
 			form.append("office_id", selectedOfficeNewClub)
 
-			filesPost("/clubs", props.token, form, () => {
+			await filesPost("/clubs", props.token, form, () => {
 				setModalClubVisible(false)
 				setImageNewClub(null)
 				setImage64NewClub(null)
@@ -156,7 +156,7 @@ const Admin = (props) => {
 			form.append("name", nameNewOffice)
 			form.append("description", descriptionNewOffice)
 
-			filesPost("/offices", props.token, form, () => {
+			await filesPost("/offices", props.token, form, () => {
 				getOffices()
 				setModalOfficeVisible(false)
 				setImageNewOffice(null)
@@ -418,7 +418,6 @@ const Admin = (props) => {
 					<TouchableOpacity style={styles.adminButton} onPress={() => {
 						setModalAddAdminVisible(true)
 						getUsers()
-						console.log("\nOOOOOOOOOOOO\n")
 						console.log(serializeUsers())
 					}}>
 						<Text style={{fontSize: 25}}>Ajouter un admin</Text>
