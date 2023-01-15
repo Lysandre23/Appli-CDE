@@ -10,11 +10,11 @@
   "dependencies": {
     "@expo/config-plugins": "^5.0.2",
     "@expo/vector-icons": "^13.0.0",
-    "@expo/webpack-config": "^0.12.44",
+    "@expo/webpack-config": "^0.17.4",
     "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-native-community/checkbox": "^0.5.9",
     "@react-native-community/datetimepicker": "6.5.2",
-    "@react-native-firebase/messaging": "^14.5.1",
+    "@react-native-firebase/messaging": "^16.5.0",
     "@react-navigation/core": "^6.1.0",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
