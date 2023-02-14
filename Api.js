@@ -1,0 +1,12 @@
+import axios from "axios";
+
+//const baseURL = "https://cercle.polytech-services-nancy.fr/api";
+const baseURL = "https://api.cercle-des-eleves-polytech-nancy.fr/api";
+//const baseURL = "http://localhost:8000/api";
+//const baseURL = "http://192.168.106.76:19000/api";
+
+export const baseUrlAPI = baseURL;
+
+export default axios.create({
+  baseURL: baseURL,
+});
