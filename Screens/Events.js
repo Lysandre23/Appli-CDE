@@ -11,10 +11,10 @@ import {getUserAndToken} from "../utils";
 import Header from "../Components/Header";
 
 export const Events = (props) => {
-    const [sideBarShown, setSideBarShown] = useState(false)
     const [expoToken,setExpoToken] = useState(null)
     const [isLogged, setIsLogged] = useState(false)
     const [pendingUserInfo, setPendingUserInfo] = useState(true)
+    const [sideBarShown, setSideBarShown] = useState(false)
 
     const toggleSideBar = () => {
         setSideBarShown(!sideBarShown)

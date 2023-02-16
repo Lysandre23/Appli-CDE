@@ -19,6 +19,8 @@ import Navbar from "../Components/Navbar";
 import Circle from "../Components/Circle";
 import modalStyle from "./Modal.style";
 import GlobalButton from "../Components/GlobalButton";
+import {SideBar} from "../Components/SideBar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const psnOfficeId = 5;
 
@@ -39,11 +41,17 @@ const PSN = (props) => {
   const [members, setMembers] = useState([]);
   const [posts, setPosts] = useState([]);
 
+  const [sideBarShown, setSideBarShown] = useState(false)
+
   useEffect(() => {
     getOffice();
     getMembers();
     getPosts();
   }, []);
+
+  const toggleSideBar = () => {
+    setSideBarShown(!sideBarShown)
+  }
 
   const getOffice = () => {
     Api.get("/offices/" + psnOfficeId, {
@@ -118,6 +126,12 @@ const PSN = (props) => {
         .catch(e => console.error("confirmDelete", e))
   };
 
+  const handleDisconnect = (value) => {
+    if (value) {
+      AsyncStorage.removeItem("cde-token");
+    }
+  };
+
   return (
     <View style={styles.main}>
       <Circle />
@@ -152,7 +166,8 @@ const PSN = (props) => {
         </Modal>
       ) : null}
 
-      <Header color="#006fc0" title="PSN" user={props.user} />
+      <Header color="#006fc0" title="PSN" toggleSideBar={toggleSideBar} user={props.user} token={props.token}/>
+      {/*props.user.email && */ sideBarShown && <SideBar user={props.user} onDisconnect={handleDisconnect} {...props} />}
       <View style={styles.head}>
         <Image style={styles.img} source={{ uri: office.picture }} />
         <View style={styles.headButton}>

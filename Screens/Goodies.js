@@ -20,6 +20,8 @@ import Circle from "../Components/Circle"
 import { showMessage, hideMessage } from "react-native-flash-message"
 import { pickImageUtils, getPictureInput, filesPost } from "../utils.js"
 import Header from "../Components/Header";
+import {SideBar} from "../Components/SideBar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Goodies = (props) => {
 	const [storeModalVisible, setStoreModalVisible] = useState(false)
@@ -38,6 +40,11 @@ const Goodies = (props) => {
 	const [isFetchingGoodies, setIsFetchingGoodies] = useState(false)
 	const [offices, setOffices] = useState([])
 	const [isError, setIsError] = useState(false)
+	const [sideBarShown, setSideBarShown] = useState(false)
+
+	const toggleSideBar = () => {
+		setSideBarShown(!sideBarShown)
+	}
 
 	const pickImage = async () => {
 		const result = await pickImageUtils(true)
@@ -185,10 +192,17 @@ const Goodies = (props) => {
 		)
 	}
 
+	const handleDisconnect = (value) => {
+		if (value) {
+			AsyncStorage.removeItem("cde-token");
+		}
+	};
+
 	return (
 		<View style={styles.main}>
-			<Header color="#da291c" title="GOODIES" user={props.user} />
+			<Header color="#da291c" title="GOODIES" toggleSideBar={toggleSideBar} user={props.user} token={props.token}/>
 			<Circle />
+			{/*props.user.email && */ sideBarShown && <SideBar user={props.user} onDisconnect={handleDisconnect} {...props} />}
 			{props.user.is_admin || props.user.office_responsible.length > 0 ? (
 				<TouchableOpacity
 					style={styles.addButton}

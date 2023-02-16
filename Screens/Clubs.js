@@ -16,33 +16,47 @@ import Api from "../Api";
 import { useNavigation } from "@react-navigation/native";
 import EndFlatList from "../Components/EndFlatList";
 import Circle from "../Components/Circle";
+import {SideBar} from "../Components/SideBar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Clubs = (props) => {
-  const [offices, setOffices] = useState([]);
-  const [isFetchingOffices, setIsFetchingOffices] = useState(false);
-  const navigation = useNavigation();
+    const [offices, setOffices] = useState([]);
+    const [isFetchingOffices, setIsFetchingOffices] = useState(false);
+    const navigation = useNavigation();
+    const [sideBarShown, setSideBarShown] = useState(false)
 
-  useEffect(() => {
-    getOffices();
-  }, []);
+    const toggleSideBar = () => {
+        setSideBarShown(!sideBarShown)
+    }
 
-  const getOffices = () => {
-    setIsFetchingOffices(true);
-    Api.get("/offices")
-      .then(function (response) {
-        setOffices(response.data.data);
-        setIsFetchingOffices(false);
-      })
-      .catch(function (error) {
-        throw error;
-      });
-  };
+    useEffect(() => {
+        getOffices();
+    }, []);
+
+    const getOffices = () => {
+        setIsFetchingOffices(true);
+        Api.get("/offices")
+            .then(function (response) {
+                setOffices(response.data.data);
+                setIsFetchingOffices(false);
+            })
+            .catch(function (error) {
+                throw error;
+            });
+    };
+
+    const handleDisconnect = (value) => {
+        if (value) {
+            AsyncStorage.removeItem("cde-token");
+        }
+    };
 
   return (
     <View style={styles.main}>
-      <Header color="#da291c" title="CLUBS" user={props.user} />
-      <Circle />
-      <FlatList
+        <Header color="#da291c" title="CLUBS" toggleSideBar={toggleSideBar} user={props.user} token={props.token}/>
+        <Circle />
+        {/*props.user.email && */ sideBarShown && <SideBar user={props.user} onDisconnect={handleDisconnect} {...props} />}
+        <FlatList
         data={offices}
         onRefresh={() => getOffices()}
         refreshing={isFetchingOffices}

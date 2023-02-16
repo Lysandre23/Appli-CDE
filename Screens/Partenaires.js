@@ -18,6 +18,8 @@ import Circle from "../Components/Circle"
 import modalStyle from "./Modal.style"
 import { pickImageUtils, getPictureInput, filesPost } from "../utils"
 import GlobalButton from "../Components/GlobalButton"
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {SideBar} from "../Components/SideBar";
 
 const Partenaires = (props, navigation) => {
 	const [partners, setPartners] = useState([])
@@ -32,6 +34,12 @@ const Partenaires = (props, navigation) => {
 	const [pendingDelete, setPendingDelete] = useState(null)
 	const [pendingEdit, setPendingEdit] = useState(null)
 	const [isError, setIsError] = useState(false)
+
+	const [sideBarShown, setSideBarShown] = useState(false)
+
+	const toggleSideBar = () => {
+		setSideBarShown(!sideBarShown)
+	}
 
 	const handleCloseStoreModal = () => {
 		setStoreModalVisible(false)
@@ -152,10 +160,18 @@ const Partenaires = (props, navigation) => {
 		)
 	}
 
+	const handleDisconnect = (value) => {
+		if (value) {
+			AsyncStorage.removeItem("cde-token");
+		}
+	};
+
 	return (
 		<View style={styles.main}>
-			<Header color="#da291c" title="PARTENAIRES" user={props.user} />
+			<Header color="#da291c" title="PARTENAIRES" toggleSideBar={toggleSideBar} user={props.user} token={props.token}/>
 			<Circle />
+			{/*props.user.email && */ sideBarShown && <SideBar user={props.user} onDisconnect={handleDisconnect} {...props} />}
+
 			{props.user.is_admin ? (
 				<Modal
 					animationType="fade"

@@ -70,17 +70,22 @@ export function SideBar(props) {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
+    position: 'absolute',
+    top: 90,
+    height: "100%",
+    zIndex: 3,
     backgroundColor: "#F8F8F8",
+    width: "65%",
+    alignItems: 'center'
   },
   name: {
     fontSize: 23,
   },
   logo: {
-    width: 100,
-    height: 100,
-    position: "absolute",
-    top: 50,
-    left: "10%",
+    width: 150,
+    height: 150,
+    position: "relative",
+    marginBottom: '10%'
   },
   info: {
     position: "absolute",
@@ -88,9 +93,6 @@ const styles = StyleSheet.create({
     left: "10%",
   },
   actions: {
-    position: "absolute",
     width: "80%",
-    left: "10%",
-    top: "40%",
   },
 });
