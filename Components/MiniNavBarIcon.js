@@ -15,12 +15,21 @@ const MiniNavbarIcon = (props) => {
   const type = props.type;
 
   const handlePress = () => {
+<<<<<<< HEAD
     navigation.navigate(props.goto)
     props.onPress(false);
   };
 
   return (
     <TouchableOpacity
+=======
+    switchScreen(props.goto, navigation);
+    props.onPress(true);
+  };
+
+  return (
+    <TouchableHighlight
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
       style={styles.main}
       onPress={handlePress}
       underlayColor="none"
@@ -39,7 +48,11 @@ const MiniNavbarIcon = (props) => {
         )}
         <Text style={styles.txt}>{props.title}</Text>
       </View>
+<<<<<<< HEAD
     </TouchableOpacity>
+=======
+    </TouchableHighlight>
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
   );
 };
 

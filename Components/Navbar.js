@@ -1,17 +1,25 @@
+<<<<<<< HEAD
 import React, {useEffect} from "react";
+=======
+import React from "react";
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MiniNavbarIcon from "./MiniNavBarIcon";
 import { useState } from "react";
+<<<<<<< HEAD
 import {getUserAndToken} from "../utils";
+=======
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
 
 function switchScreen(screenName, nav, fx) {
   nav.navigate(screenName);
   fx(false);
 }
 
+<<<<<<< HEAD
 const Navbar = (props, id) => {
   const navigation = useNavigation();
   const iconSize = 30;
@@ -33,6 +41,12 @@ const Navbar = (props, id) => {
     setUser(props.user)
   })
 
+=======
+const Navbar = (props) => {
+  const navigation = useNavigation();
+  const iconSize = 30;
+  const [visibleMiniIconBar, setVisibleMiniIconBar] = useState(false);
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
   return (
     <View style={styles.navbarContainer}>
       <View style={[styles.navbar, { backgroundColor: props.color }]}>
@@ -51,7 +65,11 @@ const Navbar = (props, id) => {
           >
             <Icon name="calendar-o" size={iconSize} color="#fff" />
           </TouchableOpacity>
+<<<<<<< HEAD
           {user?.email && (
+=======
+          {props.user.email ? (
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
             <TouchableOpacity
               onPress={() => {
                 switchScreen("Abonnements", navigation, setVisibleMiniIconBar);
@@ -59,8 +77,13 @@ const Navbar = (props, id) => {
             >
               <Icon name="bell-o" size={iconSize} color="#fff" />
             </TouchableOpacity>
+<<<<<<< HEAD
           )}
           {user?.email && (
+=======
+          ) : null}
+          {props.user.email ? (
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
             <TouchableOpacity
               onPress={() => {
                 switchScreen("Message", navigation, setVisibleMiniIconBar);
@@ -68,8 +91,13 @@ const Navbar = (props, id) => {
             >
               <Icon name="envelope-o" size={iconSize} color="#fff" />
             </TouchableOpacity>
+<<<<<<< HEAD
           )}
           {!user?.email && (
+=======
+          ) : null}
+          {!props.user.email ? (
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
             <TouchableOpacity
               onPress={() => {
                 switchScreen("Login", navigation, setVisibleMiniIconBar);
@@ -77,9 +105,15 @@ const Navbar = (props, id) => {
             >
               <Icon name="user" size={iconSize} color="#fff" />
             </TouchableOpacity>
+<<<<<<< HEAD
           )}
         </View>
         {visibleMiniIconBar && (
+=======
+          ) : null}
+        </View>
+        {visibleMiniIconBar ? (
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
           <View style={styles.mini}>
             <View style={styles.miniNavCol}>
               <MiniNavbarIcon
@@ -117,6 +151,11 @@ const Navbar = (props, id) => {
               />
             </View>
           </View>
+<<<<<<< HEAD
+=======
+        ) : (
+          <View></View>
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
         )}
       </View>
     </View>
