@@ -18,7 +18,10 @@ export function SideBarButton(props) {
 
 const styles = StyleSheet.create({
 	main: {
+<<<<<<< HEAD
 		marginHorizontal: -15,
+=======
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
 		marginBottom: 10,
 		backgroundColor: "white",
 		borderRadius: 8,

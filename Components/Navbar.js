@@ -7,11 +7,6 @@ import MiniNavbarIcon from "./MiniNavBarIcon";
 import { useState } from "react";
 import {getUserAndToken} from "../utils";
 
-function switchScreen(screenName, nav, fx) {
-  nav.navigate(screenName);
-  fx(false);
-}
-
 const Navbar = (props, id) => {
   const navigation = useNavigation();
   const iconSize = 30;

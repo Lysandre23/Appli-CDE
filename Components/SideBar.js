@@ -8,7 +8,7 @@ import {getUserAndToken} from "../utils";
 
 export function SideBar(props) {
     const navigation = useNavigation();
-
+  
     const handleDisconnect = () => {
         props.hideSideBar()
         AsyncStorage.setItem("user", JSON.stringify({
@@ -52,7 +52,7 @@ export function SideBar(props) {
     const handlePressProfile = () => {
         navigation.navigate("Profil");
     };
-
+  
     return (
         <View style={styles.main}>
             <FlashMessage position="top" />
@@ -112,4 +112,3 @@ const styles = StyleSheet.create({
         width: "80%",
         marginTop: "10%"
     },
-});
