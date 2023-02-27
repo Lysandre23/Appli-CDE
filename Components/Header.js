@@ -13,7 +13,7 @@ const Header = (props) => {
     return (
         <View style={[styles.header, {backgroundColor: props.color}]}>
             <View style={[styles.container]}>
-                {(true || props.user.email) && (
+                {(props.user.email) && (
                     <TouchableOpacity style={styles.menuIcon} onPress={props.toggleSideBar}>
                         <Icon name="reorder" size={35} color="white"/>
                     </TouchableOpacity>)}
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     title: {
-        width: "50%",
-        marginRight: "25%",
+        width: "70%",
+        marginRight: "15%",
         textAlign: "center",
         color: "white",
         fontWeight: "700",
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     menuIcon: {
-        width: "25%",
+        width: "15%",
         paddingLeft: "2%",
         zIndex: 2,
     },

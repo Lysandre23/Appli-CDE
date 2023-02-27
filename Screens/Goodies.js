@@ -78,7 +78,7 @@ const Goodies = (props) => {
 		setIsFetchingGoodies(true)
 		Api.get("/goodies")
 			.then((response) => setOfficesGoodies(response.data.data))
-			.catch(e => console.log(e))
+			.catch(e => console.error(e))
 			.finally(() => setIsFetchingGoodies(false))
 	}
 
@@ -202,7 +202,7 @@ const Goodies = (props) => {
 		<View style={styles.main}>
 			<Header color="#da291c" title="GOODIES" toggleSideBar={toggleSideBar} user={props.user} token={props.token}/>
 			<Circle />
-			{/*props.user.email && */ sideBarShown && <SideBar user={props.user} onDisconnect={handleDisconnect} {...props} />}
+			{sideBarShown && <SideBar user={props.user} onDisconnect={props.handleDisconnect} hideSideBar={toggleSideBar} {...props} />}
 			{props.user.is_admin || props.user.office_responsible.length > 0 ? (
 				<TouchableOpacity
 					style={styles.addButton}

@@ -170,7 +170,7 @@ const Partenaires = (props, navigation) => {
 		<View style={styles.main}>
 			<Header color="#da291c" title="PARTENAIRES" toggleSideBar={toggleSideBar} user={props.user} token={props.token}/>
 			<Circle />
-			{/*props.user.email && */ sideBarShown && <SideBar user={props.user} onDisconnect={handleDisconnect} {...props} />}
+			{/*props.user.email && */ sideBarShown && <SideBar user={props.user} onDisconnect={props.handleDisconnect} hideSideBar={toggleSideBar} {...props} />}
 
 			{props.user.is_admin ? (
 				<Modal

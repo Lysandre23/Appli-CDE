@@ -18,7 +18,7 @@ import GlobalButton from "../Components/GlobalButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {getUserAndToken} from "../utils";
 
-const Profil = () => {
+const Profil = (props) => {
     const [modalPasswordVisible, setModalPasswordVisible] = useState(false);
     const [newPassword, setNewPassword] = useState("");
     const [confirmedPassword, setConfirmedPassword] = useState("");
@@ -34,12 +34,13 @@ const Profil = () => {
         clubResponsible: [],
         officeMember: [],
         clubMember: [],})
-
+    /*
     useEffect(() => {
         let data = getUserAndToken()
         setToken(data.token)
         setUser(data.user)
     })
+     */
 
     const resetModalNewPassword = () => {
     setNewPassword("");
@@ -58,7 +59,7 @@ const Profil = () => {
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${props.token}`,
         },
       }
     ).then((response) => {
@@ -68,7 +69,7 @@ const Profil = () => {
 
     return (
         <View style={styles.main}>
-            <Header color="#da291c" title={user.first_name}/>
+            <Header color="#da291c" title={props.user.first_name} user={props.user}/>
                 <Modal
                     animationType="fade"
                     transparent={true}

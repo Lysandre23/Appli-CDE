@@ -27,11 +27,10 @@ const Navbar = (props, id) => {
     officeMember: [],
     clubMember: [],})
 
-  useEffect(() => {
-    let data = getUserAndToken()
-    setToken(data.token)
-    setUser(props.user)
-  })
+  const switchScreen = (screenName, fx) => {
+    fx(false)
+    navigation.navigate(screenName)
+  }
 
   return (
     <View style={styles.navbarContainer}>
@@ -46,33 +45,33 @@ const Navbar = (props, id) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              switchScreen("Events", navigation, setVisibleMiniIconBar);
+              switchScreen("Events", setVisibleMiniIconBar);
             }}
           >
             <Icon name="calendar-o" size={iconSize} color="#fff" />
           </TouchableOpacity>
-          {user?.email && (
+          {props.user?.email && (
             <TouchableOpacity
               onPress={() => {
-                switchScreen("Abonnements", navigation, setVisibleMiniIconBar);
+                switchScreen("Abonnements", setVisibleMiniIconBar);
               }}
             >
               <Icon name="bell-o" size={iconSize} color="#fff" />
             </TouchableOpacity>
           )}
-          {user?.email && (
+          {props.user?.email && (
             <TouchableOpacity
               onPress={() => {
-                switchScreen("Message", navigation, setVisibleMiniIconBar);
+                switchScreen("Message", setVisibleMiniIconBar);
               }}
             >
               <Icon name="envelope-o" size={iconSize} color="#fff" />
             </TouchableOpacity>
           )}
-          {!user?.email && (
+          {!props.user?.email && (
             <TouchableOpacity
               onPress={() => {
-                switchScreen("Login", navigation, setVisibleMiniIconBar);
+                switchScreen("Login", setVisibleMiniIconBar);
               }}
             >
               <Icon name="user" size={iconSize} color="#fff" />

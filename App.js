@@ -19,6 +19,7 @@ import Partenaires from "./Screens/Partenaires";
 import Abonnement from "./Screens/Abonnements";
 import GestionClub from "./Screens/GestionClub";
 import GestionOffice from "./Screens/GestionOffice";
+import Message from "./Screens/Message";
 
 export let id = getUserAndToken()
 
@@ -39,6 +40,20 @@ export default function App() {
         office_member: [],
         club_member: [],
     })
+
+    useEffect(() => {
+        getLocalUserInfo()
+    })
+
+    const getLocalUserInfo = async () => {
+        if (user.email === null) {
+            try {
+                setUser(JSON.parse(await AsyncStorage.getItem("user")))
+            } catch (e) {
+                console.error("No user found on local storage", e)
+            }
+        }
+    }
 
     const registerForPushNotificationsAsync = async () => {
         let token;
@@ -121,36 +136,56 @@ export default function App() {
             });
     };
 
+    const handleDisconnect = () => {
+            AsyncStorage.removeItem("cde-token");
+            setUser({
+                email: null,
+                first_name: null,
+                last_name: null,
+                is_admin: false,
+                office_responsible: [],
+                club_responsible: [],
+                office_member: [],
+                club_member: [],
+            });
+            setToken(null);
+    };
+
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Events" screenOptions={{headerShown: false}}>
                 <Stack.Screen name="Events">
-                    {(props) => <Events user={user} token={token}/>}
+                    {(props) => <Events user={user} token={token} handleDisconnect={handleDisconnect}/>}
                 </Stack.Screen>
                 <Stack.Screen name="Login">
                     {() => <Login onTokenUpdate={token => {setToken(token); getUserInfo(token)}} />}
                 </Stack.Screen>
-                <Stack.Screen name="Profil" component={Profil} />
+                <Stack.Screen name="Profil">
+                    {() => <Profil  user={user} token={token}/>}
+                </Stack.Screen>
                 <Stack.Screen name="Goodies">
-                    {() => <Goodies user={user} token={token}/>}
+                    {() => <Goodies user={user} token={token} handleDisconnect={handleDisconnect}/>}
                 </Stack.Screen>
                 <Stack.Screen name="Clubs">
-                    {() => <Clubs user={user} token={token}/>}
+                    {() => <Clubs user={user} token={token} handleDisconnect={handleDisconnect}/>}
                 </Stack.Screen>
                 <Stack.Screen name="PSN">
-                    {() => <PSN user={user} token={token}/>}
+                    {() => <PSN user={user} token={token} handleDisconnect={handleDisconnect}/>}
                 </Stack.Screen>
                 <Stack.Screen name="Partenaires">
-                    {() => <Partenaires user={user} token={token}/>}
+                    {() => <Partenaires user={user} token={token} handleDisconnect={handleDisconnect}/>}
+                </Stack.Screen>
+                <Stack.Screen name="Message">
+                    {() => <Message token={token} user={user} />}
                 </Stack.Screen>
                 <Stack.Screen name="Abonnements">
-                    {(props) => <Abonnement user={user} token={token} />}
+                    {() => <Abonnement user={user} token={token} />}
                 </Stack.Screen>
                 <Stack.Screen name="GestionClub">
-                    {(props) => <GestionClub user={user} token={token} />}
+                    {() => <GestionClub user={user} token={token} />}
                 </Stack.Screen>
                 <Stack.Screen name="GestionOffice">
-                    {(props) => <GestionOffice user={user} token={token} />}
+                    {() => <GestionOffice user={user} token={token} />}
                 </Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>

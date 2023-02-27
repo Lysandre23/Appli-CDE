@@ -167,7 +167,7 @@ const PSN = (props) => {
       ) : null}
 
       <Header color="#006fc0" title="PSN" toggleSideBar={toggleSideBar} user={props.user} token={props.token}/>
-      {/*props.user.email && */ sideBarShown && <SideBar user={props.user} onDisconnect={handleDisconnect} {...props} />}
+      {/*props.user.email && */ sideBarShown && <SideBar user={props.user} onDisconnect={props.handleDisconnect} {...props} />}
       <View style={styles.head}>
         <Image style={styles.img} source={{ uri: office.picture }} />
         <View style={styles.headButton}>

@@ -15,6 +15,22 @@ export const Events = (props) => {
     const [isLogged, setIsLogged] = useState(false)
     const [pendingUserInfo, setPendingUserInfo] = useState(true)
     const [sideBarShown, setSideBarShown] = useState(false)
+    const [posts, setPosts] = useState([])
+    const [isFetchingPosts, setIsFetchingPosts] = useState(false)
+
+    useEffect(() => {
+        getPosts()
+    }, [])
+
+    const getPosts = () => {
+        setIsFetchingPosts(true)
+        Api.get("/posts")
+            .then(function (response) {
+                setPosts(response.data.data)
+                setIsFetchingPosts(false)
+            })
+            .catch(e => console.error("getting events", e))
+    }
 
     const toggleSideBar = () => {
         setSideBarShown(!sideBarShown)
@@ -31,7 +47,7 @@ export const Events = (props) => {
             <Header color="#da291c" title="EVENTS" toggleSideBar={toggleSideBar} user={props.user} token={props.token}/>
             <Circle/>
             <Circle/>
-            {/*props.user.email && */ sideBarShown && <SideBar user={props.user} onDisconnect={handleDisconnect} {...props} />}
+            {sideBarShown && <SideBar user={props.user} onDisconnect={props.handleDisconnect} hideSideBar={toggleSideBar} {...props} />}
             <Navbar color="#da291c" user={props.user}/>
         </View>
     )

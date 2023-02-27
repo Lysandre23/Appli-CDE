@@ -11,10 +11,12 @@ import Circle from "../Components/Circle"
 const Abonnement = (props) => {
 	const [posts, setPosts] = useState([])
 	const [isFetchingPosts, setIsFetchingPosts] = useState(false)
-
+	/*
 	useEffect(() => {
 		getPosts()
 	}, [])
+
+	 */
 
 	const getPosts = () => {
 		setIsFetchingPosts(true)
@@ -25,7 +27,11 @@ const Abonnement = (props) => {
 		}).then(function (response) {
 			setPosts(response.data.data)
 			setIsFetchingPosts(false)
+		}).catch(e => {
+			console.error("getting posts", e)
+			setIsFetchingPosts(false)
 		})
+		console.log(props.token)
 	}
 
 	return (
@@ -34,7 +40,7 @@ const Abonnement = (props) => {
 			<Circle />
 			<FlatList
 				data={posts}
-				onRefresh={() => getPosts()}
+				onRefresh={getPosts}
 				refreshing={isFetchingPosts}
 				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => (
