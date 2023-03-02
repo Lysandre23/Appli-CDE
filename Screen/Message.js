@@ -8,7 +8,7 @@ import {
 	TouchableOpacity,
 	ActivityIndicator
 } from "react-native"
-import { Picker } from "@react-native-picker/picker"
+import { Picker } from "react-native-dropdown-picker"
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
 import BouncyCheckbox from "react-native-bouncy-checkbox"

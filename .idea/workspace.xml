@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f18fbb34-d96f-4753-ae9c-b05395cd2b00" name="Changes" comment="" />
+    <list default="true" id="f18fbb34-d96f-4753-ae9c-b05395cd2b00" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screen/Admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screen/Admin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screen/Goodies.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screen/Goodies.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screen/Message.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screen/Message.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screen/PSN.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screen/PSN.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -79,6 +89,7 @@
       <workItem from="1676372258557" duration="3059000" />
       <workItem from="1676532071195" duration="2020000" />
       <workItem from="1676562030306" duration="3593000" />
+      <workItem from="1677744134762" duration="1499000" />
     </task>
     <servers />
   </component>

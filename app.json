@@ -31,9 +31,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-<<<<<<< Updated upstream
-    }
-=======
     },
     "extra": {
       "eas": {
@@ -48,6 +45,5 @@
         }
       ]
     ]
->>>>>>> Stashed changes
   }
 }
