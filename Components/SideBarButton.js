@@ -18,6 +18,13 @@ export function SideBarButton(props) {
 
 const styles = StyleSheet.create({
 	main: {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+		marginHorizontal: -15,
+=======
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
 		marginBottom: 10,
 		backgroundColor: "white",
 		borderRadius: 8,

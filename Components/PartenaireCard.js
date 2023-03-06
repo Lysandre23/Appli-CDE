@@ -11,7 +11,15 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useState } from "react";
 import Api from "../Api";
+<<<<<<< HEAD
 import modalStyle from "../Screen/Modal.style";
+=======
+<<<<<<< HEAD
+import modalStyle from "../Screens/Modal.style";
+=======
+import modalStyle from "../Screen/Modal.style";
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
 
 const PartenaireCard = (props) => {
   const [modalDeleteVisible, setModalDeleteVisible] = useState(false);

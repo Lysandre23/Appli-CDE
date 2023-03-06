@@ -1,20 +1,64 @@
+<<<<<<< HEAD
 import React from "react";
+=======
+<<<<<<< HEAD
+import React, {useEffect} from "react";
+=======
+import React from "react";
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MiniNavbarIcon from "./MiniNavBarIcon";
 import { useState } from "react";
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+import {getUserAndToken} from "../utils";
+=======
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
 
 function switchScreen(screenName, nav, fx) {
   nav.navigate(screenName);
   fx(false);
 }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+const Navbar = (props, id) => {
+  const navigation = useNavigation();
+  const iconSize = 30;
+  const [visibleMiniIconBar, setVisibleMiniIconBar] = useState(false);
+  const [token, setToken] = useState(null)
+  const [user, setUser] = useState({
+    email: null,
+    firstname: null,
+    lastname: null,
+    isAdmin: false,
+    officeResponsible: [],
+    clubResponsible: [],
+    officeMember: [],
+    clubMember: [],})
+
+  const switchScreen = (screenName, fx) => {
+    fx(false)
+    navigation.navigate(screenName)
+  }
+
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
 const Navbar = (props) => {
   const navigation = useNavigation();
   const iconSize = 30;
   const [visibleMiniIconBar, setVisibleMiniIconBar] = useState(false);
+<<<<<<< HEAD
+=======
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
   return (
     <View style={styles.navbarContainer}>
       <View style={[styles.navbar, { backgroundColor: props.color }]}>
@@ -28,40 +72,105 @@ const Navbar = (props) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+<<<<<<< HEAD
               switchScreen("Events", navigation, setVisibleMiniIconBar);
+=======
+              switchScreen("Events", setVisibleMiniIconBar);
+>>>>>>> parent of 1faefc6 (all deletes)
             }}
           >
             <Icon name="calendar-o" size={iconSize} color="#fff" />
           </TouchableOpacity>
+<<<<<<< HEAD
           {props.user.email ? (
             <TouchableOpacity
               onPress={() => {
                 switchScreen("Abonnements", navigation, setVisibleMiniIconBar);
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+          {user?.email && (
+=======
+          {props.user.email ? (
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+=======
+          {props.user?.email && (
+>>>>>>> 5663c17472b474aaac21d0935775582f49b382ac
+            <TouchableOpacity
+              onPress={() => {
+                switchScreen("Abonnements", setVisibleMiniIconBar);
+>>>>>>> parent of 1faefc6 (all deletes)
               }}
             >
               <Icon name="bell-o" size={iconSize} color="#fff" />
             </TouchableOpacity>
+<<<<<<< HEAD
           ) : null}
           {props.user.email ? (
             <TouchableOpacity
               onPress={() => {
                 switchScreen("Message", navigation, setVisibleMiniIconBar);
+=======
+<<<<<<< HEAD
+          )}
+<<<<<<< HEAD
+          {user?.email && (
+=======
+          ) : null}
+          {props.user.email ? (
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+=======
+          {props.user?.email && (
+>>>>>>> 5663c17472b474aaac21d0935775582f49b382ac
+            <TouchableOpacity
+              onPress={() => {
+                switchScreen("Message", setVisibleMiniIconBar);
+>>>>>>> parent of 1faefc6 (all deletes)
               }}
             >
               <Icon name="envelope-o" size={iconSize} color="#fff" />
             </TouchableOpacity>
+<<<<<<< HEAD
           ) : null}
           {!props.user.email ? (
             <TouchableOpacity
               onPress={() => {
                 switchScreen("Login", navigation, setVisibleMiniIconBar);
+=======
+<<<<<<< HEAD
+          )}
+<<<<<<< HEAD
+          {!user?.email && (
+=======
+          ) : null}
+          {!props.user.email ? (
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+=======
+          {!props.user?.email && (
+>>>>>>> 5663c17472b474aaac21d0935775582f49b382ac
+            <TouchableOpacity
+              onPress={() => {
+                switchScreen("Login", setVisibleMiniIconBar);
+>>>>>>> parent of 1faefc6 (all deletes)
               }}
             >
               <Icon name="user" size={iconSize} color="#fff" />
             </TouchableOpacity>
+<<<<<<< HEAD
           ) : null}
         </View>
         {visibleMiniIconBar ? (
+=======
+<<<<<<< HEAD
+          )}
+        </View>
+        {visibleMiniIconBar && (
+=======
+          ) : null}
+        </View>
+        {visibleMiniIconBar ? (
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
           <View style={styles.mini}>
             <View style={styles.miniNavCol}>
               <MiniNavbarIcon
@@ -99,8 +208,16 @@ const Navbar = (props) => {
               />
             </View>
           </View>
+<<<<<<< HEAD
         ) : (
           <View></View>
+=======
+<<<<<<< HEAD
+=======
+        ) : (
+          <View></View>
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
         )}
       </View>
     </View>

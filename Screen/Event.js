@@ -18,10 +18,21 @@ const Events = (props) => {
 
 	const getPosts = () => {
 		setIsFetchingPosts(true)
+<<<<<<< HEAD
 		Api.get("/posts").then(function (response) {
 			setPosts(response.data.data)
 			setIsFetchingPosts(false)
 		})
+=======
+		Api.get("/posts")
+			.then((response) => {
+			setPosts(response.data.data)
+			setIsFetchingPosts(false)})
+			.catch((e) => {
+				console.log("failed loading events : ", e)
+				setIsFetchingPosts(false)
+			})
+>>>>>>> parent of 1faefc6 (all deletes)
 	}
 
 	return (

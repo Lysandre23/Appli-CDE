@@ -36,6 +36,12 @@
       "eas": {
         "projectId": "57aca983-4eeb-4220-b4e5-fd983138c865"
       }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    }
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
     },
     "plugins": [
       [
@@ -45,5 +51,9 @@
         }
       ]
     ]
+<<<<<<< HEAD
+=======
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
   }
 }

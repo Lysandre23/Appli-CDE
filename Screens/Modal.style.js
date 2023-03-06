@@ -6,11 +6,7 @@ const modalStyle = StyleSheet.create({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-<<<<<<< HEAD
-		backgroundColor: "rgba(0,0,0,0.15)",
-=======
 		backgroundColor: "#000c",
->>>>>>> parent of 1faefc6 (all deletes)
 	},
 	addPanel: {
 		backgroundColor: "white",

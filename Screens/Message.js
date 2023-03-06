@@ -8,11 +8,7 @@ import {
 	TouchableOpacity,
 	ActivityIndicator
 } from "react-native"
-<<<<<<< HEAD
-import { Picker } from "react-native-dropdown-picker"
-=======
 import { Picker } from "@react-native-picker/picker"
->>>>>>> parent of 1faefc6 (all deletes)
 import Header from "../Components/Header"
 import Navbar from "../Components/Navbar"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
@@ -136,10 +132,6 @@ const Message = (props) => {
 				multiline={true}
 				numberOfLines={10}
 				maxLength={200}
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of 1faefc6 (all deletes)
 			/>
 			<View
 				style={{

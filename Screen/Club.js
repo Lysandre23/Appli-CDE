@@ -248,7 +248,10 @@ const styles = StyleSheet.create({
 		fontWeight: "500",
 	},
 	presText: {
+<<<<<<< HEAD
 		width: "100%",
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
 		textAlign: "justify",
 		marginTop: 15,
 		width: "90%",

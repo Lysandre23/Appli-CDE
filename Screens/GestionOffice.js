@@ -15,17 +15,13 @@ import RedLine from "../Components/RedLine"
 import { useState, useEffect } from "react"
 import { useRoute } from "@react-navigation/core"
 import Api from "../Api"
-<<<<<<< HEAD
 import AdminButton from "../Components/AdminButton"
-=======
-//import AdminButton from "../Components/AdminButton"
->>>>>>> parent of 1faefc6 (all deletes)
 import ListModal from "../Components/ListModal"
 import modalStyle from "./Modal.style.js"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import { showMessage, hideMessage } from "react-native-flash-message"
-import { pickImageUtils, getPictureInput, filesPost } from "../helpers/helpers"
+import { pickImageUtils, getPictureInput, filesPost } from "../utils.js"
 import GlobalButton from "../Components/GlobalButton"
 
 const GestionOffice = (props) => {
@@ -48,18 +44,12 @@ const GestionOffice = (props) => {
 
 	const [modalMessagesVisible, setModalMessagesVisible] = useState(false)
 	const [modalAddMemberVisible, setModalAddMemberVisible] = useState(false)
-<<<<<<< HEAD
 	const [modalRemoveMemberVisible, setModalRemoveMemberVisible] =
 		useState(false)
 	const [modalAddResponsibleVisible, setModalAddResponsibleVisible] =
 		useState(false)
 	const [modalRemoveResponsibleVisible, setModalRemoveResponsibleVisible] =
 		useState(false)
-=======
-	const [modalRemoveMemberVisible, setModalRemoveMemberVisible] = useState(false)
-	const [modalAddResponsibleVisible, setModalAddResponsibleVisible] = useState(false)
-	const [modalRemoveResponsibleVisible, setModalRemoveResponsibleVisible] = useState(false)
->>>>>>> parent of 1faefc6 (all deletes)
 
 	const [office, setOffice] = useState({
 		id: null,
@@ -72,10 +62,6 @@ const GestionOffice = (props) => {
 	const [users, setUsers] = useState([])
 	const [members, setMembers] = useState([])
 	const [responsibles, setResponsibles] = useState([])
-<<<<<<< HEAD
-=======
-	const [onChangeDate, setOnChangeDate] = useState(false)
->>>>>>> parent of 1faefc6 (all deletes)
 
 	const [isError, setIsError] = useState(false)
 
@@ -297,11 +283,7 @@ const GestionOffice = (props) => {
 				transparent={true}
 				visible={modalUpdateVisible}
 				onRequestClose={() => {
-<<<<<<< HEAD
 					setModalUpdateVisible(!modalUpdateVisible)
-=======
-					setModalUpdateVisible(false)
->>>>>>> parent of 1faefc6 (all deletes)
 				}}
 			>
 				<View style={modalStyle.modal}>
@@ -309,11 +291,7 @@ const GestionOffice = (props) => {
 						<Text style={modalStyle.title}>Modifier le bureau</Text>
 						<TextInput
 							style={modalStyle.input}
-<<<<<<< HEAD
 							placeholder="Nom"
-=======
-							placeholder="Nom*"
->>>>>>> parent of 1faefc6 (all deletes)
 							value={nameUpdateOffice}
 							onChangeText={setNameUpdateOffice}
 						/>
@@ -335,11 +313,7 @@ const GestionOffice = (props) => {
 						>
 							<Text style={modalStyle.textImagePicker}>
 								{imageUpdateOffice == null
-<<<<<<< HEAD
 									? "Choisir une image"
-=======
-									? "Choisir une image*"
->>>>>>> parent of 1faefc6 (all deletes)
 									: "Image sélectionée"}
 							</Text>
 						</TouchableOpacity>
@@ -348,12 +322,7 @@ const GestionOffice = (props) => {
 								Erreur détectée
 							</Text>
 						) : null}
-<<<<<<< HEAD
 						<View style={{marginLeft: 20, marginRight: 20, marginTop: 15}}>
-=======
-						<Text style={{fontSize: 8, textAlign: "center"}}>Les champs marqués d'un astérisque sont obligatoires</Text>
-						<View style={{marginLeft: 20, marginRight: 20, marginTop: 5}}>
->>>>>>> parent of 1faefc6 (all deletes)
 							<GlobalButton onPress={updateOffice} padding={6} borderRadius={5} text="Valider" color="#2ecc71"/>
 						</View>
 						<View style={{marginLeft: 20, marginRight: 20, marginTop: 5, marginBottom: 15}}>
@@ -388,7 +357,6 @@ const GestionOffice = (props) => {
 							numberOfLines={3}
 							maxLength={200}
 						/>
-<<<<<<< HEAD
 						<DateTimePicker
 							testID="dateTimePicker"
 							value={datePost}
@@ -397,18 +365,6 @@ const GestionOffice = (props) => {
 							display="default"
 							onChange={handleChangeDate}
 						/>
-=======
-						{onChangeDate &&
-							<DateTimePicker
-								testID="dateTimePicker"
-								value={datePost}
-								mode={"date"}
-								is24Hour={true}
-								display="default"
-								onChange={handleChangeDate}
-							/>
-						}
->>>>>>> parent of 1faefc6 (all deletes)
 						<TouchableOpacity
 							style={modalStyle.imagePicker}
 							onPress={pickImagePost}
@@ -463,11 +419,7 @@ const GestionOffice = (props) => {
 				type="messages"
 				list={messages}
 				selectable={false}
-<<<<<<< HEAD
 				onClose={() => setModalMessagesVisible(!modalMessagesVisible)}
-=======
-				onClose={() => setModalMessagesVisible(false)}
->>>>>>> parent of 1faefc6 (all deletes)
 			/>
 			<ListModal
 				title="Ajouter un membre"
@@ -479,11 +431,7 @@ const GestionOffice = (props) => {
 					)
 				)}
 				selectable={true}
-<<<<<<< HEAD
 				onClose={() => setModalAddMemberVisible(!modalAddMemberVisible)}
-=======
-				onClose={() => setModalAddMemberVisible(false)}
->>>>>>> parent of 1faefc6 (all deletes)
 				onConfirm={handleToggleMember}
 			/>
 			<ListModal
@@ -492,20 +440,12 @@ const GestionOffice = (props) => {
 				list={serializeUsers(members)}
 				selectable={true}
 				onClose={() =>
-<<<<<<< HEAD
 					setModalRemoveMemberVisible(!modalRemoveMemberVisible)
-=======
-					setModalRemoveMemberVisible(false)
->>>>>>> parent of 1faefc6 (all deletes)
 				}
 				onConfirm={handleToggleMember}
 			/>
 			<ListModal
-<<<<<<< HEAD
 				title="Ajouter un responsible"
-=======
-				title="Ajouter un responsable"
->>>>>>> parent of 1faefc6 (all deletes)
 				visible={modalAddResponsibleVisible}
 				list={serializeUsers(
 					members.filter(
@@ -517,11 +457,7 @@ const GestionOffice = (props) => {
 				)}
 				selectable={true}
 				onClose={() =>
-<<<<<<< HEAD
 					setModalAddResponsibleVisible(!modalAddResponsibleVisible)
-=======
-					setModalAddResponsibleVisible(false)
->>>>>>> parent of 1faefc6 (all deletes)
 				}
 				onConfirm={handleToggleResponsible}
 			/>
@@ -538,11 +474,7 @@ const GestionOffice = (props) => {
 				onConfirm={handleToggleResponsible}
 			/>
 
-<<<<<<< HEAD
 			<Header title="GESTION DE CLUB" color="#da291c" user={props.user} />
-=======
-			<Header title="GESTION DE BUREAU" color="#da291c" user={props.user} />
->>>>>>> parent of 1faefc6 (all deletes)
 			<View
 				style={{
 					display: "flex",
@@ -583,7 +515,6 @@ const GestionOffice = (props) => {
 				</View>
 			</View>
 			<RedLine />
-<<<<<<< HEAD
 			<AdminButton
 				text="Messages"
 				onPress={() => setModalMessagesVisible(true)}
@@ -612,31 +543,6 @@ const GestionOffice = (props) => {
 				text="Retirer un membre"
 				onPress={() => setModalRemoveMemberVisible(true)}
 			/>
-=======
-			<ScrollView style={{maxHeight: "55%"}}>
-				<TouchableOpacity style={styles.adminButton} onPress={() => setModalMessagesVisible(true)}>
-					<Text style={{fontSize: 25}}>Messages</Text>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.adminButton} onPress={() => setModalUpdateVisible(true)}>
-					<Text style={{fontSize: 25}}>Modifier le bureau</Text>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.adminButton} onPress={() => setModalPostVisible(true)}>
-					<Text style={{fontSize: 25}}>Ecrire un nouveau post</Text>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.adminButton} onPress={() => setModalAddResponsibleVisible(true)}>
-					<Text style={{fontSize: 25}}>Ajouter un responsable</Text>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.adminButton} onPress={() => setModalRemoveResponsibleVisible(true)}>
-					<Text style={{fontSize: 25}}>Retirer un responsable</Text>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.adminButton} onPress={() => setModalAddMemberVisible(true)}>
-					<Text style={{fontSize: 25}}>Ajouter un membre</Text>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.adminButton} onPress={() => setModalRemoveMemberVisible(true)}>
-					<Text style={{fontSize: 25}}>Retirer un membre</Text>
-				</TouchableOpacity>
-			</ScrollView>
->>>>>>> parent of 1faefc6 (all deletes)
 			<Navbar color="#da291c" user={props.user} />
 		</View>
 	)
@@ -647,28 +553,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "rgb(250,250,250)",
 	},
-<<<<<<< HEAD
-=======
-	adminButton: {
-		height: 55,
-		width: "90%",
-		backgroundColor: "white",
-		display: "flex",
-		flexDirection: "row",
-		alignItems: "center",
-		marginLeft: "5%",
-		marginTop: 15,
-		padding: 10,
-		borderRadius: 10,
-		shadowColor: "#000",
-		shadowOffset: {
-			width: 0,
-			height: 1,
-		},
-		shadowOpacity: 0.05,
-		shadowRadius: 10,
-	},
->>>>>>> parent of 1faefc6 (all deletes)
 	bt: {
 		marginTop: 15,
 		borderColor: "#da291c",

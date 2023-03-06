@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useState, useEffect } from "react";
 import ListModal from "../Components/ListModal";
@@ -17,10 +17,12 @@ import EventsCard from "../Components/EventsCard";
 import Header from "../Components/Header";
 import Navbar from "../Components/Navbar";
 import Circle from "../Components/Circle";
-import modalStyle from "../Screen/Modal.style";
+import modalStyle from "./Modal.style";
 import GlobalButton from "../Components/GlobalButton";
+import {SideBar} from "../Components/SideBar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const psnOfficeId = 1;
+const psnOfficeId = 5;
 
 const PSN = (props) => {
   const navigation = useNavigation();
@@ -39,11 +41,17 @@ const PSN = (props) => {
   const [members, setMembers] = useState([]);
   const [posts, setPosts] = useState([]);
 
+  const [sideBarShown, setSideBarShown] = useState(false)
+
   useEffect(() => {
     getOffice();
     getMembers();
     getPosts();
   }, []);
+
+  const toggleSideBar = () => {
+    setSideBarShown(!sideBarShown)
+  }
 
   const getOffice = () => {
     Api.get("/offices/" + psnOfficeId, {
@@ -51,38 +59,36 @@ const PSN = (props) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${props.token}`,
       },
-    }).then(function (response) {
+    })
+        .then(function (response) {
       setOffice(response.data.data);
-    });
+    })
+        .catch(e => console.error("getOffice", e))
   };
 
   const getMembers = () => {
-    Api.get("/offices/members/" + psnOfficeId).then(function (response) {
-      setMembers(response.data.data);
-    });
+    Api.get("/offices/members/" + psnOfficeId)
+        .then((response) => setMembers(response.data.data))
+        .catch(e => console.error("getMembers", e))
   };
 
   const getPosts = () => {
-    Api.get("/offices/posts/" + psnOfficeId).then(function (response) {
-      setPosts(response.data.data);
-    });
+    Api.get("/offices/posts/" + psnOfficeId)
+        .then((response) => setPosts(response.data.data))
+        .catch(e => console.error("getPosts", e))
   };
 
   const handleClickFollow = () => {
-    Api.post(
-      "/subscribings",
-      {
-        office_id: office.id,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${props.token}`,
+    Api.post("/subscribings",
+        {
+          office_id: office.id
         },
-      }
-    ).then(function (response) {
-      getOffice();
-    });
+        {headers: {
+        "Content-Type": "application/json",
+          Authorization: `Bearer ${props.token}`,
+        }})
+        .then((response) => getOffice())
+        .catch(e => console.error("clickFollow", e))
   };
 
   const serializeUsers = (users) => {
@@ -116,7 +122,14 @@ const PSN = (props) => {
       setPendingDelete(null);
       setDeleteModalVisible(false);
       getPosts();
-    });
+    })
+        .catch(e => console.error("confirmDelete", e))
+  };
+
+  const handleDisconnect = (value) => {
+    if (value) {
+      AsyncStorage.removeItem("cde-token");
+    }
   };
 
   return (
@@ -153,7 +166,8 @@ const PSN = (props) => {
         </Modal>
       ) : null}
 
-      <Header color="#006fc0" title="PSN" user={props.user} />
+      <Header color="#006fc0" title="PSN" toggleSideBar={toggleSideBar} user={props.user} token={props.token}/>
+      {/*props.user.email && */ sideBarShown && <SideBar user={props.user} onDisconnect={props.handleDisconnect} {...props} />}
       <View style={styles.head}>
         <Image style={styles.img} source={{ uri: office.picture }} />
         <View style={styles.headButton}>
@@ -245,10 +259,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   presText: {
-<<<<<<< HEAD
-=======
-    width: "100%",
->>>>>>> parent of 1faefc6 (all deletes)
     textAlign: "justify",
     marginTop: 15,
     width: "90%",
