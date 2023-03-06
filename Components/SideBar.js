@@ -1,16 +1,23 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React from "react";
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
 import React, {useEffect, useState} from "react";
 =======
 import React from "react";
 >>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+<<<<<<< HEAD
+>>>>>>> parent of 1faefc6 (all deletes)
+=======
 >>>>>>> parent of 1faefc6 (all deletes)
 import { View, Text, StyleSheet, Image } from "react-native";
 import { SideBarButton } from "./SideBarButton";
 import { useNavigation } from "@react-navigation/native";
 import FlashMessage, { showMessage } from "react-native-flash-message";
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 export function SideBar(props) {
@@ -19,6 +26,8 @@ export function SideBar(props) {
   const handleDisconnect = () => {
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {getUserAndToken} from "../utils";
 =======
@@ -32,6 +41,9 @@ export function SideBar(props) {
 <<<<<<< HEAD
 
 =======
+<<<<<<< HEAD
+>>>>>>> parent of 1faefc6 (all deletes)
+=======
 >>>>>>> parent of 1faefc6 (all deletes)
     props.navigation.closeDrawer();
     navigation.navigate("Events");
@@ -40,6 +52,7 @@ export function SideBar(props) {
       type: "success",
     })
     props.onDisconnect(true);
+<<<<<<< HEAD
 <<<<<<< HEAD
   };
 
@@ -64,6 +77,8 @@ export function SideBar(props) {
   };
 
 =======
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
 >>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
   };
 =======
@@ -113,6 +128,9 @@ export function SideBar(props) {
     };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 1faefc6 (all deletes)
+=======
 >>>>>>> parent of 1faefc6 (all deletes)
   const handlePressProfile = () => {
     navigation.navigate("Profil");
@@ -130,12 +148,18 @@ export function SideBar(props) {
       <View style={styles.actions}>
         <SideBarButton onPress={handlePressProfile} txt="Profil" />
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
         {true || props.user.is_admin ? (
           <SideBarButton onPress={handlePressAdmin} txt="Page administrateur" />
         ) : null}
         {(true || props.user.club_member.length > 0 || props.user.office_member.length > 0) && (
+=======
+<<<<<<< HEAD
+>>>>>>> parent of 1faefc6 (all deletes)
 =======
 >>>>>>> parent of 1faefc6 (all deletes)
         {props.user.is_admin ? (
@@ -144,6 +168,10 @@ export function SideBar(props) {
         {props.user.club_member.length > 0 ||
         props.user.office_member.length > 0 ? (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
 =======
 >>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
 >>>>>>> parent of 1faefc6 (all deletes)
@@ -152,13 +180,19 @@ export function SideBar(props) {
             txt="Gestion de club"
           />
 <<<<<<< HEAD
+<<<<<<< HEAD
         ) : null}
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
         )}
 =======
         ) : null}
 >>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+<<<<<<< HEAD
+>>>>>>> parent of 1faefc6 (all deletes)
+=======
 >>>>>>> parent of 1faefc6 (all deletes)
         <SideBarButton
           goto="Login"
@@ -174,9 +208,12 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
 <<<<<<< HEAD
+<<<<<<< HEAD
     backgroundColor: "#F8F8F8",
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
     position: 'absolute',
     top: 90,
     height: "100%",
@@ -187,6 +224,9 @@ const styles = StyleSheet.create({
 =======
     backgroundColor: "#F8F8F8",
 >>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+<<<<<<< HEAD
+>>>>>>> parent of 1faefc6 (all deletes)
+=======
 >>>>>>> parent of 1faefc6 (all deletes)
   },
   name: {
@@ -194,12 +234,18 @@ const styles = StyleSheet.create({
   },
   logo: {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
     width: 150,
     height: 150,
     position: "relative",
     marginBottom: '10%'
+=======
+<<<<<<< HEAD
+>>>>>>> parent of 1faefc6 (all deletes)
 =======
 >>>>>>> parent of 1faefc6 (all deletes)
     width: 100,
@@ -208,6 +254,10 @@ const styles = StyleSheet.create({
     top: 50,
     left: "10%",
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
 =======
 >>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
 >>>>>>> parent of 1faefc6 (all deletes)
@@ -219,8 +269,13 @@ const styles = StyleSheet.create({
   },
   actions: {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+    width: "80%",
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
+=======
     width: "80%",
 =======
 >>>>>>> parent of 1faefc6 (all deletes)
@@ -229,8 +284,11 @@ const styles = StyleSheet.create({
     left: "10%",
     top: "40%",
 <<<<<<< HEAD
+<<<<<<< HEAD
   },
 =======
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
 >>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
   },
 =======
@@ -294,5 +352,8 @@ const styles = StyleSheet.create({
         marginTop: "10%"
     },
 >>>>>>> 5663c17472b474aaac21d0935775582f49b382ac
+<<<<<<< HEAD
+>>>>>>> parent of 1faefc6 (all deletes)
+=======
 >>>>>>> parent of 1faefc6 (all deletes)
 });

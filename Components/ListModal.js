@@ -97,7 +97,11 @@ const styles = StyleSheet.create({
 	modal: {
 		flex: 1,
 <<<<<<< HEAD
+<<<<<<< HEAD
 		backgroundColor: "rgba(0,0,0,0.3)",
+=======
+		backgroundColor: "#000000dd",
+>>>>>>> parent of 1faefc6 (all deletes)
 =======
 		backgroundColor: "#000000dd",
 >>>>>>> parent of 1faefc6 (all deletes)

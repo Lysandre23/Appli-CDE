@@ -16,14 +16,20 @@ const MiniNavbarIcon = (props) => {
 
   const handlePress = () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
     navigation.navigate(props.goto)
     props.onPress(false);
   };
 
   return (
     <TouchableOpacity
+=======
+<<<<<<< HEAD
+>>>>>>> parent of 1faefc6 (all deletes)
 =======
 >>>>>>> parent of 1faefc6 (all deletes)
     switchScreen(props.goto, navigation);
@@ -33,6 +39,10 @@ const MiniNavbarIcon = (props) => {
   return (
     <TouchableHighlight
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
 =======
 >>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
 >>>>>>> parent of 1faefc6 (all deletes)
@@ -48,7 +58,11 @@ const MiniNavbarIcon = (props) => {
         }}
       >
 <<<<<<< HEAD
+<<<<<<< HEAD
         {type == "icon" ? (
+=======
+        {type === "icon" ? (
+>>>>>>> parent of 1faefc6 (all deletes)
 =======
         {type === "icon" ? (
 >>>>>>> parent of 1faefc6 (all deletes)
@@ -59,13 +73,19 @@ const MiniNavbarIcon = (props) => {
         <Text style={styles.txt}>{props.title}</Text>
       </View>
 <<<<<<< HEAD
+<<<<<<< HEAD
     </TouchableHighlight>
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
     </TouchableOpacity>
 =======
     </TouchableHighlight>
 >>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+<<<<<<< HEAD
+>>>>>>> parent of 1faefc6 (all deletes)
+=======
 >>>>>>> parent of 1faefc6 (all deletes)
   );
 };

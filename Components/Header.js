@@ -1,6 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 1faefc6 (all deletes)
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -61,6 +64,9 @@ const styles = StyleSheet.create({
 })
 
 export default Header
+=======
+<<<<<<< HEAD
+>>>>>>> parent of 1faefc6 (all deletes)
 =======
 >>>>>>> parent of 1faefc6 (all deletes)
 import React, { useReducer } from "react"
@@ -125,6 +131,10 @@ const styles = StyleSheet.create({
 
 export default Header
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
+>>>>>>> parent of 1faefc6 (all deletes)
 =======
 >>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
 >>>>>>> parent of 1faefc6 (all deletes)
