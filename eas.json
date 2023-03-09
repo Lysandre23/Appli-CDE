@@ -1,10 +1,4 @@
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> parent of 1faefc6 (all deletes)
   "cli": {
     "version": ">= 3.5.2"
   },
@@ -32,38 +26,3 @@
     "production": {}
   }
 }
-=======
-<<<<<<< HEAD
->>>>>>> parent of 1faefc6 (all deletes)
-=======
->>>>>>> parent of 1faefc6 (all deletes)
-    "build": {
-        "development": {
-          "developmentClient": true,
-          "distribution": "internal"
-        },
-        "preview": {
-          "distribution": "internal"
-        },
-        "production": {}
-    },
-    "submit": {
-        "production": {
-            "ios": {
-                "appleId": "cde.polytech.nancy.apple@gmail.com",
-                "ascAppId": "6443661545",
-                "appleTeamId": "C8YX3YR477"
-            }
-        }
-    }
-<<<<<<< HEAD
-<<<<<<< HEAD
-}
-=======
-}
->>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
->>>>>>> parent of 1faefc6 (all deletes)
-=======
-}
->>>>>>> b90db95c9e563d73eaffc73a003558c689d174f9
->>>>>>> parent of 1faefc6 (all deletes)
