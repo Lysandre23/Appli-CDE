@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
+<<<<<<< HEAD
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
@@ -9,6 +10,19 @@
       <change beforePath="$PROJECT_DIR$/Screen/Admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screen/Admin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Screen/Goodies.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screen/Goodies.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Screen/Message.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screen/Message.js" afterDir="false" />
+=======
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f18fbb34-d96f-4753-ae9c-b05395cd2b00" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screen/Admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screen/Admin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screen/Goodies.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screen/Goodies.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screen/Message.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screen/Message.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screen/PSN.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screen/PSN.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+>>>>>>> fc5f6ecc6fec40add8a7ede5e526d12330c40735
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
     </list>
@@ -20,7 +34,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+<<<<<<< HEAD
         <option value="tsconfig.json" />
+=======
+        <option value="JavaScript File" />
+>>>>>>> fc5f6ecc6fec40add8a7ede5e526d12330c40735
       </list>
     </option>
   </component>
@@ -30,14 +48,19 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+<<<<<<< HEAD
   <component name="ProjectId" id="2Jrc6A4wYTVJfolFc7JXp7XdyUw" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+=======
+  <component name="ProjectId" id="2L6F1zr449O5CRqS8jkyyHCocyf" />
+>>>>>>> fc5f6ecc6fec40add8a7ede5e526d12330c40735
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+<<<<<<< HEAD
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
@@ -47,12 +70,24 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+=======
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;16.16.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;16.18.11&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/grego/WebstormProjects/app-cde/App-CDE/Components&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Subversion&quot;,
+>>>>>>> fc5f6ecc6fec40add8a7ede5e526d12330c40735
     &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2022.2.3\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+<<<<<<< HEAD
       <recent name="C:\Users\grego\WebstormProjects\Appli-CDE" />
     </key>
   </component>
@@ -112,6 +147,43 @@
       <workItem from="1678043488791" duration="57000" />
       <workItem from="1678369521500" duration="3591000" />
       <workItem from="1678724287347" duration="2082000" />
+=======
+      <recent name="C:\Users\grego\WebstormProjects\app-cde\App-CDE\Components" />
+      <recent name="C:\Users\grego\WebstormProjects\app-cde\App-CDE\Screens" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\grego\AppData\Roaming\Subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f18fbb34-d96f-4753-ae9c-b05395cd2b00" name="Changes" comment="" />
+      <created>1675183414765</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1675183414765</updated>
+      <workItem from="1675183416049" duration="8739000" />
+      <workItem from="1675247268096" duration="3000" />
+      <workItem from="1675250905319" duration="5154000" />
+      <workItem from="1675268003571" duration="6777000" />
+      <workItem from="1675330531862" duration="6266000" />
+      <workItem from="1675346789103" duration="2004000" />
+      <workItem from="1675416087697" duration="1161000" />
+      <workItem from="1675417270126" duration="2701000" />
+      <workItem from="1675678725735" duration="1907000" />
+      <workItem from="1675711420519" duration="4128000" />
+      <workItem from="1675851463839" duration="2669000" />
+      <workItem from="1675949492968" duration="1521000" />
+      <workItem from="1675951516172" duration="249000" />
+      <workItem from="1675957502292" duration="810000" />
+      <workItem from="1675962309384" duration="3618000" />
+      <workItem from="1676029630836" duration="7189000" />
+      <workItem from="1676372258557" duration="3059000" />
+      <workItem from="1676532071195" duration="2020000" />
+      <workItem from="1676562030306" duration="3593000" />
+      <workItem from="1677744134762" duration="1499000" />
+>>>>>>> fc5f6ecc6fec40add8a7ede5e526d12330c40735
     </task>
     <servers />
   </component>
