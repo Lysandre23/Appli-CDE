@@ -50,7 +50,7 @@ const EventModal = (props) => {
         />
         <ScrollView>
           <Image
-            style={(styles.img, { width: imageWidth, height: imageHeight })}
+            style={[styles.img + { width: imageWidth, height: imageHeight }]}
             source={{ uri: props.image }}
           />
           <View style={{
