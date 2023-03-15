@@ -13,8 +13,12 @@
     "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-native-community/checkbox": "^0.5.9",
     "@react-native-community/datetimepicker": "6.2.0",
+<<<<<<< HEAD
     "@react-native-firebase/app": "~17.3.2",
     "@react-native-firebase/messaging": "^17.3.2",
+=======
+    "@react-native-firebase/app": "~15.4.0",
+>>>>>>> fc5f6ecc6fec40add8a7ede5e526d12330c40735
     "@react-navigation/core": "^6.1.0",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
